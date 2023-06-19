@@ -1,5 +1,6 @@
 # Build
 build*/
+a.ou*
 
 # Kernel Module Compile Results
 .DS_store

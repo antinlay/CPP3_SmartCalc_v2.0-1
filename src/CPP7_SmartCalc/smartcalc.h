@@ -19,4 +19,5 @@ class SmartCalc : public QMainWindow {
  private:
   Ui::SmartCalc *ui;
 };
+
 #endif  // SMARTCALC_H
