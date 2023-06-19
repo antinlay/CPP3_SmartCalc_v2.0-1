@@ -60,12 +60,13 @@ std::string parser(const std::string& infix) {
 bool isOperator(const std::string& str) {
   std::string listOperators = "+-*/%^";
   bool isOperator = false;
-  if (str.find(listOperators) != std::string::npos) isOperator = true;
+  // char c = str[0];
+  if (listOperators.find(str) != std::string::npos) isOperator = true;
   return isOperator;
 }
 
 // Infix to postfix
-std::vector<std::string> to_postfix(std::stack<std::string>& infix) {
+std::vector<std::string> toPostfix(std::stack<std::string>& infix) {
   std::vector<std::string> output;
   std::stack<std::string> s;
   while (!infix.empty()) {
@@ -104,13 +105,18 @@ int main() {
   std::istringstream iss(parser(infix));
   std::cout << "Infix: " << parser(infix) << std::endl;
   std::stack<std::string> s;
+  std::vector<std::string> postfix;
   std::string element;
   while (iss >> element) {
     s.push(element);
-    std::cout << element << std::endl;
+    // std::cout << element << std::endl;
   }
-
-  while () return 0;
+  postfix = toPostfix(s);
+  while (!postfix.empty()) {
+    std::cout << postfix.back() << std::endl;
+    postfix.pop_back();
+  }
+  return 0;
 }
 // #include "consoleView.h"
 
