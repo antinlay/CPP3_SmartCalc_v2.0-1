@@ -1,113 +1,116 @@
 #include <cmath>
 #include <iostream>
+#include <map>
+#include <sstream>
 #include <stack>
 #include <unordered_map>
-
-using namespace std;
+#include <vector>
 
 // Функция, которая проверяет, является ли символ оператором
 bool is_operator(const char& c) {
-  static const string operators = "+-*/%^";
-  return operators.find(c) != string::npos;
+  static const std::string operators = "+-*/%^";
+  return operators.find(c) != std::string::npos;
 }
 
-double calculate(double a, double b, char c) {
-  double res{};
-  try {
-    switch (c) {
-      case '+':
-        res = a + b;
-        break;
-      case '-':
-        res = a - b;
-        break;
-      case '*':
-        res = a * b;
-        break;
-      case '/':
-        res = a / b;
-        break;
-      case '%':
-        if (b == 0) {
-          throw("Error");
-        } else {
-          res = fmod(a, b);
-        }
-        break;
-      case '^':
-        res = pow(a, b);
-        break;
-    }
-  } catch (...) {
-    throw("Error");
-  }
-  return res;
+double add(double a, double b) { return a + b; }
+double subtract(double a, double b) { return a - b; }
+double multiply(double a, double b) { return a * b; }
+double divide(double a, double b) {
+  if (b == 0) throw std::runtime_error("Error");
+  return a / b;
+}
+double mod(double a, double b) {
+  if (b == 0) throw std::runtime_error("Undefined");
+  return fmod(a, b);
+}
+double power(double a, double b) { return pow(a, b); }
+
+double calculate(double a, double b, std::string c) {
+  std::map<std::string, double (*)(double, double)> operations = {
+      {"+", add},    {"-", subtract}, {"*", multiply},
+      {"/", divide}, {"%", mod},      {"^", power}};
+  if (!operations[c](a, b))
+    throw std::invalid_argument("Input Error");
+  else
+    return operations[c](a, b);
 }
 
 // Return precedence of operators
-int precedence(const char& c) {
-  static const unordered_map<char, int> precedences = {
-      {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}, {'%', 2}, {'^', 3}, {'(', 0}};
+int precedence(const std::string& c) {
+  static const std::unordered_map<std::string, int> precedences = {
+      {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2}, {"%", 2}, {"^", 3}, {"(", 0}};
   return precedences.at(c);
 }
 
-// Infix to postfix
-string to_postfix(const string& infix) {
-  stack<char> s;
-  string postfix = "";
+std::string parser(const std::string& infix) {
+  std::string listOperators = "+-*/)(%^";
+  std::string str = "";
   for (const char& c : infix) {
-    if (isdigit(c)) {
-      postfix += c;
-    } else if (c == '(') {
-      s.push(c);
-    } else if (c == ')') {
-      while (!s.empty() && s.top() != '(') {
-        postfix += s.top();
+    if (listOperators.find(c) == std::string::npos) {
+      str += c;
+    } else if (!str.empty() && listOperators.find(c) != std::string::npos) {
+      str += ' ';
+      str += c;
+      str += ' ';
+    }
+  }
+  return str;
+}
+
+bool isOperator(const std::string& str) {
+  std::string listOperators = "+-*/%^";
+  bool isOperator = false;
+  if (str.find(listOperators) != std::string::npos) isOperator = true;
+  return isOperator;
+}
+
+// Infix to postfix
+std::vector<std::string> to_postfix(std::stack<std::string>& infix) {
+  std::vector<std::string> output;
+  std::stack<std::string> s;
+  while (!infix.empty()) {
+    if (!isOperator(infix.top())) {
+      output.push_back(infix.top());
+      infix.pop();
+    } else if (infix.top() == "(") {
+      s.push(infix.top());
+      infix.pop();
+    } else if (infix.top() == ")") {
+      while (!s.empty() || s.top() != "(") {
+        output.push_back(s.top());
         s.pop();
       }
-      s.pop();  // Удаляем открывающую скобку из стека
-    } else if (is_operator(c)) {
-      while (!s.empty() && is_operator(s.top()) &&
-             precedence(s.top()) >= precedence(c)) {
-        postfix += s.top();
+      infix.pop();  // Delete ')'
+    } else if (isOperator(infix.top())) {
+      while (!s.empty() && isOperator(s.top()) &&
+             precedence(s.top()) >= precedence(infix.top())) {
+        output.push_back(s.top());
         s.pop();
       }
-      s.push(c);
+      s.push(infix.top());
+      infix.pop();
     }
   }
   // Добавляем оставшиеся операторы в выходную строку
   while (!s.empty()) {
-    postfix += s.top();
+    output.push_back(s.top());
     s.pop();
   }
-  return postfix;
+  return output;
 }
 
 int main() {
-  string infix = "3 + 4 * 2 / (1 - 5) ^ 2";
-  string postfix = to_postfix(infix);
-  cout << "Infix: " << infix << endl;
-  cout << "Postfix: " << postfix << endl;
-
-  stack<double> operands;  // стек операндов
-                           //   string expression = "23+4*";
-  for (char c : postfix) {
-    if (isdigit(c)) {
-      operands.push(
-          c - '0');  // преобразование символа в число и помещение его в стек
-    } else {
-      double operand2 =
-          operands.top();  // извлечение последнего операнда из стека
-      operands.pop();
-      double operand1 =
-          operands.top();  // извлечение предпоследнего операнда из стека
-      operands.pop();
-      operands.push(calculate(operand1, operand2, c));
-    }
+  std::string infix = "33.4234525+4.1111111*2.0043111/(1.5345119-5.5345119)^2";
+  std::istringstream iss(parser(infix));
+  std::cout << "Infix: " << parser(infix) << std::endl;
+  std::stack<std::string> s;
+  std::string element;
+  while (iss >> element) {
+    s.push(element);
+    std::cout << element << std::endl;
   }
 
-  cout << "Result: " << operands.top() << endl;  // вывод результата вычисления
-  return 0;
+  while () return 0;
 }
 // #include "consoleView.h"
 
