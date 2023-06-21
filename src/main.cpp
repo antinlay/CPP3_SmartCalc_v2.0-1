@@ -194,6 +194,7 @@ int main() {
   // std::cout << "Postfix: " << newInfix << std::endl;
 
   std::cout << "Result: " << evaluate_postfix(newInfix) << std::endl;
+  printf("%f", evaluate_postfix(newInfix));
 
   // std::list<std::string> s = stringToList(newInfix);
   // std::list<std::string> postfix = infixToPostfix(s);
