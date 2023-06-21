@@ -42,48 +42,34 @@ double calcOperations(double a, double b, std::string c) {
 
 double calcFunctions(double a, std::string c) {
   std::map<std::string, double (*)(double)> functions = {
-      {"sqrt", sqrtCalc}, {"ln", lnCalc},     {"log", logCalc},
-      {"tan", tanCalc},   {"atan", atanCalc}, {"sin", sinCalc},
-      {"asin", asinCalc}, {"cos", cosCalc},   {"acos", acosCalc}};
+      {"q", sqrtCalc}, {"l", lnCalc},   {"g", logCalc},
+      {"t", tanCalc},  {"n", atanCalc}, {"s", sinCalc},
+      {"i", asinCalc}, {"c", cosCalc},  {"o", acosCalc}};
   if (!functions[c](a))
     throw std::invalid_argument("Input Error");
   else
     return functions[c](a);
 }
 
+bool isFunction(const std::string& str) {
+  std::string listOperators = "qtilncgso";
+  bool result = false;
+  if (listOperators.find(str) != std::string::npos) result = true;
+  return result;
+}
+
 // Return priority of operators
 int getPriority(char& c) {
-  static const std::unordered_map<char, int> precedences = {
-      {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2},
-      {'%', 2}, {'^', 3}, {'(', 0}, {')', 0}};
-  return precedences.at(c);
-}
-
-std::string apendDelimeter(const std::string& infix) {
-  std::string listOperators = "+-*/)(%^";
-  std::string newInfix = "";
-  for (const char& c : infix) {
-    if (listOperators.find(c) == std::string::npos) {
-      newInfix += c;
-    } else if (!newInfix.empty() &&
-               listOperators.find(c) != std::string::npos) {
-      newInfix += ' ';
-      newInfix += c;
-      newInfix += ' ';
-    }
+  int res = 0;
+  if (isFunction(std::string(1, c))) {
+    res = 4;
+  } else {
+    static const std::unordered_map<char, int> precedences = {
+        {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2},
+        {'%', 2}, {'^', 3}, {'(', 0}, {')', 0}};
+    res = precedences.at(c);
   }
-  return newInfix;
-}
-
-std::list<std::string> stringToList(const std::string& newInfix) {
-  std::istringstream issInfix(apendDelimeter(newInfix));
-  std::list<std::string> listInfix;
-  std::string element;
-  while (issInfix >> element) {
-    listInfix.push_back(element);
-  }
-  listInfix.unique();
-  return listInfix;
+  return res;
 }
 
 bool isOperator(const std::string& str) {
@@ -101,7 +87,11 @@ std::queue<std::string> infixToPostfix(std::string& infix) {
 
   for (int i = 0; i < infix.length(); i++) {
     char currentChar = infix[i];
-    if (isdigit(currentChar) || currentChar == '.') {
+    if (isdigit(currentChar) || currentChar == '.' || currentChar == 'e') {
+      if (currentChar == 'e') {
+        currentToken += currentChar;
+        currentChar = infix[++i];
+      }
       currentToken += currentChar;
     } else {
       if (!currentToken.empty()) {
@@ -117,9 +107,8 @@ std::queue<std::string> infixToPostfix(std::string& infix) {
           operatorStack.pop();
         }
         operatorStack.pop();
-        // } else if (isFunction(infix.substr(i, 3))) {
-        //   operatorStack.push(infix.substr(i, 3));
-        //   i += 2;
+      } else if (isFunction(infix.substr(i, 1))) {
+        operatorStack.push(infix.substr(i, 1));
       } else {
         while (!operatorStack.empty() && operatorStack.top() != "(" &&
                getPriority(currentChar) <=
@@ -150,34 +139,33 @@ std::queue<std::string> infixToPostfix(std::string& infix) {
   return outputQueue;
 }
 
-double evaluate_postfix(std::queue<std::string> postfix) {
-  std::stack<double> operands;
+double getFromStack(std::stack<double>& operands) {
+  double operand = operands.top();
+  operands.pop();
+  return operand;
+}
+
+double calculatePostfix(std::queue<std::string> postfix) {
+  std::stack<double> calcStack;
   std::string token;
   while (!postfix.empty()) {
     token = postfix.front();
     postfix.pop();
-    if (token == "+" || token == "-" || token == "*" || token == "/" ||
-        token == "^") {
-      double operand2 = operands.top();
-      operands.pop();
-      double operand1 = operands.top();
-      operands.pop();
-      if (token == "+") {
-        operands.push(operand1 + operand2);
-      } else if (token == "-") {
-        operands.push(operand1 - operand2);
-      } else if (token == "*") {
-        operands.push(operand1 * operand2);
-      } else if (token == "/") {
-        operands.push(operand1 / operand2);
-      } else if (token == "^") {
-        operands.push(pow(operand1, operand2));
-      }
+    if (isOperator(token)) {
+      double operand1 = getFromStack(calcStack);
+      double operand2 = getFromStack(calcStack);
+      double result = calcOperations(operand2, operand1, token);
+      calcStack.push(result);
+    } else if (isFunction(token)) {
+      double topStack = getFromStack(calcStack);
+      double debug = calcFunctions(topStack, token);
+      calcStack.push(debug);
     } else {
-      operands.push(std::stod(token));
+      double debug = std::stod(token);
+      calcStack.push(debug);
     }
   }
-  return operands.top();
+  return calcStack.top();
 }
 
 int main() {
@@ -187,14 +175,16 @@ int main() {
   // double res = calcOperations(a, b, c);
   // std::cout << res << std::endl;
 
-  std::string infix = "33.4234525+4.1111111*2.0043111/(1.5345119-5.5345119)^2";
+  std::string infix =
+      "33.4234525+4.1111111*2.0043111/"
+      "(1.5345119-5.5345119)^2-g(1-0.5)-123.11e-5";
   std::queue<std::string> newInfix = infixToPostfix(infix);
 
   // std::istringstream iss(apendDelimeter(infix));
   // std::cout << "Postfix: " << newInfix << std::endl;
 
-  std::cout << "Result: " << evaluate_postfix(newInfix) << std::endl;
-  printf("%f", evaluate_postfix(newInfix));
+  std::cout << "Result: " << calculatePostfix(newInfix) << std::endl;
+  printf("%f", calculatePostfix(newInfix));
 
   // std::list<std::string> s = stringToList(newInfix);
   // std::list<std::string> postfix = infixToPostfix(s);
