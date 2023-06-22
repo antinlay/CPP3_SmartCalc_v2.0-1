@@ -15,7 +15,7 @@ class Credit : public QWidget {
   ~Credit();
 
  private slots:
-  void on_pushButtonCredit_clicked();
+  void on_credit_clicked();
 
  private:
   Ui::Credit *ui;

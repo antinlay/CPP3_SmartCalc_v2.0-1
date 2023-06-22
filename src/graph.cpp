@@ -4,7 +4,7 @@
 
 char *strConvert(QString res, double val);
 
-graph::graph(QWidget *parent) : QWidget(parent), ui(new Ui::graph) {
+graph::graph(QWidget *parent) : QWidget(parent), ui(new s21::graph) {
   ui->setupUi(this);
 }
 

@@ -2,11 +2,8 @@
 #define GRAPH_H
 
 #include <QWidget>
-extern "C" {
-#include "../s21_smartcalc.h"
-}
 
-namespace Ui {
+namespace s21 {
 class graph;
 }
 
@@ -22,7 +19,7 @@ class graph : public QWidget {
   void on_pushButton_clicked();
 
  private:
-  Ui::graph *ui;
+  s21::graph *ui;
 };
 
 #endif  // GRAPH_H

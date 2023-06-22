@@ -86,7 +86,7 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
         }
         operatorStack.pop();
       } else if (isFunction(infix.substr(i, 1))) {
-        operatorStack.push(infix.substr(i, 1));
+        if (i == 0) operatorStack.push(infix.substr(i, 1));
       } else {
         while (!operatorStack.empty() && operatorStack.top() != "(" &&
                getPriority(currentChar) <=
@@ -141,13 +141,11 @@ double s21::CalcModel::calculatePostfix(std::queue<std::string> postfix) {
   return calcStack.top();
 }
 
-int main(void) {
-  s21::CalcModel ll;
-  std::string infix =
-      "33.4234525+4.1111111*2.0043111/"
-      "(1.5345119-5.5345119)^2-g(1-0.5)-123.11e-5";
-  std::queue<std::string> newInfix = ll.infixToPostfix(infix);
-  std::cout << "Result: " << ll.calculatePostfix(newInfix) << std::endl;
-  printf("%f", ll.calculatePostfix(newInfix));
-  return 0;
-}
+// int main(void) {
+//   s21::CalcModel ll;
+//   std::string infix = "-5+(-1+2)*4*c(-2*7.5-2)+s(c(2*5))-q(2^g(5-1))+l(55)";
+//   std::queue<std::string> newInfix = ll.infixToPostfix(infix);
+//   std::cout << "Result: " << ll.calculatePostfix(newInfix) << std::endl;
+//   printf("%f", ll.calculatePostfix(newInfix));
+//   return 0;
+// }

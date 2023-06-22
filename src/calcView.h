@@ -1,28 +1,47 @@
-#ifndef CalcVIEW_H
-#define CalcVIEW_H
+#ifndef CALCVIEW_H
+#define CALCVIEW_H
+
+#include <QMainWindow>
 
 #include "calcController.h"
+#include "credit.h"
+#include "debit.h"
 
-enum Choice {
-  SUM = 1,
-  SUB = 2,
-  MUL = 3,
-  DIV = 4,
-  RES = 5,
-  EXIT = 0,
-  NONE = -1
-};
+QT_BEGIN_NAMESPACE
+namespace Ui {
+class calcView;
+}
+QT_END_NAMESPACE
 
-class CalcView {
- private:
-  CalcController *controller;
+class calcView : public QMainWindow {
+  Q_OBJECT
 
  public:
-  CalcView(CalcController *c) : controller(c){};
-  void displayMenu();
-  int performChoice();
-  double performNumericInput();
-  void startEventLoop();
-};
+  calcView(QWidget *parent = nullptr);
+  ~calcView();
+  void initCalc();
 
-#endif
+ signals:
+  void sendData(QString res);
+
+ private:
+  Ui::calcView *ui;
+  Credit *creditWindow;
+  Debit *debitWindow;
+  // graph *graphWindow;
+ private slots:
+  void mathFuncs();
+  void numFuncs();
+  void symbs();
+  void dotClick();
+  //   void equalClick();
+  void ceClick();
+  void acClick();
+  void on_credit_clicked();
+  void on_debit_clicked();
+  //   void on_open_clicked();
+  //   void on_graph_clicked();
+  //   void on_xoy_clicked();
+  //   void on_close_clicked();
+};
+#endif  // CALCVIEW_H
