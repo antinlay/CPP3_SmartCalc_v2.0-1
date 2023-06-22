@@ -3,22 +3,15 @@
 #include <list>
 #include <map>
 #include <queue>
-#include <sstream>
 #include <stack>
 #include <unordered_map>
 
-double addCalc(double a, double b) { return a + b; }
-double subtractCalc(double a, double b) { return a - b; }
-double multiplyCalc(double a, double b) { return a * b; }
-double divideCalc(double a, double b) {
-  if (b == 0) throw std::runtime_error("Error divide zero");
-  return a / b;
-}
-double modCalc(double a, double b) {
-  if (b == 0) throw std::runtime_error("Undefined");
-  return fmod(a, b);
-}
-double powerCalc(double a, double b) { return pow(a, b); }
+double addCalc(double a, double b);
+double subtractCalc(double a, double b);
+double multiplyCalc(double a, double b);
+double divideCalc(double a, double b);
+double modCalc(double a, double b);
+double powerCalc(double a, double b);
 
 double sqrtCalc(double a) { return sqrt(a); }
 double lnCalc(double a) { return log(a); }
