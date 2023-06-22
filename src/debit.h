@@ -15,7 +15,7 @@ class Debit : public QWidget {
   ~Debit();
 
  private slots:
-  void on_debit_clicked();
+  void on_pushButtonDebit_clicked();
 
  private:
   Ui::Debit *ui;

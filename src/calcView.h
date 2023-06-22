@@ -39,7 +39,7 @@ class calcView : public QMainWindow {
   void acClick();
   void on_credit_clicked();
   void on_debit_clicked();
-  //   void on_open_clicked();
+  void on_open_clicked();
   //   void on_graph_clicked();
   //   void on_xoy_clicked();
   //   void on_close_clicked();

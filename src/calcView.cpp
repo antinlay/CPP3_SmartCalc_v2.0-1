@@ -42,8 +42,8 @@ calcView::calcView(QWidget *parent)
   connect(ui->sub, SIGNAL(clicked()), this, SLOT(symbs()));
   connect(ui->pow, SIGNAL(clicked()), this, SLOT(symbs()));
   connect(ui->mod, SIGNAL(clicked()), this, SLOT(symbs()));
-  connect(ui->open, SIGNAL(clicked()), this, SLOT(symbs()));
-  connect(ui->close, SIGNAL(clicked()), this, SLOT(symbs()));
+  // connect(ui->open, SIGNAL(clicked()), this, SLOT(symbs()));
+  // connect(ui->close, SIGNAL(clicked()), this, SLOT(symbs()));
 
   //   connect(ui->equal, SIGNAL(clicked()), this, SLOT(equalClick()));
   connect(ui->dot, SIGNAL(clicked()), this, SLOT(dotClick()));
@@ -158,21 +158,21 @@ void calcView::acClick() {
 }
 
 void calcView::on_credit_clicked() {
-  creditWindow = new Credit();
+  Credit *creditWindow = new Credit();
   creditWindow->show();
 }
 
 void calcView::on_debit_clicked() {
-  debitWindow = new Debit();
+  Debit *debitWindow = new Debit();
   debitWindow->show();
 }
 
-// void calcView::on_open_clicked() {
-//   initCalc();
-//   if (!dot) {
-//     ui->resultShow->setText(ui->resultShow->text() + "(");
-//   }
-// }
+void calcView::on_open_clicked() {
+  initCalc();
+  if (!dot) {
+    ui->resultShow->setText(ui->resultShow->text() + "(");
+  }
+}
 
 // void calcView::on_graph_clicked() {
 //   initCalc();

@@ -10,10 +10,14 @@ CONFIG += c++17
 
 SOURCES += \
     calcView.cpp \
+    credit.cpp \
+    debit.cpp \
     main.cpp \
 
 HEADERS += \
-    calcView.h
+    calcView.h \
+    credit.h \
+    debit.h
 
 FORMS += \
     calcView.ui \
