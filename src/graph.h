@@ -3,23 +3,24 @@
 
 #include <QWidget>
 
-namespace s21 {
-class graph;
+namespace Ui {
+class Graph;
 }
 
-class graph : public QWidget {
+class Graph : public QWidget {
   Q_OBJECT
 
  public:
-  explicit graph(QWidget *parent = nullptr);
-  ~graph();
+  explicit Graph(QWidget *parent = nullptr);
+  ~Graph();
   void getData(QString res);
+  char *strConvert(QString res, double val);
 
  public slots:
   void on_pushButton_clicked();
 
  private:
-  s21::graph *ui;
+  Ui::Graph *ui;
 };
 
 #endif  // GRAPH_H

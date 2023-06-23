@@ -1,19 +1,18 @@
 #include "calcView.h"
 
-#include "ui_calcView.h"
-
 int curs = 0, dot = 0, symb = 0;
 
 calcView::calcView(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::calcView) {
-  //   auto val = new QDoubleValidator();
+  auto val = new QDoubleValidator();
   //    val->setLocale(lo);
 
   ui->setupUi(this);
 
-  //   ui->resultShow->setValidator(val);
+  ui->resultShow->setValidator(val);
 
-  //   graphWindow = new graph;
+  // Graph *graphWindow = new Graph();
+  graphWindow = new Graph;
 
   connect(ui->sin, SIGNAL(clicked()), this, SLOT(mathFuncs()));
   connect(ui->cos, SIGNAL(clicked()), this, SLOT(mathFuncs()));
@@ -51,8 +50,8 @@ calcView::calcView(QWidget *parent)
   connect(ui->CE, SIGNAL(clicked()), this, SLOT(ceClick()));
   connect(ui->AC, SIGNAL(clicked()), this, SLOT(acClick()));
 
-  //  connect(ui->graph, SIGNAL(clicked()), this, SLOT(on_graph_clicked()));
-  // connect(this, &calcView::sendData, graphWindow, &graph::getData);
+  connect(ui->graph, SIGNAL(clicked()), this, SLOT(on_graph_clicked()));
+  connect(this, &calcView::sendData, graphWindow, &Graph::getData);
 }
 
 calcView::~calcView() { delete ui; }
@@ -174,34 +173,34 @@ void calcView::on_open_clicked() {
   }
 }
 
-// void calcView::on_graph_clicked() {
-//   initCalc();
-//   if (ui->resultShow->text().contains('X', Qt::CaseInsensitive) &&
-//       !ui->resultShow->text().contains('=', Qt::CaseInsensitive)) {
-//     //    graphWindow = new graph(graphWindow);
-//     emit sendData(ui->resultShow->text());
-//     graphWindow->show();
-//     graphWindow->on_pushButton_clicked();
-//   } else {
-//     if (ui->resultShow->text().contains(" X=", Qt::CaseInsensitive)) {
-//       ui->resultShow->text().replace(" X=", "");
-//     }
-//     ui->resultShow->setText(ui->resultShow->text() + "+X");
-//   }
-// }
+void calcView::on_graph_clicked() {
+  initCalc();
+  if (ui->resultShow->text().contains('X', Qt::CaseInsensitive) &&
+      !ui->resultShow->text().contains('=', Qt::CaseInsensitive)) {
+    // Graph *graphWindow = new Graph(graphWindow);
+    emit sendData(ui->resultShow->text());
+    graphWindow->show();
+    graphWindow->on_pushButton_clicked();
+  } else {
+    if (ui->resultShow->text().contains(" X=", Qt::CaseInsensitive)) {
+      ui->resultShow->text().replace(" X=", "");
+    }
+    ui->resultShow->setText(ui->resultShow->text() + "+X");
+  }
+}
 
-// void calcView::on_xoy_clicked() {
-//   initCalc();
-//   if (!dot) {
-//     ui->resultShow->setText(ui->resultShow->text() + "X");
-//   }
-//   symb--;
-//   emit sendData(ui->resultShow->text());
-// }
+void calcView::on_xoy_clicked() {
+  initCalc();
+  if (!dot) {
+    ui->resultShow->setText(ui->resultShow->text() + "X");
+  }
+  symb--;
+  emit sendData(ui->resultShow->text());
+}
 
-// void calcView::on_close_clicked() {
-//   initCalc();
-//   if (!dot) {
-//     ui->resultShow->setText(ui->resultShow->text() + ")");
-//   }
-// }
+void calcView::on_close_clicked() {
+  initCalc();
+  if (!dot) {
+    ui->resultShow->setText(ui->resultShow->text() + ")");
+  }
+}

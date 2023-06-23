@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QDoubleValidator>
 
 #include "calcView.h"
 

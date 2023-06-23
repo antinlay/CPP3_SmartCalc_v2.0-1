@@ -1,6 +1,7 @@
 #include "credit.h"
 
-#include "math.h"
+#include <cmath>
+
 #include "ui_credit.h"
 
 Credit::Credit(QWidget *parent) : QWidget(parent), ui(new Ui::Credit) {

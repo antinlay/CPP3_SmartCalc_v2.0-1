@@ -12,12 +12,16 @@ SOURCES += \
     calcView.cpp \
     credit.cpp \
     debit.cpp \
+    graph.cpp \
     main.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
     calcView.h \
     credit.h \
-    debit.h
+    debit.h \
+    graph.h \
+    qcustomplot.h \
 
 FORMS += \
     calcView.ui \

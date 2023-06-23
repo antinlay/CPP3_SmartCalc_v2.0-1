@@ -1,4 +1,4 @@
-#include "Debit.h"
+#include "debit.h"
 
 #include "ui_debit.h"
 

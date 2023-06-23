@@ -2,15 +2,12 @@
 
 #include "ui_graph.h"
 
-char *strConvert(QString res, double val);
-
-graph::graph(QWidget *parent) : QWidget(parent), ui(new s21::graph) {
+Graph::Graph(QWidget *parent) : QWidget(parent), ui(new Ui::Graph) {
   ui->setupUi(this);
 }
+Graph::~Graph() { delete ui; }
 
-graph::~graph() { delete ui; }
-
-char *strConvert(QString res, double val) {
+char *Graph::strConvert(QString res, double val) {
   QString copy, num;
   QByteArray str;
   char *result;
@@ -27,7 +24,7 @@ char *strConvert(QString res, double val) {
   return result;
 }
 
-void graph::on_pushButton_clicked() {
+void Graph::on_pushButton_clicked() {
   int h = ui->spinBox->value() * 100;
   double xStart = ui->doubleSpinBox_xStart->value(),
          xEnd = ui->doubleSpinBox_xEnd->value(), j = (xEnd - xStart) / h;
@@ -36,13 +33,13 @@ void graph::on_pushButton_clicked() {
   // calculate and write all graphics poins
   for (int i = 0; i <= h; ++i) {
     x[i] = xStart + i * j;
-    char *tmp = strConvert(res, x[i]);
-    y[i] = calculate(tmp);
+    // char *tmp = strConvert(res, x[i]);
+    // y[i] = calculate(tmp);
   }
   // find max and min in elements
   double yStart = *std::min_element(y.begin(), y.end());
   double yEnd = *std::max_element(y.begin(), y.end());
-  // create graph and assign data to it:
+  // create Graph and assign data to it:
   ui->widget->addGraph();
   ui->widget->graph(0)->setData(x, y);
   // give the axes some labels:
@@ -55,4 +52,4 @@ void graph::on_pushButton_clicked() {
   ui->widget->replot();
 }
 
-void graph::getData(QString res) { ui->lineEdit_func->setText(res); }
+void Graph::getData(QString res) { ui->lineEdit_func->setText(res); }

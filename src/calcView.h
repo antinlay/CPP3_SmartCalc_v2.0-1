@@ -1,11 +1,15 @@
 #ifndef CALCVIEW_H
 #define CALCVIEW_H
 
+#include <QDoubleValidator>
 #include <QMainWindow>
 
-#include "calcController.h"
+// #include "calcController.h"
 #include "credit.h"
 #include "debit.h"
+#include "graph.h"
+#include "qobjectdefs.h"
+#include "ui_calcView.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,7 +32,8 @@ class calcView : public QMainWindow {
   Ui::calcView *ui;
   Credit *creditWindow;
   Debit *debitWindow;
-  // graph *graphWindow;
+  Graph *graphWindow;
+
  private slots:
   void mathFuncs();
   void numFuncs();
@@ -40,8 +45,8 @@ class calcView : public QMainWindow {
   void on_credit_clicked();
   void on_debit_clicked();
   void on_open_clicked();
-  //   void on_graph_clicked();
-  //   void on_xoy_clicked();
-  //   void on_close_clicked();
+  void on_graph_clicked();
+  void on_xoy_clicked();
+  void on_close_clicked();
 };
 #endif  // CALCVIEW_H
