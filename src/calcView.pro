@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    calcModel.cpp \
     calcView.cpp \
     credit.cpp \
     debit.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
     qcustomplot.cpp
 
 HEADERS += \
+    calcModel.h \
     calcView.h \
     credit.h \
     debit.h \

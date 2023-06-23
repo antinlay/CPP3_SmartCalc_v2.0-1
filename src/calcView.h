@@ -4,6 +4,7 @@
 #include <QDoubleValidator>
 #include <QMainWindow>
 
+#include "calcModel.h"
 // #include "calcController.h"
 #include "credit.h"
 #include "debit.h"
@@ -17,6 +18,7 @@ class calcView;
 }
 QT_END_NAMESPACE
 
+namespace s21 {
 class calcView : public QMainWindow {
   Q_OBJECT
 
@@ -33,13 +35,14 @@ class calcView : public QMainWindow {
   Credit *creditWindow;
   Debit *debitWindow;
   Graph *graphWindow;
+  CalcModel resultModel;
 
  private slots:
   void mathFuncs();
   void numFuncs();
   void symbs();
   void dotClick();
-  //   void equalClick();
+  void equalClick();
   void ceClick();
   void acClick();
   void on_credit_clicked();
@@ -49,4 +52,5 @@ class calcView : public QMainWindow {
   void on_xoy_clicked();
   void on_close_clicked();
 };
+}  // namespace s21
 #endif  // CALCVIEW_H

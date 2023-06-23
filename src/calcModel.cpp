@@ -140,7 +140,10 @@ double s21::CalcModel::calculatePostfix(std::queue<std::string> postfix) {
   }
   return calcStack.top();
 }
-
+double s21::CalcModel::calculate(std::string infix) {
+  std::queue<std::string> newInfix = infixToPostfix(infix);
+  return calculatePostfix(newInfix);
+}
 // int main(void) {
 //   s21::CalcModel ll;
 //   std::string infix = "-5+(-1+2)*4*c(-2*7.5-2)+s(c(2*5))-q(2^g(5-1))+l(55)";

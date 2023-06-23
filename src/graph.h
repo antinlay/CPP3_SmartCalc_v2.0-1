@@ -3,10 +3,15 @@
 
 #include <QWidget>
 
+#include "calcModel.h"
+
+QT_BEGIN_NAMESPACE
 namespace Ui {
 class Graph;
 }
+QT_END_NAMESPACE
 
+namespace s21 {
 class Graph : public QWidget {
   Q_OBJECT
 
@@ -14,13 +19,14 @@ class Graph : public QWidget {
   explicit Graph(QWidget *parent = nullptr);
   ~Graph();
   void getData(QString res);
-  char *strConvert(QString res, double val);
+  std::string strConvert(QString res, double val);
 
  public slots:
   void on_pushButton_clicked();
 
  private:
   Ui::Graph *ui;
+  CalcModel resultModel;
 };
-
+}  // namespace s21
 #endif  // GRAPH_H

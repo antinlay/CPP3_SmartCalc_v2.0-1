@@ -5,7 +5,7 @@
 
 // class CalcController {
 //  private:
-//   CalcModel *model;
+//   s21::CalcModel *model;
 
 //  public:
 //   CalcController(CalcModel *m) : model(m){};

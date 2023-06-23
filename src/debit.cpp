@@ -2,7 +2,7 @@
 
 #include "ui_debit.h"
 
-Debit::Debit(QWidget *parent) : QWidget(parent), ui(new Ui::Debit) {
+s21::Debit::Debit(QWidget *parent) : QWidget(parent), ui(new Ui::Debit) {
   // for dot in validator
   QLocale lo(QLocale::C);
   lo.setNumberOptions(QLocale::RejectGroupSeparator);
@@ -14,9 +14,9 @@ Debit::Debit(QWidget *parent) : QWidget(parent), ui(new Ui::Debit) {
   ui->lineEdit_intRate->setValidator(val);
 }
 
-Debit::~Debit() { delete ui; }
+s21::Debit::~Debit() { delete ui; }
 
-void Debit::on_pushButtonDebit_clicked() {
+void s21::Debit::on_pushButtonDebit_clicked() {
   double sumDep = ui->lineEdit_sumDep->text().toDouble();
   double percent = ui->lineEdit_intRate->text().toDouble();
   int month = ui->spinBox_months->text().toInt();

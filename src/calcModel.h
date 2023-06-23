@@ -53,6 +53,7 @@ class CalcModel {
   // CALCULATE POSTFIX
   double getFromStack(std::stack<double>& operands);
   double calculatePostfix(std::queue<std::string> postfix);
+  double calculate(std::string infix);
 };
 }  // namespace s21
 #endif  // CALCMODEL_H

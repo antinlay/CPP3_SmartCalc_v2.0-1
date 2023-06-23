@@ -2,39 +2,38 @@
 
 #include "ui_graph.h"
 
-Graph::Graph(QWidget *parent) : QWidget(parent), ui(new Ui::Graph) {
+s21::Graph::Graph(QWidget *parent) : QWidget(parent), ui(new Ui::Graph) {
   ui->setupUi(this);
 }
-Graph::~Graph() { delete ui; }
+s21::Graph::~Graph() { delete ui; }
 
-char *Graph::strConvert(QString res, double val) {
-  QString copy, num;
-  QByteArray str;
-  char *result;
+std::string s21::Graph::strConvert(QString res, double val) {
+  QString copy;
+  QString num;
+  std::string result;
 
-  copy.push_back(res);
   num = QString::number(val);
-  str = copy.replace('X', '(' + num + ')').toLocal8Bit();
+  res.replace('X', '(' + num + ')');
   // change dot to comma for LINUX
-#ifdef linux
-  result = str.replace('.', ',').data();
-#else
-  result = str.data();
-#endif
-  return result;
+//#ifdef linux
+//  result = str.replace('.', ',').data();
+//#else
+//  result = str.data();
+//#endif
+  return res.toStdString();
 }
 
-void Graph::on_pushButton_clicked() {
+void s21::Graph::on_pushButton_clicked() {
   int h = ui->spinBox->value() * 100;
   double xStart = ui->doubleSpinBox_xStart->value(),
          xEnd = ui->doubleSpinBox_xEnd->value(), j = (xEnd - xStart) / h;
   QVector<double> x(h + 1), y(h + 1);
   QString res = ui->lineEdit_func->text();
-  // calculate and write all graphics poins
+  // s21::CalcModel::calculate and write all graphics poins
   for (int i = 0; i <= h; ++i) {
     x[i] = xStart + i * j;
-    // char *tmp = strConvert(res, x[i]);
-    // y[i] = calculate(tmp);
+    std::string tmp = strConvert(res, x[i]);
+    y[i] = resultModel.calculate(tmp);
   }
   // find max and min in elements
   double yStart = *std::min_element(y.begin(), y.end());
@@ -52,4 +51,4 @@ void Graph::on_pushButton_clicked() {
   ui->widget->replot();
 }
 
-void Graph::getData(QString res) { ui->lineEdit_func->setText(res); }
+void s21::Graph::getData(QString res) { ui->lineEdit_func->setText(res); }

@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
-  calcView w;
+  s21::calcView w;
   w.show();
   return a.exec();
 }
