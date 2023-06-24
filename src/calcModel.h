@@ -22,12 +22,18 @@ class CalcModel {
   double subtractCalc(double a, double b) { return a - b; }
   double multiplyCalc(double a, double b) { return a * b; }
   double divideCalc(double a, double b) {
-    if (b == 0) throw std::runtime_error("Error divide zero");
-    return a / b;
+    if (b == 0)
+      throw std::runtime_error("Undefined divide zero: " + std::to_string(a) +
+                               "/" + std::to_string(b));
+    else
+      return a / b;
   }
   double modCalc(double a, double b) {
-    if (b == 0) throw std::runtime_error("Undefined");
-    return fmod(a, b);
+    if (b == 0)
+      throw std::runtime_error("Undefined mod(" + std::to_string(a) + ", " +
+                               std::to_string(b) + ")");
+    else
+      return fmod(a, b);
   }
   double powerCalc(double a, double b) { return pow(a, b); }
 
@@ -42,13 +48,14 @@ class CalcModel {
   double cosCalc(double a) { return cos(a); }
   double acosCalc(double a) { return acos(a); }
   // CHECKS
-  int getPriority(char& c);
-  bool isOperator(const std::string& str);
-  bool isFunction(const std::string& str);
+  int getPriority(std::string c);
+  bool isOperator(std::string& str);
+  bool isFunction(std::string& str);
   // MAP CALCULATIONS
   double calcOperations(double a, double b, std::string c);
   double calcFunctions(double a, std::string c);
   // CONVERT TO POSTFIX
+  void fixInfix(std::string& infix);
   std::queue<std::string> infixToPostfix(std::string& infix);
   // CALCULATE POSTFIX
   double getFromStack(std::stack<double>& operands);

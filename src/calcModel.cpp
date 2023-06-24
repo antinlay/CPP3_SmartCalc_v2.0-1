@@ -1,28 +1,28 @@
 #include "calcModel.h"
 
 // CHECKS
-int s21::CalcModel::getPriority(char& c) {
+int s21::CalcModel::getPriority(std::string c) {
   int res = 0;
-  if (isFunction(std::string(1, c))) {
+  if (isFunction(c)) {
     res = 4;
   } else {
-    static const std::unordered_map<char, int> precedences = {
-        {'+', 1}, {'-', 1}, {'*', 2}, {'/', 2},
-        {'%', 2}, {'^', 3}, {'(', 0}, {')', 0}};
+    static const std::unordered_map<std::string, int> precedences = {
+        {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2},
+        {"%", 2}, {"^", 3}, {"(", 0}, {")", 0}};
     res = precedences.at(c);
   }
   return res;
 }
 
-bool s21::CalcModel::isOperator(const std::string& str) {
+bool s21::CalcModel::isOperator(std::string& str) {
   std::string listOperators = "+-*)(/%^";
   bool result = false;
   if (listOperators.find(str) != std::string::npos) result = true;
   return result;
 }
 
-bool s21::CalcModel::isFunction(const std::string& str) {
-  std::string listOperators = "qtilncgso";
+bool s21::CalcModel::isFunction(std::string& str) {
+  std::string listOperators = "qgaiontsc";
   bool result = false;
   if (listOperators.find(str) != std::string::npos) result = true;
   return result;
@@ -38,7 +38,7 @@ double s21::CalcModel::calcOperations(double a, double b, std::string c) {
                     {"%", &s21::CalcModel::modCalc},
                     {"^", &s21::CalcModel::powerCalc}};
   if (operations.find(c) == operations.end())
-    throw std::invalid_argument("Input Error");
+    throw std::invalid_argument("Input Error: " + c + "not found");
   else
     return operations[c](this, a, b);
 }
@@ -46,15 +46,28 @@ double s21::CalcModel::calcOperations(double a, double b, std::string c) {
 double s21::CalcModel::calcFunctions(double a, std::string c) {
   std::map<std::string, std::function<double(s21::CalcModel*, double)>>
       functions = {
-          {"q", &s21::CalcModel::sqrtCalc}, {"l", &s21::CalcModel::lnCalc},
+          {"q", &s21::CalcModel::sqrtCalc}, {"n", &s21::CalcModel::lnCalc},
           {"g", &s21::CalcModel::logCalc},  {"t", &s21::CalcModel::tanCalc},
-          {"n", &s21::CalcModel::atanCalc}, {"s", &s21::CalcModel::sinCalc},
+          {"a", &s21::CalcModel::atanCalc}, {"s", &s21::CalcModel::sinCalc},
           {"i", &s21::CalcModel::asinCalc}, {"c", &s21::CalcModel::cosCalc},
           {"o", &s21::CalcModel::acosCalc}};
   if (functions.find(c) == functions.end())
-    throw std::invalid_argument("Input Error");
+    throw std::invalid_argument("Input Error: " + c + "not found");
   else
     return functions[c](this, a);
+}
+
+void s21::CalcModel::fixInfix(std::string& infix) {
+  static const std::unordered_map<std::string, std::string> keyFunctions = {
+      {"sqrt", "q"}, {"ln", "n"},   {"log", "g"}, {"tan", "t"}, {"atan", "a"},
+      {"sin", "s"},  {"asin", "i"}, {"cos", "c"}, {"acos", "o"}};
+  for (auto& key : keyFunctions) {
+    size_t pos = 0;
+    while ((pos = infix.find(key.first, pos)) != std::string::npos) {
+      infix.replace(pos, key.first.length(), key.second);
+      pos += key.second.length();
+    }
+  }
 }
 
 // CONVERT TO POSTFIX
@@ -65,7 +78,9 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
 
   for (int i = 0; i < infix.length(); i++) {
     char currentChar = infix[i];
-    if (isdigit(currentChar) || currentChar == '.' || currentChar == 'e') {
+    if (isdigit(currentChar) || currentChar == '.' || currentChar == 'e' ||
+        (currentChar == '-' &&
+         (i == 0 || !isdigit(infix[i - 1]) && infix[i - 1] != ')'))) {
       if (currentChar == 'e') {
         currentToken += currentChar;
         currentChar = infix[++i];
@@ -76,7 +91,6 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
         outputQueue.push(currentToken);
         currentToken = "";
       }
-
       if (currentChar == '(') {
         operatorStack.push(std::string(1, currentChar));
       } else if (currentChar == ')') {
@@ -85,12 +99,12 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
           operatorStack.pop();
         }
         operatorStack.pop();
-      } else if (isFunction(infix.substr(i, 1))) {
-        if (i == 0) operatorStack.push(infix.substr(i, 1));
+        // } else if (isFunction(infix.substr(i, 1))) {
+        //   if (i == 0) operatorStack.push(infix.substr(i, 1));
       } else {
         while (!operatorStack.empty() && operatorStack.top() != "(" &&
-               getPriority(currentChar) <=
-                   getPriority(operatorStack.top()[0])) {
+               getPriority(std::string(1, currentChar)) <=
+                   getPriority(operatorStack.top())) {
           outputQueue.push(operatorStack.top());
           operatorStack.pop();
         }
@@ -107,6 +121,7 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
     outputQueue.push(operatorStack.top());
     operatorStack.pop();
   }
+  std::cout << std::endl;
 
   return outputQueue;
 }
@@ -124,8 +139,10 @@ double s21::CalcModel::getFromStack(std::stack<double>& operands) {
 double s21::CalcModel::calculatePostfix(std::queue<std::string> postfix) {
   std::stack<double> calcStack;
   std::string token;
+
   while (!postfix.empty()) {
     token = postfix.front();
+    std::cout << token << " ";
     postfix.pop();
     if (isOperator(token)) {
       double operand1 = getFromStack(calcStack);
@@ -147,11 +164,15 @@ double s21::CalcModel::calculate(std::string infix) {
   std::queue<std::string> newInfix = infixToPostfix(infix);
   return calculatePostfix(newInfix);
 }
-// int main(void) {
-//   s21::CalcModel ll;
-//   std::string infix = "-5+(-1+2)*4*c(-2*7.5-2)+s(c(2*5))-q(2^g(5-1))+l(55)";
-//   std::queue<std::string> newInfix = ll.infixToPostfix(infix);
-//   std::cout << "Result: " << ll.calculatePostfix(newInfix) << std::endl;
-//   printf("%f", ll.calculatePostfix(newInfix));
-//   return 0;
-// }
+int main(void) {
+  s21::CalcModel ll;
+  std::string infix = "-5+(-1+2)*4*cos(-2*7.5-2)+sin(cos(2*5))";
+  ll.fixInfix(infix);
+  std::cout << "fixInfix: " << infix << std::endl;
+  std::queue<std::string> newInfix = ll.infixToPostfix(infix);
+  std::cout << "Result: " << ll.calculatePostfix(newInfix) << std::endl;
+  std::cout << "5 -1 - 2 + 4 * c 2 7.5 * - 2 - * + s c 2 5 * +" << std::endl;
+  printf("\n%f", ll.calculatePostfix(newInfix));
+
+  return 0;
+}
