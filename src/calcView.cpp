@@ -2,7 +2,7 @@
 
 int curs = 0, dot = 0, symb = 0;
 
-s21::calcView::calcView(QWidget *parent)
+Ui::calcView::calcView(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::calcView) {
   auto val = new QDoubleValidator();
   //    val->setLocale(lo);
@@ -51,12 +51,12 @@ s21::calcView::calcView(QWidget *parent)
   connect(ui->AC, SIGNAL(clicked()), this, SLOT(acClick()));
 
   connect(ui->graph, SIGNAL(clicked()), this, SLOT(on_graph_clicked()));
-  connect(this, &s21::calcView::sendData, graphWindow, &Graph::getData);
+  connect(this, &Ui::calcView::sendData, graphWindow, &Graph::getData);
 }
 
-s21::calcView::~calcView() { delete ui; }
+Ui::calcView::~calcView() { delete ui; }
 
-void s21::calcView::initCalc() {
+void Ui::calcView::initCalc() {
   if (ui->resultShow->text() == "ERROR") {
     ui->resultShow->clear();
     dot = 0;
@@ -65,7 +65,7 @@ void s21::calcView::initCalc() {
   }
 }
 
-void s21::calcView::mathFuncs() {
+void Ui::calcView::mathFuncs() {
   initCalc();
   QPushButton *button = (QPushButton *)sender();
   QString allStrings;
@@ -75,7 +75,7 @@ void s21::calcView::mathFuncs() {
   if (dot) dot--;
 }
 
-void s21::calcView::numFuncs() {
+void Ui::calcView::numFuncs() {
   initCalc();
   QPushButton *button = (QPushButton *)sender();
   QString newString;
@@ -84,7 +84,7 @@ void s21::calcView::numFuncs() {
   if (symb) symb--;
 }
 
-void s21::calcView::symbs() {
+void Ui::calcView::symbs() {
   initCalc();
   QPushButton *button = (QPushButton *)sender();
   QString allStrings;
@@ -96,7 +96,7 @@ void s21::calcView::symbs() {
   if (dot) dot--;
 }
 
-void s21::calcView::dotClick() {
+void Ui::calcView::dotClick() {
   initCalc();
   if (!dot) {
     char point = '.';
@@ -108,7 +108,7 @@ void s21::calcView::dotClick() {
   }
 }
 
-void s21::calcView::equalClick() {
+void Ui::calcView::equalClick() {
   initCalc();
   QString calc = ui->resultShow->text(), num;  // .toStdString
 
@@ -142,7 +142,7 @@ void s21::calcView::equalClick() {
 // }
 // }
 
-void s21::calcView::ceClick() {
+void Ui::calcView::ceClick() {
   if (ui->resultShow->text() != "") {
     ui->resultShow->clear();
   }
@@ -151,31 +151,31 @@ void s21::calcView::ceClick() {
   curs = 0;
 }
 
-void s21::calcView::acClick() {
+void Ui::calcView::acClick() {
   initCalc();
   if (!ui->resultShow->text().contains(" X=", Qt::CaseInsensitive)) {
     ui->resultShow->setText(ui->resultShow->text() + " X=");
   }
 }
 
-void s21::calcView::on_credit_clicked() {
+void Ui::calcView::on_credit_clicked() {
   Credit *creditWindow = new Credit();
   creditWindow->show();
 }
 
-void s21::calcView::on_debit_clicked() {
+void Ui::calcView::on_debit_clicked() {
   Debit *debitWindow = new Debit();
   debitWindow->show();
 }
 
-void s21::calcView::on_open_clicked() {
+void Ui::calcView::on_open_clicked() {
   initCalc();
   if (!dot) {
     ui->resultShow->setText(ui->resultShow->text() + "(");
   }
 }
 
-void s21::calcView::on_graph_clicked() {
+void Ui::calcView::on_graph_clicked() {
   initCalc();
   if (ui->resultShow->text().contains('X', Qt::CaseInsensitive) &&
       !ui->resultShow->text().contains('=', Qt::CaseInsensitive)) {
@@ -191,7 +191,7 @@ void s21::calcView::on_graph_clicked() {
   }
 }
 
-void s21::calcView::on_xoy_clicked() {
+void Ui::calcView::on_xoy_clicked() {
   initCalc();
   if (!dot) {
     ui->resultShow->setText(ui->resultShow->text() + "X");
@@ -200,7 +200,7 @@ void s21::calcView::on_xoy_clicked() {
   emit sendData(ui->resultShow->text());
 }
 
-void s21::calcView::on_close_clicked() {
+void Ui::calcView::on_close_clicked() {
   initCalc();
   if (!dot) {
     ui->resultShow->setText(ui->resultShow->text() + ")");

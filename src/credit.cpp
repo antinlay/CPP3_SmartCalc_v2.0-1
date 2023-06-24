@@ -4,7 +4,7 @@
 
 #include "ui_credit.h"
 
-s21::Credit::Credit(QWidget *parent) : QWidget(parent), ui(new Ui::Credit) {
+Ui::Credit::Credit(QWidget *parent) : QWidget(parent), ui(new Ui::Credit) {
   QLocale lo(QLocale::C);
   lo.setNumberOptions(QLocale::RejectGroupSeparator);
   auto val = new QDoubleValidator();
@@ -17,9 +17,9 @@ s21::Credit::Credit(QWidget *parent) : QWidget(parent), ui(new Ui::Credit) {
   ui->comboBox->addItem("differentiated");
 }
 
-s21::Credit::~Credit() { delete ui; }
+Ui::Credit::~Credit() { delete ui; }
 
-void s21::Credit::on_pushButtonCredit_clicked() {
+void Ui::Credit::on_pushButtonCredit_clicked() {
   int month = ui->spinBox->text().toInt();
   double payment = 0, allSum = 0, pp = 0;
   double summa = ui->lineEdit_sumCredit->text().toDouble();

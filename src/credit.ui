@@ -22,6 +22,11 @@
     <height>550</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>Verdana</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>CREDIT</string>
   </property>
@@ -38,12 +43,31 @@
      <height>521</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Arial Black</family>
+     <bold>true</bold>
+    </font>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QComboBox" name="comboBox"/>
+     <widget class="QComboBox" name="comboBox">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Credit sum, RUR</string>
       </property>
@@ -53,6 +77,12 @@
      <widget class="QLineEdit" name="lineEdit_sumCredit">
       <property name="enabled">
        <bool>true</bool>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
       </property>
       <property name="autoFillBackground">
        <bool>false</bool>
@@ -79,26 +109,58 @@
     </item>
     <item>
      <widget class="QLabel" name="label_2">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Months</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QSpinBox" name="spinBox"/>
+     <widget class="QSpinBox" name="spinBox">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QLabel" name="label_3">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Percent</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_stavkaProc"/>
+     <widget class="QLineEdit" name="lineEdit_stavkaProc">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QPushButton" name="pushButtonCredit">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>CALCULATE</string>
       </property>
@@ -106,6 +168,12 @@
     </item>
     <item>
      <widget class="QLabel" name="label_4">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Payments sum, RUR</string>
       </property>
@@ -113,6 +181,12 @@
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit_sumVyplat">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
@@ -120,6 +194,12 @@
     </item>
     <item>
      <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Overpayment, RUR</string>
       </property>
@@ -127,13 +207,26 @@
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit_sumPereplata">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QListWidget" name="listWidget"/>
+     <widget class="QListWidget" name="listWidget">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

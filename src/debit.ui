@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Debit</class>
+ <class>debit</class>
  <widget class="QWidget" name="debit">
   <property name="geometry">
    <rect>
@@ -38,9 +38,21 @@
      <height>531</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Arial Black</family>
+     <bold>true</bold>
+    </font>
+   </property>
    <layout class="QVBoxLayout" name="enterValue">
     <item>
      <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Deposit, RUR</string>
       </property>
@@ -48,6 +60,12 @@
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit_sumDep">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -58,16 +76,35 @@
     </item>
     <item>
      <widget class="QLabel" name="label_3">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Months</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QSpinBox" name="spinBox_months"/>
+     <widget class="QSpinBox" name="spinBox_months">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Rate, %</string>
       </property>
@@ -75,6 +112,12 @@
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit_intRate">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="maxLength">
        <number>255</number>
       </property>
@@ -82,6 +125,12 @@
     </item>
     <item>
      <widget class="QCheckBox" name="checkBox">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>% to deposit</string>
       </property>
@@ -91,8 +140,9 @@
      <widget class="QPushButton" name="pushButton_debit">
       <property name="font">
        <font>
+        <family>Arial Black</family>
         <pointsize>14</pointsize>
-        <bold>false</bold>
+        <bold>true</bold>
        </font>
       </property>
       <property name="cursor">
@@ -105,6 +155,12 @@
     </item>
     <item>
      <widget class="QLabel" name="label_10">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Profit, RUR</string>
       </property>
@@ -112,6 +168,12 @@
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit_resPercent">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="inputMask">
        <string/>
       </property>
@@ -122,6 +184,12 @@
     </item>
     <item>
      <widget class="QLabel" name="label_14">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>Summ deposit, RUR</string>
       </property>
@@ -129,13 +197,26 @@
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit_resDep">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QListWidget" name="listWidget"/>
+     <widget class="QListWidget" name="listWidget">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <bold>true</bold>
+       </font>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

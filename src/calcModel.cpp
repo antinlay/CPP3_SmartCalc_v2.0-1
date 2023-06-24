@@ -113,8 +113,11 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
 
 // CALCULATE POSTFIX
 double s21::CalcModel::getFromStack(std::stack<double>& operands) {
-  double operand = operands.top();
-  operands.pop();
+  double operand = 0;
+  if (!operands.empty()) {
+    operand = operands.top();
+    operands.pop();
+  }
   return operand;
 }
 

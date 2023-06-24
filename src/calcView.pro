@@ -29,7 +29,7 @@ FORMS += \
     calcView.ui \
     credit.ui \
     debit.ui \
-    graph.ui
+    graph.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

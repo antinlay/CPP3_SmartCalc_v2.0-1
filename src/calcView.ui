@@ -45,6 +45,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>9</string>
     </property>
@@ -57,6 +62,11 @@
       <width>71</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
     </property>
     <property name="text">
      <string>8</string>
@@ -71,6 +81,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>7</string>
     </property>
@@ -83,6 +98,11 @@
       <width>71</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
     </property>
     <property name="text">
      <string>6</string>
@@ -97,6 +117,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>5</string>
     </property>
@@ -109,6 +134,11 @@
       <width>71</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
     </property>
     <property name="text">
      <string>4</string>
@@ -123,6 +153,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>1</string>
     </property>
@@ -136,6 +171,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>2</string>
     </property>
@@ -148,6 +188,11 @@
       <width>71</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
     </property>
     <property name="text">
      <string>3</string>
@@ -164,6 +209,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -180,6 +226,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>.</string>
     </property>
@@ -192,6 +243,11 @@
       <width>151</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
     </property>
     <property name="text">
      <string>0</string>
@@ -208,6 +264,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <pointsize>18</pointsize>
       <bold>true</bold>
      </font>
@@ -228,6 +285,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>+</string>
     </property>
@@ -243,6 +305,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -261,6 +324,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -279,6 +343,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -297,6 +362,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -315,6 +381,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -333,6 +400,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -349,6 +417,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>-</string>
     </property>
@@ -362,6 +435,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>/</string>
     </property>
@@ -374,6 +452,11 @@
       <width>71</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
     </property>
     <property name="text">
      <string>*</string>
@@ -390,6 +473,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -408,6 +492,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -424,6 +509,11 @@
       <height>131</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>=</string>
     </property>
@@ -436,6 +526,11 @@
       <width>71</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
     </property>
     <property name="text">
      <string>^</string>
@@ -452,6 +547,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -470,6 +566,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -488,6 +585,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -504,6 +602,11 @@
       <height>61</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>(</string>
     </property>
@@ -516,6 +619,11 @@
       <width>71</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
     </property>
     <property name="text">
      <string>)</string>
@@ -530,6 +638,11 @@
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
+    </property>
     <property name="text">
      <string>CREDIT</string>
     </property>
@@ -542,6 +655,11 @@
       <width>109</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Black</family>
+     </font>
     </property>
     <property name="text">
      <string>DEBIT</string>
@@ -558,6 +676,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>
@@ -576,6 +695,7 @@
     </property>
     <property name="font">
      <font>
+      <family>Arial Black</family>
       <bold>true</bold>
      </font>
     </property>

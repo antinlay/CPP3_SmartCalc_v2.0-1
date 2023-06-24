@@ -3,13 +3,12 @@
 
 #include <QWidget>
 
+//namespace s21 {
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Debit;
 }
 QT_END_NAMESPACE
-
-namespace s21 {
 class Debit : public QWidget {
   Q_OBJECT
 
@@ -23,5 +22,7 @@ class Debit : public QWidget {
  private:
   Ui::Debit *ui;
 };
-}  // namespace s21
+
+//}  // namespace s21
+
 #endif  // DEBIT_H

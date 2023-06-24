@@ -2,34 +2,28 @@
 
 #include "ui_graph.h"
 
-s21::Graph::Graph(QWidget *parent) : QWidget(parent), ui(new Ui::Graph) {
+Ui::Graph::Graph(QWidget *parent) : QWidget(parent), ui(new Ui::Graph) {
   ui->setupUi(this);
 }
-s21::Graph::~Graph() { delete ui; }
+Ui::Graph::~Graph() { delete ui; }
 
-std::string s21::Graph::strConvert(QString res, double val) {
-  QString copy;
-  QString num;
-  std::string result;
-
-  num = QString::number(val);
-  res.replace('X', '(' + num + ')');
+std::string Ui::Graph::strConvert(QString res, double val) {
+  QString num = QString::number(val);
+  res.replace("X", num);
   // change dot to comma for LINUX
-//#ifdef linux
-//  result = str.replace('.', ',').data();
-//#else
-//  result = str.data();
-//#endif
+#ifdef linux
+  res.replace('.', ',').data();
+#endif
   return res.toStdString();
 }
 
-void s21::Graph::on_pushButton_clicked() {
-  int h = ui->spinBox->value() * 100;
+void Ui::Graph::on_pushButton_clicked() {
+  int h = ui->spinBox->value();
   double xStart = ui->doubleSpinBox_xStart->value(),
          xEnd = ui->doubleSpinBox_xEnd->value(), j = (xEnd - xStart) / h;
   QVector<double> x(h + 1), y(h + 1);
   QString res = ui->lineEdit_func->text();
-  // s21::CalcModel::calculate and write all graphics poins
+  // Ui::CalcModel::calculate and write all graphics points
   for (int i = 0; i <= h; ++i) {
     x[i] = xStart + i * j;
     std::string tmp = strConvert(res, x[i]);
@@ -51,4 +45,4 @@ void s21::Graph::on_pushButton_clicked() {
   ui->widget->replot();
 }
 
-void s21::Graph::getData(QString res) { ui->lineEdit_func->setText(res); }
+void Ui::Graph::getData(QString res) { ui->lineEdit_func->setText(res); }
