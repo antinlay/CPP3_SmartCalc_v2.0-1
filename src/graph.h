@@ -5,12 +5,12 @@
 
 #include "calcModel.h"
 
-//namespace s21 {
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Graph;
 }
 QT_END_NAMESPACE
+// namespace s21 {
 class Graph : public QWidget {
   Q_OBJECT
 
@@ -28,5 +28,5 @@ class Graph : public QWidget {
   s21::CalcModel resultModel;
 };
 
-//}  // namespace s21
+// }  // namespace s21
 #endif  // GRAPH_H

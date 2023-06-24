@@ -2,7 +2,7 @@
 
 #include "ui_debit.h"
 
-Ui::Debit::Debit(QWidget *parent) : QWidget(parent), ui(new Debit) {
+Debit::Debit(QWidget *parent) : QWidget(parent), ui(new Ui::Debit) {
   // for dot in validator
   QLocale lo(QLocale::C);
   lo.setNumberOptions(QLocale::RejectGroupSeparator);

@@ -37,7 +37,7 @@ double s21::CalcModel::calcOperations(double a, double b, std::string c) {
                     {"/", &s21::CalcModel::divideCalc},
                     {"%", &s21::CalcModel::modCalc},
                     {"^", &s21::CalcModel::powerCalc}};
-  if (!operations[c](this, a, b))
+  if (operations.find(c) == operations.end())
     throw std::invalid_argument("Input Error");
   else
     return operations[c](this, a, b);
@@ -51,7 +51,7 @@ double s21::CalcModel::calcFunctions(double a, std::string c) {
           {"n", &s21::CalcModel::atanCalc}, {"s", &s21::CalcModel::sinCalc},
           {"i", &s21::CalcModel::asinCalc}, {"c", &s21::CalcModel::cosCalc},
           {"o", &s21::CalcModel::acosCalc}};
-  if (!functions[c](this, a))
+  if (functions.find(c) == functions.end())
     throw std::invalid_argument("Input Error");
   else
     return functions[c](this, a);

@@ -3,12 +3,12 @@
 
 #include <QWidget>
 
-//namespace s21 {
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Credit;
 }
 QT_END_NAMESPACE
+// namespace s21 {
 class Credit : public QWidget {
   Q_OBJECT
 
@@ -23,5 +23,5 @@ class Credit : public QWidget {
   Ui::Credit *ui;
 };
 
-//}  // namespace s21
+// }  // namespace s21
 #endif  // CREDIT_H

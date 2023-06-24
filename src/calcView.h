@@ -12,25 +12,26 @@
 #include "qobjectdefs.h"
 #include "ui_calcView.h"
 
-//namespace s21 {
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class calcView;
+class CalcView;
 }
 QT_END_NAMESPACE
-class calcView : public QMainWindow {
+
+// namespace s21 {
+class CalcView : public QMainWindow {
   Q_OBJECT
 
  public:
-  calcView(QWidget *parent = nullptr);
-  ~calcView();
+  CalcView(QWidget *parent = nullptr);
+  ~CalcView();
   void initCalc();
 
  signals:
   void sendData(QString res);
 
  private:
-  Ui::calcView *ui;
+  Ui::CalcView *ui;
   Credit *creditWindow;
   Debit *debitWindow;
   Graph *graphWindow;
@@ -52,5 +53,5 @@ class calcView : public QMainWindow {
   void on_close_clicked();
 };
 
-//}  // namespace s21
+// }  // namespace s21
 #endif  // CALCVIEW_H
