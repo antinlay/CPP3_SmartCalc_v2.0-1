@@ -49,6 +49,7 @@ class CalcModel {
   double acosCalc(double a) { return acos(a); }
   // CHECKS
   int getPriority(std::string c);
+  bool isDigit(char& currentChar, std::string& infix, int& i);
   bool isOperator(const std::string& str);
   bool isFunction(const std::string& str);
   // MAP CALCULATIONS

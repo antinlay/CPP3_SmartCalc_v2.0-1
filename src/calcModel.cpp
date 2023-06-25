@@ -14,6 +14,16 @@ int s21::CalcModel::getPriority(std::string c) {
   return res;
 }
 
+bool s21::CalcModel::isDigit(char& currentChar, std::string& infix, int& i) {
+  bool result = false;
+  if (isdigit(currentChar) || currentChar == '.' || currentChar == 'e' ||
+      (currentChar == '-' &&
+       (i == 0 || !isdigit(infix[i - 1]) && infix[i - 1] != ')'))) {
+    result = true;
+  }
+  return result;
+}
+
 bool s21::CalcModel::isOperator(const std::string& str) {
   std::string listOperators = "+-*)(/%^";
   bool result = false;
@@ -38,7 +48,7 @@ double s21::CalcModel::calcOperations(double a, double b, std::string c) {
                     {"%", &s21::CalcModel::modCalc},
                     {"^", &s21::CalcModel::powerCalc}};
   if (operations.find(c) == operations.end())
-    throw std::invalid_argument("Input Error: " + c + "not found");
+    throw std::invalid_argument("Input Error: " + c + " not found");
   else
     return operations[c](this, a, b);
 }
@@ -76,11 +86,9 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
   std::queue<std::string> outputQueue;
   std::string currentToken = "";
 
-  for (int i = 0; i < infix.length(); i++) {
+  for (int i = 0; i < infix.length(); ++i) {
     char currentChar = infix[i];
-    if (isdigit(currentChar) || currentChar == '.' || currentChar == 'e' ||
-        (currentChar == '-' &&
-         (i == 0 || !isdigit(infix[i - 1]) && infix[i - 1] != ')'))) {
+    if (isDigit(currentChar, infix, i)) {
       if (currentChar == 'e') {
         currentToken += currentChar;
         currentChar = infix[++i];
@@ -89,9 +97,24 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
     } else {
       if (!currentToken.empty()) {
         outputQueue.push(currentToken);
-        currentToken = "";
-      }
-      if (currentChar == '(') {
+        currentToken.clear();
+      } else if (isOperator(std::string(1, currentChar)) ||
+                 isFunction(std::string(1, currentChar))) {
+        if (operatorStack.empty() || operatorStack.top() == "(") {
+          operatorStack.push(std::string(1, currentChar));
+        } else if (getPriority(std::string(1, currentChar)) >
+                   getPriority(operatorStack.top())) {
+          operatorStack.push(std::string(1, currentChar));
+        } else {
+          while (!operatorStack.empty() && operatorStack.top() != "(" &&
+                 getPriority(std::string(1, currentChar)) <=
+                     getPriority(operatorStack.top())) {
+            outputQueue.push(operatorStack.top());
+            operatorStack.pop();
+          }
+          operatorStack.push(std::string(1, currentChar));
+        }
+      } else if (currentChar == '(') {
         operatorStack.push(std::string(1, currentChar));
       } else if (currentChar == ')') {
         while (operatorStack.top() != "(") {
@@ -99,19 +122,46 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
           operatorStack.pop();
         }
         operatorStack.pop();
-        // } else if (isFunction(infix.substr(i, 1))) {
-        //   if (i == 0) operatorStack.push(infix.substr(i, 1));
-      } else {
-        while (!operatorStack.empty() && operatorStack.top() != "(" &&
-               getPriority(std::string(1, currentChar)) <=
-                   getPriority(operatorStack.top())) {
-          outputQueue.push(operatorStack.top());
-          operatorStack.pop();
-        }
-        operatorStack.push(std::string(1, currentChar));
       }
     }
   }
+
+  // for (int i = 0; i < infix.length(); i++) {
+  //   char currentChar = infix[i];
+  //   if (isdigit(currentChar) || currentChar == '.' || currentChar == 'e' ||
+  //       (currentChar == '-' &&
+  //        (i == 0 || !isdigit(infix[i - 1]) && infix[i - 1] != ')'))) {
+  //     if (currentChar == 'e') {
+  //       currentToken += currentChar;
+  //       currentChar = infix[++i];
+  //     }
+  //     currentToken += currentChar;
+  //   } else {
+  //     if (!currentToken.empty()) {
+  //       outputQueue.push(currentToken);
+  //       currentToken = "";
+  //     }
+  //     if (currentChar == '(') {
+  //       operatorStack.push(std::string(1, currentChar));
+  //     } else if (currentChar == ')') {
+  //       while (operatorStack.top() != "(") {
+  //         outputQueue.push(operatorStack.top());
+  //         operatorStack.pop();
+  //       }
+  //       operatorStack.pop();
+  //       // } else if (isFunction(infix.substr(i, 1))) {
+  //       //   if (i == 0) operatorStack.push(infix.substr(i, 1));
+  //     } else {
+  //       while (!operatorStack.empty() && operatorStack.top() != "(" &&
+  //              getPriority(std::string(1, currentChar)) <=
+  //                  getPriority(operatorStack.top())) {
+  //         outputQueue.push(operatorStack.top());
+  //         operatorStack.pop();
+  //       }
+  //       operatorStack.push(std::string(1, currentChar));
+  //     }
+  //   }
+  // }
 
   if (!currentToken.empty()) {
     outputQueue.push(currentToken);
