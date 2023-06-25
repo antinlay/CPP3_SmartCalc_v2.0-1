@@ -49,8 +49,8 @@ class CalcModel {
   double acosCalc(double a) { return acos(a); }
   // CHECKS
   int getPriority(std::string c);
-  bool isOperator(std::string& str);
-  bool isFunction(std::string& str);
+  bool isOperator(const std::string& str);
+  bool isFunction(const std::string& str);
   // MAP CALCULATIONS
   double calcOperations(double a, double b, std::string c);
   double calcFunctions(double a, std::string c);

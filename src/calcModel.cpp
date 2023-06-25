@@ -14,14 +14,14 @@ int s21::CalcModel::getPriority(std::string c) {
   return res;
 }
 
-bool s21::CalcModel::isOperator(std::string& str) {
+bool s21::CalcModel::isOperator(const std::string& str) {
   std::string listOperators = "+-*)(/%^";
   bool result = false;
   if (listOperators.find(str) != std::string::npos) result = true;
   return result;
 }
 
-bool s21::CalcModel::isFunction(std::string& str) {
+bool s21::CalcModel::isFunction(const std::string& str) {
   std::string listOperators = "qgaiontsc";
   bool result = false;
   if (listOperators.find(str) != std::string::npos) result = true;
