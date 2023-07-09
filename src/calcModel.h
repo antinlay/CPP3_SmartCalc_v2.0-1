@@ -62,6 +62,11 @@ class CalcModel {
   double getFromStack(std::stack<double>& operands);
   double calculatePostfix(std::queue<std::string> postfix);
   double calculate(std::string infix);
+
+ private:
+  std::unordered_map<std::string, int> precedences = {
+      {"(", 0}, {")", 0}, {"+", 1}, {"-", 1},
+      {"*", 2}, {"/", 2}, {"%", 2}, {"^", 3}};
 };
 }  // namespace s21
 #endif  // CALCMODEL_H

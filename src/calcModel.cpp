@@ -6,9 +6,6 @@ int s21::CalcModel::getPriority(std::string c) {
   if (isFunction(c)) {
     res = 4;
   } else {
-    static const std::unordered_map<std::string, int> precedences = {
-        {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2},
-        {"%", 2}, {"^", 3}, {"(", 0}, {")", 0}};
     res = precedences.at(c);
   }
   return res;
@@ -86,51 +83,126 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
   std::queue<std::string> outputQueue;
   std::string currentToken = "";
 
+  infix.append(")");
+  operatorStack.push("(");
+
   for (int i = 0; i < infix.length(); ++i) {
-    char currentChar = infix[i];
-    if (isDigit(currentChar, infix, i)) {
-      if (currentChar == 'e') {
-        currentToken += currentChar;
-        currentChar = infix[++i];
+    printf("SYMB: %c\n", infix[i]);
+    if (isdigit(infix[i])) {
+      if (currentToken.length() == 0) {
+        currentToken += infix[i];
+      } else if (isdigit(currentToken[0]) || currentToken[0] == '.' ||
+                 currentToken[0] == '+' || currentToken[0] == '-' ||
+                 currentToken[0] == 'e') {
+        currentToken += infix[i];
+      } else {
+        if (isFunction(currentToken)) {
+          operatorStack.push(currentToken);
+        }
+        currentToken = infix[i];
       }
-      currentToken += currentChar;
-    } else {
-      if (!currentToken.empty()) {
-        outputQueue.push(currentToken);
+    } else if (isOperator(std::string(1, infix[i]))) {
+      if (currentToken.empty() && (infix[i] == '+' || infix[i] == '-') &&
+          !isFunction(outputQueue.back())) {
+        currentToken += infix[i];
+        continue;
+      } else {
+        if (isFunction(currentToken)) {
+          operatorStack.push(currentToken);
+        } else if (currentToken.length() > 0) {
+          outputQueue.push(currentToken);
+        }
         currentToken.clear();
-      } else if (isOperator(std::string(1, currentChar)) ||
-                 isFunction(std::string(1, currentChar))) {
-        if (operatorStack.empty() || operatorStack.top() == "(") {
-          operatorStack.push(std::string(1, currentChar));
-        } else if (getPriority(std::string(1, currentChar)) >
-                   getPriority(operatorStack.top())) {
-          operatorStack.push(std::string(1, currentChar));
-        } else {
-          while (!operatorStack.empty() && operatorStack.top() != "(" &&
-                 getPriority(std::string(1, currentChar)) <=
-                     getPriority(operatorStack.top())) {
-            outputQueue.push(operatorStack.top());
-            operatorStack.pop();
-          }
-          operatorStack.push(std::string(1, currentChar));
-        }
-      } else if (currentChar == '(') {
-        operatorStack.push(std::string(1, currentChar));
-      } else if (currentChar == ')') {
-        while (operatorStack.top() != "(") {
-          outputQueue.push(operatorStack.top());
-          operatorStack.pop();
-        }
+      }
+      while (!operatorStack.empty() && operatorStack.top() != "(" &&
+             !isFunction(operatorStack.top()) &&
+             getPriority(std::string(1, infix[i])) <=
+                 getPriority(operatorStack.top()) &&
+             infix[i] != '^') {
+        outputQueue.push(operatorStack.top());
         operatorStack.pop();
+      }
+      operatorStack.push(std::string(1, infix[i]));
+    } else if (infix[i] == '(') {
+      operatorStack.push(std::string(1, infix[i]));
+    } else if (infix[i] == ')') {
+      while (!operatorStack.empty() && operatorStack.top() != "(") {
+        if (!currentToken.empty()) {
+          if (isFunction(currentToken)) {
+            operatorStack.push(currentToken);
+          } else {
+            outputQueue.push(currentToken);
+          }
+          currentToken.clear();
+        }
+        outputQueue.push(operatorStack.top());
+        operatorStack.pop();
+      }
+      if (!operatorStack.empty() && operatorStack.top() == "(") {
+        operatorStack.pop();
+      } else {
+        std::cout << "Error: incomplite right paranthesis at position "
+                  << (i + 1) << std::endl;
+        std::exit(1);
+      }
+      if (!operatorStack.empty() && isFunction(operatorStack.top())) {
+        outputQueue.push(operatorStack.top());
+        operatorStack.pop();
+      }
+    } else {
+      if (!currentToken.empty() &&
+          (isdigit(currentToken[0]) || currentToken[0] == '.' ||
+           currentToken[0] == '+' || currentToken[0] == '-' ||
+           currentToken[0] == 'e')) {
+        if (infix[i] == '.') {
+          currentToken += infix[i];
+        } else {
+          outputQueue.push(currentToken);
+          currentToken = infix[i];
+        }
+      } else if (isFunction(currentToken)) {
+        operatorStack.push(currentToken);
+        currentToken = infix[i];
+      } else {
+        currentToken += infix[i];
       }
     }
   }
 
+  // for (int i = 0; i < infix.length(); ++i) {
+  //   char currentChar = infix[i];
+  //   if (currentChar == '(') {
+  //     operatorStack.push("(");
+  //   }
+  //   if (isDigit(currentChar, infix, i)) {
+  //     while (isDigit(currentChar, infix, i)) {
+  //       currentToken.append(std::string(1, currentChar));
+  //       currentChar = infix[++i];
+  //     }
+  //     outputQueue.push(currentToken);
+  //     currentToken.clear();
+  //   }
+  //   if (currentChar == ')') {
+  //     while (!operatorStack.empty() && operatorStack.top() != "(") {
+  //       outputQueue.push(operatorStack.top());
+  //       operatorStack.pop();
+  //     }
+  //     if (operatorStack.top() == "(") operatorStack.pop();
+  //   }
+  //   if (isOperator(std::string(1, currentChar))) {
+  //     while (!operatorStack.empty() && operatorStack.top() != "(" &&
+  //            getPriority(std::string(1, currentChar)) <=
+  //                getPriority(operatorStack.top())) {
+  //       outputQueue.push(operatorStack.top());
+  //       operatorStack.pop();
+  //     }
+  //     operatorStack.push(std::string(1, currentChar));
+  //   }
+  // }
+
   // for (int i = 0; i < infix.length(); i++) {
   //   char currentChar = infix[i];
-  //   if (isdigit(currentChar) || currentChar == '.' || currentChar == 'e' ||
-  //       (currentChar == '-' &&
-  //        (i == 0 || !isdigit(infix[i - 1]) && infix[i - 1] != ')'))) {
+  //   if (isDigit(currentChar, infix, i)) {
   //     if (currentChar == 'e') {
   //       currentToken += currentChar;
   //       currentChar = infix[++i];
@@ -168,6 +240,10 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
   }
 
   while (!operatorStack.empty()) {
+    // if (operatorStack.top() == "(") {
+    //   std::cout << "Error: mismatched paranthesis";
+    //   std::exit(1);
+    // }
     outputQueue.push(operatorStack.top());
     operatorStack.pop();
   }
@@ -210,18 +286,20 @@ double s21::CalcModel::calculatePostfix(std::queue<std::string> postfix) {
   }
   return calcStack.top();
 }
+
 double s21::CalcModel::calculate(std::string infix) {
   std::queue<std::string> newInfix = infixToPostfix(infix);
   return calculatePostfix(newInfix);
 }
+
 int main(void) {
   s21::CalcModel ll;
-  std::string infix = "-5+(-1+2)*4*cos(-2*7.5-2)+sin(cos(2*5))";
+  std::string infix = "51+2";
   ll.fixInfix(infix);
   std::cout << "fixInfix: " << infix << std::endl;
   std::queue<std::string> newInfix = ll.infixToPostfix(infix);
   std::cout << "Result: " << ll.calculatePostfix(newInfix) << std::endl;
-  std::cout << "5 -1 - 2 + 4 * c 2 7.5 * - 2 - * + s c 2 5 * +" << std::endl;
+  // std::cout << "5 -1 - 2 + 4 * c 2 7.5 * - 2 - * + s c 2 5 * +" << std::endl;
   printf("\n%f", ll.calculatePostfix(newInfix));
 
   return 0;
