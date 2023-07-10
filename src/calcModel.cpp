@@ -22,7 +22,7 @@ bool s21::CalcModel::isDigit(char& currentChar, std::string& infix, int& i) {
 }
 
 bool s21::CalcModel::isOperator(const std::string& str) {
-  std::string listOperators = "+-*)(/%^";
+  std::string listOperators = "+-*/%^";
   bool result = false;
   if (listOperators.find(str) != std::string::npos) result = true;
   return result;
@@ -112,7 +112,7 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
         } else if (currentToken.length() > 0) {
           outputQueue.push(currentToken);
         }
-        currentToken.clear();
+        currentToken = "";
       }
       while (!operatorStack.empty() && operatorStack.top() != "(" &&
              !isFunction(operatorStack.top()) &&
@@ -133,7 +133,7 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
           } else {
             outputQueue.push(currentToken);
           }
-          currentToken.clear();
+          currentToken = "";
         }
         outputQueue.push(operatorStack.top());
         operatorStack.pop();
@@ -180,7 +180,7 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
   //       currentChar = infix[++i];
   //     }
   //     outputQueue.push(currentToken);
-  //     currentToken.clear();
+  //     currentToken = "";
   //   }
   //   if (currentChar == ')') {
   //     while (!operatorStack.empty() && operatorStack.top() != "(") {
