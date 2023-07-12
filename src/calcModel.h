@@ -37,7 +37,7 @@ class CalcModel {
   }
   double powerCalc(double a, double b) { return pow(a, b); }
 
-  double sqrtCalc(double a) { return sqrt(a); }
+  double sqrtCalc(double a) { return sqrt(abs(a)); }
   // FUNCTIONS
   double lnCalc(double a) { return log(a); }
   double logCalc(double a) { return log10(a); }

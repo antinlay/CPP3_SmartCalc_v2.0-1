@@ -18,7 +18,7 @@ std::string Graph::strConvert(QString res, double val) {
 }
 
 void Graph::on_pushButton_clicked() {
-  int h = ui->spinBox->value() * 1000;
+  int h = ui->spinBox->value() * 300;
 
   double xStart = ui->doubleSpinBox_xStart->value(),
          xEnd = ui->doubleSpinBox_xEnd->value(), j = (xEnd - xStart) / h;
@@ -29,7 +29,7 @@ void Graph::on_pushButton_clicked() {
     x[i] = xStart + i * j;
     std::string tmp = strConvert(res, x[i]);
     y[i] = resultModel.calculate(tmp);
-    qDebug() << "i = " << i << " x = " << x[i] << " y = " << y[i];
+//    qDebug() << "i = " << i << " x = " << x[i] << " y = " << y[i];
   }
 
   // find max and min in elements

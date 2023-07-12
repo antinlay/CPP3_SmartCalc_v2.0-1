@@ -70,8 +70,9 @@ double s21::CalcModel::calcFunctions(double a, std::string c) {
 
 void s21::CalcModel::fixInfix(std::string& infix) {
   static const std::unordered_map<std::string, std::string> keyFunctions = {
-      {"sqrt", "q"}, {"ln", "n"},   {"log", "g"}, {"tan", "t"}, {"atan", "a"},
-      {"sin", "s"},  {"asin", "i"}, {"cos", "c"}, {"acos", "o"}};
+      {"sqrt", "q"}, {"ln", "n"},  {"log", "g"},  {"tan", "t"},
+      {"atan", "a"}, {"sin", "s"}, {"asin", "i"}, {"cos", "c"},
+      {"acos", "o"}, {"mod", "%"}, {"x", "X"}};
   for (auto& key : keyFunctions) {
     size_t pos = 0;
     while ((pos = infix.find(key.first, pos)) != std::string::npos) {
@@ -86,6 +87,7 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
   std::stack<std::string> operatorStack;
   std::queue<std::string> outputQueue;
   std::string currentToken = "";
+  fixInfix(infix);
 
   for (int i = 0; i < infix.length(); i++) {
     char currentChar = infix[i];
@@ -152,7 +154,6 @@ double s21::CalcModel::getFromStack(std::stack<double>& operands) {
 double s21::CalcModel::calculatePostfix(std::queue<std::string> postfix) {
   std::stack<double> calcStack;
   std::string token;
-
   while (!postfix.empty()) {
     token = postfix.front();
     std::cout << token << " ";
@@ -177,18 +178,4 @@ double s21::CalcModel::calculatePostfix(std::queue<std::string> postfix) {
 double s21::CalcModel::calculate(std::string infix) {
   std::queue<std::string> newInfix = infixToPostfix(infix);
   return calculatePostfix(newInfix);
-}
-
-int main(void) {
-  s21::CalcModel ll;
-  std::string infix =
-      "sqrt(4)+9.235+2^3^sin(cos(10))-564-sqrt(25)+28.6*35%99^2^3";
-  ll.fixInfix(infix);
-  std::cout << "fixInfix: " << infix << std::endl;
-  std::queue<std::string> newInfix = ll.infixToPostfix(infix);
-  std::cout << "Result: " << ll.calculatePostfix(newInfix) << std::endl;
-  // std::cout << "5 -1 - 2 + 4 * c 2 7.5 * - 2 - * + s c 2 5 * +" << std::endl;
-  printf("\n%f", ll.calculatePostfix(newInfix));
-
-  return 0;
 }
