@@ -22,16 +22,20 @@ bool s21::CalcModel::isDigit(char& currentChar, std::string& infix, int& i) {
 }
 
 bool s21::CalcModel::isOperator(const std::string& str) {
-  std::string listOperators = "+-*/%^";
   bool result = false;
-  if (listOperators.find(str) != std::string::npos) result = true;
+  if (!str.empty()) {
+    std::string listOperators = "+-*/%^";
+    if (listOperators.find(str) != std::string::npos) result = true;
+  }
   return result;
 }
 
 bool s21::CalcModel::isFunction(const std::string& str) {
-  std::string listOperators = "qgaiontsc";
   bool result = false;
-  if (listOperators.find(str) != std::string::npos) result = true;
+  if (!str.empty()) {
+    std::string listOperators = "qgaiontsc";
+    if (listOperators.find(str) != std::string::npos) result = true;
+  }
   return result;
 }
 
@@ -87,7 +91,6 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
   operatorStack.push("(");
 
   for (int i = 0; i < infix.length(); ++i) {
-    printf("SYMB: %c\n", infix[i]);
     if (isdigit(infix[i])) {
       if (currentToken.length() == 0) {
         currentToken += infix[i];
@@ -117,8 +120,7 @@ std::queue<std::string> s21::CalcModel::infixToPostfix(std::string& infix) {
       while (!operatorStack.empty() && operatorStack.top() != "(" &&
              !isFunction(operatorStack.top()) &&
              getPriority(std::string(1, infix[i])) <=
-                 getPriority(operatorStack.top()) &&
-             infix[i] != '^') {
+                 getPriority(operatorStack.top())) {
         outputQueue.push(operatorStack.top());
         operatorStack.pop();
       }
@@ -294,7 +296,8 @@ double s21::CalcModel::calculate(std::string infix) {
 
 int main(void) {
   s21::CalcModel ll;
-  std::string infix = "51+2";
+  std::string infix =
+      "5+(1+2)*4*cos(2*7.5-2)+sin(cos(2*5))-sqrt(2^log(5-1))+ln(55)";
   ll.fixInfix(infix);
   std::cout << "fixInfix: " << infix << std::endl;
   std::queue<std::string> newInfix = ll.infixToPostfix(infix);
