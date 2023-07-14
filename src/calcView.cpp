@@ -52,6 +52,7 @@ CalcView::CalcView(QWidget *parent)
 
   connect(ui->graph, SIGNAL(clicked()), this, SLOT(on_graph_clicked()));
   connect(this, &CalcView::sendData, graphWindow, &Graph::getData);
+  connect(ui->resultShow, &QLineEdit::textChanged, this, &CalcView::on_equalX_textChanged);
 }
 
 CalcView::~CalcView() { delete ui; }
@@ -124,10 +125,7 @@ void CalcView::equalClick() {
     }
   }
   std::string str = calc.toStdString();
-  // if (calc.left(1) == "+") calc.replace("+", "");
-  // QByteArray byte = calc.toLocal8Bit();
   double result = 0;
-  // char *str = byte.data();
 
   // if (validAriphSymb(str)) {
   result = resultModel.calculate(str);
@@ -153,9 +151,10 @@ void CalcView::ceClick() {
 
 void CalcView::acClick() {
   initCalc();
-  if (!ui->resultShow->text().contains(" X=", Qt::CaseInsensitive)) {
-    ui->resultShow->setText(ui->resultShow->text() + " X=");
-  }
+
+    if (!ui->resultShow->text().contains(" X=", Qt::CaseInsensitive)) {
+      ui->resultShow->setText(ui->resultShow->text() + " X=");
+    }
 }
 
 void CalcView::on_credit_clicked() {
@@ -206,3 +205,17 @@ void CalcView::on_close_clicked() {
     ui->resultShow->setText(ui->resultShow->text() + ")");
   }
 }
+
+void CalcView::on_equalX_textChanged(const QString &arg1)
+{
+    QString  resultShowText = ui->resultShow->text();
+    if (arg1 != resultShowText && !arg1.contains('X', Qt::CaseInsensitive)) {
+        ui->equalX->setStyleSheet("font-color: red;");
+        ui->equalX->setEnabled(false);
+    } else {
+        ui->equalX->setStyleSheet("background-color: default;");
+        ui->equalX->setEnabled(true);
+      // ui->equalX->text().contains("Start with an expression containing X");
+    }
+}
+

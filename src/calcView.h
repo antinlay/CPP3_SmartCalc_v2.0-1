@@ -51,6 +51,7 @@ class CalcView : public QMainWindow {
   void on_graph_clicked();
   void on_xoy_clicked();
   void on_close_clicked();
+  void on_equalX_textChanged(const QString &arg1);
 };
 
 // }  // namespace s21

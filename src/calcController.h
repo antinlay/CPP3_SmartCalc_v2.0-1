@@ -1,18 +1,12 @@
-// #ifndef CALCCONTROLLER_H
-// #define CALCCONTROLLER_H
+#ifndef CALCCONTROLLER_H
+#define CALCCONTROLLER_H
 
-// #include "calcModel.h"
+#include "calcModel.h"
 
-// class CalcController {
-//  private:
-//   s21::CalcModel *model;
-
-//  public:
-//   CalcController(CalcModel *m) : model(m){};
-//   double add(double a);
-//   double sub(double a);
-//   double mult(double a);
-//   double div(double a);
-//   void reset();
-// };
-// #endif
+class CalcController {
+ private:
+ public:
+  void getExpression(QString calc);
+  void fixInfix(std::string& infix);
+};
+#endif
