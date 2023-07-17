@@ -52,7 +52,15 @@ CalcView::CalcView(QWidget *parent)
 
   connect(ui->graph, SIGNAL(clicked()), this, SLOT(on_graph_clicked()));
   connect(this, &CalcView::sendData, graphWindow, &Graph::getData);
-  connect(ui->resultShow, &QLineEdit::textChanged, this, &CalcView::on_equalX_textChanged);
+  connect(ui->resultShow, &QLineEdit::textChanged, this, [=]() {
+      if (ui->resultShow->text().contains("X")) {
+          ui->equalX->setStyleSheet("border: 1px solid pink;");
+          ui->equalX->setEnabled(true);
+      } else {
+          ui->equalX->setStyleSheet("");
+          ui->equalX->setEnabled(false);
+      }
+  });
 }
 
 CalcView::~CalcView() { delete ui; }
@@ -111,34 +119,24 @@ void CalcView::dotClick() {
 
 void CalcView::equalClick() {
   initCalc();
-  QString calc = ui->resultShow->text(), num;  // .toStdString
+  std::string str = ui->resultShow->text().toStdString(), num;  // .toStdString
+//  CalcController::getExpression(str);
+  if (ui->resultShow->text().contains("X", Qt::CaseInsensitive) && !ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
+      str = ui->resultShow->text().replace("X",  "(" + ui->equalX->text() + ")").toStdString();
 
-  if (ui->resultShow->text().contains(" X=", Qt::CaseInsensitive)) {
-    int i = calc.length() - calc.indexOf("=") - 1;
-    num = calc.right(i);
-    calc = calc.left(calc.indexOf("=") - 2);
-    if (calc.contains('X')) {
-      calc = calc.replace('X', num);
-    } else {
-      ui->resultShow->setText("ERROR");
-      return;
-    }
+      // if (validAriphSymb(str)) {
+      double result = 0;
+      result = resultModel.calculate(str);
+      QString resCalc = QString::number(result, 'g', 14);
+      #ifdef linux
+        resCalc.replace('.', ',');
+      #endif
+      ui->resultShow->setText(resCalc);
+      // else {
+      //   ui->resultShow->setText("ERROR");
+      // }
   }
-  std::string str = calc.toStdString();
-  double result = 0;
-
-  // if (validAriphSymb(str)) {
-  result = resultModel.calculate(str);
-  QString resCalc = QString::number(result, 'g', 14);
-#ifdef linux
-  resCalc.replace('.', ',');
-#endif
-  ui->resultShow->setText(resCalc);
 }
-// else {
-//   ui->resultShow->setText("ERROR");
-// }
-// }
 
 void CalcView::ceClick() {
   if (ui->resultShow->text() != "") {
@@ -151,10 +149,9 @@ void CalcView::ceClick() {
 
 void CalcView::acClick() {
   initCalc();
-
-    if (!ui->resultShow->text().contains(" X=", Qt::CaseInsensitive)) {
-      ui->resultShow->setText(ui->resultShow->text() + " X=");
-    }
+  if (!ui->resultShow->text().isEmpty()) {
+    ui->resultShow->backspace();
+  }
 }
 
 void CalcView::on_credit_clicked() {
@@ -205,17 +202,3 @@ void CalcView::on_close_clicked() {
     ui->resultShow->setText(ui->resultShow->text() + ")");
   }
 }
-
-void CalcView::on_equalX_textChanged(const QString &arg1)
-{
-    QString  resultShowText = ui->resultShow->text();
-    if (arg1 != resultShowText && !arg1.contains('X', Qt::CaseInsensitive)) {
-        ui->equalX->setStyleSheet("font-color: red;");
-        ui->equalX->setEnabled(false);
-    } else {
-        ui->equalX->setStyleSheet("background-color: default;");
-        ui->equalX->setEnabled(true);
-      // ui->equalX->text().contains("Start with an expression containing X");
-    }
-}
-

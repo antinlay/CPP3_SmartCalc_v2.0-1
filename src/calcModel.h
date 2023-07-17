@@ -6,6 +6,7 @@
 #include <iostream>
 #include <map>
 #include <queue>
+#include <regex>
 #include <stack>
 #include <unordered_map>
 
@@ -48,6 +49,7 @@ class CalcModel {
   double cosCalc(double a) { return cos(a); }
   double acosCalc(double a) { return acos(a); }
   // CHECKS
+  bool validateExpression(const std::string& expression);
   int getPriority(std::string c);
   bool isDigit(char& currentChar, std::string& infix, int& i);
   bool isOperator(const std::string& str);

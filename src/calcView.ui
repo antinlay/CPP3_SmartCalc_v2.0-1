@@ -590,7 +590,7 @@
      </font>
     </property>
     <property name="text">
-     <string>X=</string>
+     <string>DEL</string>
     </property>
    </widget>
    <widget class="QPushButton" name="open">

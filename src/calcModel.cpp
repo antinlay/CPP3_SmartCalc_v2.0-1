@@ -1,5 +1,45 @@
 #include "calcModel.h"
 
+bool s21::CalcModel::validateExpression(const std::string& expression) {
+  std::stack<char> parenthesesStack;
+  std::regex validCharacters(
+      "[\\d\\+\\-\\*/%^\\(\\)\\s\\.sincostanctgmodlnlog]+");
+
+  // Проверка наличия недопустимых символов
+  if (!std::regex_match(expression, validCharacters)) return false;
+
+  // Проверка на сбалансированность скобок
+  for (const char& ch : expression) {
+    if (ch == '(')
+      parenthesesStack.push(ch);
+    else if (ch == ')') {
+      if (parenthesesStack.empty()) return false;
+      parenthesesStack.pop();
+    }
+  }
+  if (!parenthesesStack.empty()) return false;
+
+  // Проверка на неправильное расположение операторов и функций
+  std::regex invalidOperators(
+      "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\%|\\*\\*|\\*\\/|\\*\\^|\\*\\%|\\/\\/"
+      "|\\/\\*|\\/\\^|\\/\\%|\\^\\+|\\^\\*|\\^\\/"
+      "|\\^\\^|\\^\\%|\\%\\+|\\%\\*|\\%\\/|\\%\\^|\\%\\%|\\s\\+|\\s\\*|\\s\\/"
+      "|\\s\\^|\\s\\%|\\+\\s|\\*\\s|\\/\\s|\\^\\s|\\%\\s|\\(\\+|\\(\\*|\\(\\/"
+      "|\\(\\^|\\(\\%|\\+\\)|\\*\\)|\\/\\)|\\^\\)|\\%\\))");
+  if (std::regex_search(expression, invalidOperators)) return false;
+
+  // Проверка на неправильное количество операторов и функций
+  std::regex multipleOperators(
+      "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\%{2,}");
+  if (std::regex_search(expression, multipleOperators)) return false;
+
+  std::regex multipleFunctions(
+      "sin{2,}|cos{2,}|tan{2,}|ctg{2,}|mod{2,}|ln{2,}|log{2,}");
+  if (std::regex_search(expression, multipleFunctions)) return false;
+
+  return true;
+}
+
 // CHECKS
 int s21::CalcModel::getPriority(std::string c) {
   int res = 0;

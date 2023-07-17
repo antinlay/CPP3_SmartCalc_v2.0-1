@@ -4,8 +4,8 @@
 #include <QDoubleValidator>
 #include <QMainWindow>
 
+//#include "calcController.h"
 #include "calcModel.h"
-// #include "calcController.h"
 #include "credit.h"
 #include "debit.h"
 #include "graph.h"
@@ -51,7 +51,6 @@ class CalcView : public QMainWindow {
   void on_graph_clicked();
   void on_xoy_clicked();
   void on_close_clicked();
-  void on_equalX_textChanged(const QString &arg1);
 };
 
 // }  // namespace s21
