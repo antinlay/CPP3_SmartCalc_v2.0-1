@@ -60,6 +60,13 @@ CalcView::CalcView(QWidget *parent)
           ui->equalX->setStyleSheet("");
           ui->equalX->setEnabled(false);
       }
+      if (!resultModel.validateExpression(ui->resultShow->text().toStdString())) {
+          ui->resultShow->setStyleSheet("border: 1px solid pink;");
+          ui->equal->setEnabled(false);
+      } else {
+          ui->resultShow->setStyleSheet("");
+          ui->equal->setEnabled(true);
+      }
   });
 }
 
@@ -123,8 +130,8 @@ void CalcView::equalClick() {
 //  CalcController::getExpression(str);
   if (ui->resultShow->text().contains("X", Qt::CaseInsensitive) && !ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
       str = ui->resultShow->text().replace("X",  "(" + ui->equalX->text() + ")").toStdString();
-
-      // if (validAriphSymb(str)) {
+  }
+//  if (resultModel.validateExpression(str)) {
       double result = 0;
       result = resultModel.calculate(str);
       QString resCalc = QString::number(result, 'g', 14);
@@ -135,7 +142,6 @@ void CalcView::equalClick() {
       // else {
       //   ui->resultShow->setText("ERROR");
       // }
-  }
 }
 
 void CalcView::ceClick() {
