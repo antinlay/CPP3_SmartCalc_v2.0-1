@@ -9,7 +9,7 @@ Graph::~Graph() { delete ui; }
 
 std::string Graph::strConvert(QString res, double val) {
   QString num = QString::number(val);
-  res.replace("X", num);
+  res.replace("X", num, Qt::CaseInsensitive);
   // change dot to comma for LINUX
 #ifdef linux
   res.replace('.', ',').data();

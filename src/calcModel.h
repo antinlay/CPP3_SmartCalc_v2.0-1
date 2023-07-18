@@ -30,11 +30,11 @@ class CalcModel {
       return a / b;
   }
   double modCalc(double a, double b) {
-    if (b == 0)
-      throw std::runtime_error("Undefined mod(" + std::to_string(a) + ", " +
-                               std::to_string(b) + ")");
-    else
-      return fmod(a, b);
+    // if (b == 0)
+    //   throw std::runtime_error("Undefined mod(" + std::to_string(a) + ", " +
+    //                            std::to_string(b) + ")");
+    // else
+    return fmod(a, b);
   }
   double powerCalc(double a, double b) { return pow(a, b); }
 

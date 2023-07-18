@@ -2,11 +2,6 @@
 
 bool s21::CalcModel::validateExpression(const std::string& expression) {
   std::stack<char> parenthesesStack;
-  std::regex validCharacters(
-      "[\\d\\+\\-\\*/%^\\(\\)\\s\\.sincostanctgmodlnlog]+");
-
-  // Проверка наличия недопустимых символов
-  if (!std::regex_match(expression, validCharacters)) return false;
 
   // Проверка на сбалансированность скобок
   for (const char& ch : expression) {
@@ -19,6 +14,13 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   }
   if (!parenthesesStack.empty()) return false;
 
+  std::regex validFunc(
+      "(^|[-+*/%^])(?=sqrt|sin|cos|tan|asin|acos|atan|ln|log|mod)");
+  if (!std::regex_search(expression, validFunc)) return false;
+
+  // std::regex validMod("(?!.*[-+*/%^\\(])mod\\(");
+  // if (!std::regex_search(expression, validMod)) return false;
+
   // Проверка на неправильное расположение операторов и функций
   std::regex invalidOperators(
       "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\%|\\*\\*|\\*\\/|\\*\\^|\\*\\%|\\/\\/"
@@ -29,12 +31,13 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   if (std::regex_search(expression, invalidOperators)) return false;
 
   // Проверка на неправильное количество операторов и функций
-  std::regex multipleOperators(
-      "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\%{2,}");
+  std::regex multipleOperators("\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}");
   if (std::regex_search(expression, multipleOperators)) return false;
 
   std::regex multipleFunctions(
-      "sin{2,}|cos{2,}|tan{2,}|ctg{2,}|mod{2,}|ln{2,}|log{2,}");
+      "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{1,"
+      "}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!ln\\()"
+      "ln{2,}|(?!log\\()log{1,}|mod{2,}");
   if (std::regex_search(expression, multipleFunctions)) return false;
 
   return true;
@@ -109,6 +112,9 @@ double s21::CalcModel::calcFunctions(double a, std::string c) {
 }
 
 void s21::CalcModel::fixInfix(std::string& infix) {
+  std::regex pattern("(\\d+\\.?\\d*)([a-zA-Z]+)");
+  std::string modifiedExpression = std::regex_replace(infix, pattern, "$1*$2");
+
   static const std::unordered_map<std::string, std::string> keyFunctions = {
       {"sqrt", "q"}, {"ln", "n"},  {"log", "g"},  {"tan", "t"},
       {"atan", "a"}, {"sin", "s"}, {"asin", "i"}, {"cos", "c"},

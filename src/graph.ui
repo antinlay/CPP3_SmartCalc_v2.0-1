@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Graph</class>
- <widget class="QWidget" name="graph">
+ <widget class="QWidget" name="Graph">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -62,21 +62,27 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="sizeConstraint">
-     <enum>QLayout::SetFixedSize</enum>
+     <enum>QLayout::SetMaximumSize</enum>
     </property>
     <item>
      <widget class="QLineEdit" name="lineEdit_func">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="font">
        <font>
         <family>Arial Black</family>
         <bold>true</bold>
        </font>
       </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
       <property name="maxLength">
        <number>255</number>
       </property>
       <property name="readOnly">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
      </widget>
     </item>
