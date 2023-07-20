@@ -14,20 +14,19 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   }
   if (!parenthesesStack.empty()) return false;
 
-  std::regex validFunc(
-      "(^|[-+*/%^])(?=sqrt|sin|cos|tan|asin|acos|atan|ln|log|mod)");
-  if (!std::regex_search(expression, validFunc)) return false;
+  std::regex regexExpression(
+      "(\\d+(\\.\\d+)?(\\s*\\*\\s*)?(sin|cos|mod|tan|sqrt|asin|acos|atan|ln|"
+      "log|X|x))");
+  if (std ::regex_search(expression, regexExpression)) return false;
 
   // std::regex validMod("(?!.*[-+*/%^\\(])mod\\(");
   // if (!std::regex_search(expression, validMod)) return false;
 
   // Проверка на неправильное расположение операторов и функций
   std::regex invalidOperators(
-      "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\%|\\*\\*|\\*\\/|\\*\\^|\\*\\%|\\/\\/"
-      "|\\/\\*|\\/\\^|\\/\\%|\\^\\+|\\^\\*|\\^\\/"
-      "|\\^\\^|\\^\\%|\\%\\+|\\%\\*|\\%\\/|\\%\\^|\\%\\%|\\s\\+|\\s\\*|\\s\\/"
-      "|\\s\\^|\\s\\%|\\+\\s|\\*\\s|\\/\\s|\\^\\s|\\%\\s|\\(\\+|\\(\\*|\\(\\/"
-      "|\\(\\^|\\(\\%|\\+\\)|\\*\\)|\\/\\)|\\^\\)|\\%\\))");
+      "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
+      "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
+      "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\))");
   if (std::regex_search(expression, invalidOperators)) return false;
 
   // Проверка на неправильное количество операторов и функций
@@ -37,7 +36,7 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   std::regex multipleFunctions(
       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{1,"
       "}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!ln\\()"
-      "ln{2,}|(?!log\\()log{1,}|mod{2,}");
+      "ln{2,}|(?!log\\()log{1,}|mod{2,}|X{2,}|x{2,}|\\s{1,}");
   if (std::regex_search(expression, multipleFunctions)) return false;
 
   return true;
