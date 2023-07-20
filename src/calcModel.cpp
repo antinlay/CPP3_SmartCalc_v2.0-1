@@ -14,10 +14,20 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   }
   if (!parenthesesStack.empty()) return false;
 
-  std::regex regexExpression(
-      "(\\d+(\\.\\d+)?(\\s*\\*\\s*)?(sin|cos|mod|tan|sqrt|asin|acos|atan|ln|"
-      "log|X|x))");
-  if (std ::regex_search(expression, regexExpression)) return false;
+  std::regex regexDotMax("\\d+(\\.\\d+){2,}");
+  if (std ::regex_search(expression, regexDotMax)) return false;
+
+  std::regex regexCloseBracket(
+      "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x)");
+  if (std ::regex_search(expression, regexCloseBracket)) return false;
+
+  std::regex regexBeforeFunc(
+      "(\\d+(\\.\\d+)?(\\s*\\*\\s*)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
+      "log))");
+  if (std ::regex_search(expression, regexBeforeFunc)) return false;
+
+  std::regex regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
+  if (std ::regex_search(expression, regexBeforeX)) return false;
 
   // std::regex validMod("(?!.*[-+*/%^\\(])mod\\(");
   // if (!std::regex_search(expression, validMod)) return false;
@@ -26,7 +36,7 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   std::regex invalidOperators(
       "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
       "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
-      "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\))");
+      "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
   if (std::regex_search(expression, invalidOperators)) return false;
 
   // Проверка на неправильное количество операторов и функций
