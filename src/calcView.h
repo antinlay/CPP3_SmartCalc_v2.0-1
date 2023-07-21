@@ -4,8 +4,7 @@
 #include <QDoubleValidator>
 #include <QMainWindow>
 
-//#include "calcController.h"
-#include "calcModel.h"
+#include "calcController.h"
 #include "credit.h"
 #include "debit.h"
 #include "graph.h"
@@ -35,7 +34,7 @@ class CalcView : public QMainWindow {
   Credit *creditWindow;
   Debit *debitWindow;
   Graph *graphWindow;
-  s21::CalcModel resultModel;
+  s21::CalcController resultController;
 
  private slots:
   void mathFuncs();

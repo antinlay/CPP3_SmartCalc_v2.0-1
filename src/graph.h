@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "calcModel.h"
+#include "calcController.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,14 +18,14 @@ class Graph : public QWidget {
   explicit Graph(QWidget *parent = nullptr);
   ~Graph();
   void getData(QString res);
-  std::string strConvert(QString res, double val);
+  void strConvert(QString& res, double val);
 
  public slots:
   void on_pushButton_clicked();
 
  private:
   Ui::Graph *ui;
-  s21::CalcModel resultModel;
+  s21::CalcController resultController;
 };
 
 // }  // namespace s21

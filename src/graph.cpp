@@ -7,14 +7,9 @@ Graph::Graph(QWidget *parent) : QWidget(parent), ui(new Ui::Graph) {
 }
 Graph::~Graph() { delete ui; }
 
-std::string Graph::strConvert(QString res, double val) {
+void Graph::strConvert(QString& res, double val) {
   QString num = QString::number(val);
   res.replace("X", num, Qt::CaseInsensitive);
-  // change dot to comma for LINUX
-#ifdef linux
-  res.replace('.', ',').data();
-#endif
-  return res.toStdString();
 }
 
 void Graph::on_pushButton_clicked() {
@@ -27,8 +22,8 @@ void Graph::on_pushButton_clicked() {
   // s21::CalcModel::calculate and write all graphics points
   for (int i = 0; i <= h; ++i) {
     x[i] = xStart + i * j;
-    std::string tmp = strConvert(res, x[i]);
-    y[i] = resultModel.calculate(tmp);
+    strConvert(res, x[i]);
+    resultController.calcGraph(res, y[i]);
 //    qDebug() << "i = " << i << " x = " << x[i] << " y = " << y[i];
   }
 

@@ -58,7 +58,7 @@ CalcView::CalcView(QWidget *parent)
       ui->equalX->setEnabled(false);
       ui->graph->setEnabled(false);
     }
-    if (!resultModel.validateExpression(ui->resultShow->text().toStdString())) {
+    if (!resultController.validateChangeOn(ui->resultShow->text())) {
       ui->resultShow->setStyleSheet("border: 1px solid pink;");
       ui->equal->setEnabled(false);
     } else {
@@ -69,12 +69,6 @@ CalcView::CalcView(QWidget *parent)
 }
 
 CalcView::~CalcView() { delete ui; }
-
-void CalcView::initCalc() {
-  if (ui->resultShow->text() == "ERROR") {
-    ui->resultShow->clear();
-  }
-}
 
 void CalcView::mathFuncs() {
   QPushButton *button = (QPushButton *)sender();
@@ -106,20 +100,10 @@ void CalcView::dotClick() {
 }
 
 void CalcView::equalClick() {
-  std::string str = ui->resultShow->text().toStdString(), num;
-  if (ui->resultShow->text().contains("X", Qt::CaseInsensitive) &&
-      !ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
-    str = ui->resultShow->text()
-              .replace("X", "(" + ui->equalX->text() + ")", Qt::CaseInsensitive)
-              .toStdString();
-  }
-  double result = 0;
-  result = resultModel.calculate(str);
-  QString resCalc = QString::number(result, 'g', 14);
-#ifdef linux
-  resCalc.replace('.', ',');
-#endif
-  ui->resultShow->setText(resCalc);
+  QString equalResult = ui->resultShow->text();
+  QString equalX = ui->equalX->text();
+  resultController.calcExpression(equalResult, equalX);
+  ui->resultShow->setText(equalResult);
 }
 
 void CalcView::ceClick() {
