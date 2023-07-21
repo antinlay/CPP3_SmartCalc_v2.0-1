@@ -1,11 +1,8 @@
 #include "calcView.h"
 
-// int curs = 0, dot = 0, symb = 0;
-
 CalcView::CalcView(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::CalcView) {
   auto val = new QDoubleValidator();
-  // val->setLocale(lo);
 
   ui->setupUi(this);
 
@@ -42,8 +39,6 @@ CalcView::CalcView(QWidget *parent)
   connect(ui->sub, SIGNAL(clicked()), this, SLOT(symbs()));
   connect(ui->pow, SIGNAL(clicked()), this, SLOT(symbs()));
   connect(ui->mod, SIGNAL(clicked()), this, SLOT(symbs()));
-  // connect(ui->open, SIGNAL(clicked()), this, SLOT(symbs()));
-  // connect(ui->close, SIGNAL(clicked()), this, SLOT(symbs()));
 
   connect(ui->equal, SIGNAL(clicked()), this, SLOT(equalClick()));
   connect(ui->dot, SIGNAL(clicked()), this, SLOT(dotClick()));
@@ -78,66 +73,46 @@ CalcView::~CalcView() { delete ui; }
 void CalcView::initCalc() {
   if (ui->resultShow->text() == "ERROR") {
     ui->resultShow->clear();
-    // dot = 0;
-    // curs = 0;
-    // symb = 0;
   }
 }
 
 void CalcView::mathFuncs() {
-  // initCalc();
   QPushButton *button = (QPushButton *)sender();
   QString allStrings;
   allStrings = (ui->resultShow->text() + button->text());
   ui->resultShow->setText(allStrings + '(');
-  // curs++;
-  // if (dot) dot--;
 }
 
 void CalcView::numFuncs() {
-  // initCalc();
   QPushButton *button = (QPushButton *)sender();
   QString newString;
   newString = (ui->resultShow->text() + button->text());
   ui->resultShow->setText(newString);
-  // if (symb) symb--;
 }
 
 void CalcView::symbs() {
-  // initCalc();
   QPushButton *button = (QPushButton *)sender();
   QString allStrings;
-  // if (!symb) {
   allStrings = (ui->resultShow->text()) + button->text();
   ui->resultShow->setText(allStrings);
-  // symb++;
-  // }
-  // if (dot) dot--;
 }
 
 void CalcView::dotClick() {
-  // initCalc();
-  // if (!dot) {
   char point = '.';
 #ifdef linux
   point = ',';
 #endif
   ui->resultShow->setText(ui->resultShow->text() + point);
-  // dot++;
-  // }
 }
 
 void CalcView::equalClick() {
-  // initCalc();
-  std::string str = ui->resultShow->text().toStdString(), num;  // .toStdString
-  //  CalcController::getExpression(str);
+  std::string str = ui->resultShow->text().toStdString(), num;
   if (ui->resultShow->text().contains("X", Qt::CaseInsensitive) &&
       !ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
     str = ui->resultShow->text()
               .replace("X", "(" + ui->equalX->text() + ")", Qt::CaseInsensitive)
               .toStdString();
   }
-  //  if (resultModel.validateExpression(str)) {
   double result = 0;
   result = resultModel.calculate(str);
   QString resCalc = QString::number(result, 'g', 14);
@@ -145,23 +120,15 @@ void CalcView::equalClick() {
   resCalc.replace('.', ',');
 #endif
   ui->resultShow->setText(resCalc);
-  // else {
-  //   ui->resultShow->setText("ERROR");
-  // }
 }
 
 void CalcView::ceClick() {
-  // dot = 0;
-  // curs = 0;
-  // symb = 0;
-
   if (!ui->resultShow->text().isEmpty()) {
     ui->resultShow->clear();
   }
 }
 
 void CalcView::acClick() {
-  // initCalc();
   if (!ui->resultShow->text().isEmpty()) {
     ui->resultShow->backspace();
   }
@@ -178,14 +145,14 @@ void CalcView::on_debit_clicked() {
 }
 
 void CalcView::on_open_clicked() {
-  // initCalc();
-  // if (!dot) {
   ui->resultShow->setText(ui->resultShow->text() + "(");
-  // }
+}
+
+void CalcView::on_close_clicked() {
+  ui->resultShow->setText(ui->resultShow->text() + ")");
 }
 
 void CalcView::on_graph_clicked() {
-  // initCalc();
   if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
     emit sendData(ui->resultShow->text());
     graphWindow->show();
@@ -194,17 +161,6 @@ void CalcView::on_graph_clicked() {
 }
 
 void CalcView::on_xoy_clicked() {
-  // initCalc();
-  // if (!dot) {
   ui->resultShow->setText(ui->resultShow->text() + "X");
-  // }
-  // symb--;
   emit sendData(ui->resultShow->text());
-}
-
-void CalcView::on_close_clicked() {
-  // initCalc();
-//  if (!dot) {
-    ui->resultShow->setText(ui->resultShow->text() + ")");
-//  }
 }

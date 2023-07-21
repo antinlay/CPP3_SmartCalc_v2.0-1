@@ -22,7 +22,7 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   if (std ::regex_search(expression, regexCloseBracket)) return false;
 
   std::regex regexBeforeFunc(
-      "(\\d+(\\.\\d+)?(\\s*\\*\\s*)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
+      "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
       "log))");
   if (std ::regex_search(expression, regexBeforeFunc)) return false;
 
@@ -40,7 +40,8 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   if (std::regex_search(expression, invalidOperators)) return false;
 
   // Проверка на неправильное количество операторов и функций
-  std::regex multipleOperators("\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}");
+  std::regex multipleOperators(
+      "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
   if (std::regex_search(expression, multipleOperators)) return false;
 
   std::regex multipleFunctions(
