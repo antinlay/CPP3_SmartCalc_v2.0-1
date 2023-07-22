@@ -11,7 +11,7 @@ class CalcController {
  public:
   void calcExpression(QString& equalResult, QString& equalX);
   bool validateChangeOn(QString equalStr);
-  void calcGraph(QString& graphResult, double& result);
+  double calcGraph(QString graphResult, double x);
 
  private:
   s21::CalcModel resultModel;

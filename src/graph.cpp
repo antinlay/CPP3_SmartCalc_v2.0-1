@@ -22,8 +22,8 @@ void Graph::on_pushButton_clicked() {
   // s21::CalcModel::calculate and write all graphics points
   for (int i = 0; i <= h; ++i) {
     x[i] = xStart + i * j;
-    strConvert(res, x[i]);
-    resultController.calcGraph(res, y[i]);
+//    strConvert(res, x[i]);
+    y[i] = resultController.calcGraph(res, x[i]);
 //    qDebug() << "i = " << i << " x = " << x[i] << " y = " << y[i];
   }
 

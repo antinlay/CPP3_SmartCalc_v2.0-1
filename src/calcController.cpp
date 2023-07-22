@@ -15,6 +15,10 @@ bool s21::CalcController::validateChangeOn(QString equalStr) {
   return resultModel.validateExpression(equalStr.toStdString());
 }
 
-void s21::CalcController::calcGraph(QString& graphResult, double& result) {
-  result = resultModel.calculate(graphResult.toStdString());
+double s21::CalcController::calcGraph(QString graphResult, double x) {
+  QString num = QString::number(x);
+  graphResult.replace("X", num, Qt::CaseInsensitive);
+
+  double result = resultModel.calculate(graphResult.toStdString());
+  return result;
 }
