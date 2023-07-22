@@ -14,7 +14,18 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   }
   if (!parenthesesStack.empty()) return false;
 
-  std::regex regexDotMax("\\d+(\\.\\d+){2,}");
+  std::regex regexAlphabet("[a-zA-ZА-я]+");
+  if (std::regex_search(expression, regexAlphabet)) {
+    std::regex regexFunc(
+        "(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod|e|E|x|X)");
+    if (!std ::regex_search(expression, regexFunc)) return false;
+
+    // std::regex regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?");
+    // if (!std ::regex_search(expression, regexExponenta)) return false;
+  }
+
+  std::regex regexDotMax(
+      "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
   if (std ::regex_search(expression, regexDotMax)) return false;
 
   std::regex regexCloseBracket(
@@ -28,9 +39,6 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
 
   std::regex regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
   if (std ::regex_search(expression, regexBeforeX)) return false;
-
-  // std::regex validMod("(?!.*[-+*/%^\\(])mod\\(");
-  // if (!std::regex_search(expression, validMod)) return false;
 
   // Проверка на неправильное расположение операторов и функций
   std::regex invalidOperators(

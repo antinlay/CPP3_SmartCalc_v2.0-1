@@ -2,50 +2,55 @@
 
 CalcView::CalcView(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::CalcView) {
-  auto val = new QDoubleValidator();
+  //  auto val = new QDoubleValidator();
 
   ui->setupUi(this);
 
-  ui->resultShow->setValidator(val);
-  ui->equalX->setValidator(val);
+  //  ui->resultShow->setValidator(val);
+  //  ui->equalX->setValidator(val);
 
   graphWindow = new Graph;
 
-  connect(ui->sin, SIGNAL(clicked()), this, SLOT(mathFuncs()));
-  connect(ui->cos, SIGNAL(clicked()), this, SLOT(mathFuncs()));
-  connect(ui->tan, SIGNAL(clicked()), this, SLOT(mathFuncs()));
-  connect(ui->asin, SIGNAL(clicked()), this, SLOT(mathFuncs()));
-  connect(ui->acos, SIGNAL(clicked()), this, SLOT(mathFuncs()));
-  connect(ui->atan, SIGNAL(clicked()), this, SLOT(mathFuncs()));
-  connect(ui->sqrt, SIGNAL(clicked()), this, SLOT(mathFuncs()));
-  connect(ui->ln, SIGNAL(clicked()), this, SLOT(mathFuncs()));
-  connect(ui->log, SIGNAL(clicked()), this, SLOT(mathFuncs()));
-  connect(ui->mod, SIGNAL(clicked()), this, SLOT(mathFuncs()));
+  connect(ui->sin, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->cos, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->tan, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->asin, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->acos, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->atan, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->sqrt, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->ln, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->log, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->mod, &QPushButton::clicked, this, [=]() { focusInsert("("); });
 
-  connect(ui->num0, SIGNAL(clicked()), this, SLOT(numFuncs()));
-  connect(ui->num1, SIGNAL(clicked()), this, SLOT(numFuncs()));
-  connect(ui->num2, SIGNAL(clicked()), this, SLOT(numFuncs()));
-  connect(ui->num3, SIGNAL(clicked()), this, SLOT(numFuncs()));
-  connect(ui->num4, SIGNAL(clicked()), this, SLOT(numFuncs()));
-  connect(ui->num5, SIGNAL(clicked()), this, SLOT(numFuncs()));
-  connect(ui->num6, SIGNAL(clicked()), this, SLOT(numFuncs()));
-  connect(ui->num7, SIGNAL(clicked()), this, SLOT(numFuncs()));
-  connect(ui->num8, SIGNAL(clicked()), this, SLOT(numFuncs()));
-  connect(ui->num9, SIGNAL(clicked()), this, SLOT(numFuncs()));
+  connect(ui->num0, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num1, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num2, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num3, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num4, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num5, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num6, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num7, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num8, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num9, &QPushButton::clicked, this, [=]() { focusInsert(""); });
 
-  connect(ui->div, SIGNAL(clicked()), this, SLOT(symbs()));
-  connect(ui->mult, SIGNAL(clicked()), this, SLOT(symbs()));
-  connect(ui->add, SIGNAL(clicked()), this, SLOT(symbs()));
-  connect(ui->sub, SIGNAL(clicked()), this, SLOT(symbs()));
-  connect(ui->pow, SIGNAL(clicked()), this, SLOT(symbs()));
+  connect(ui->div, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->mult, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->add, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->sub, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->pow, &QPushButton::clicked, this, [=]() { focusInsert(""); });
 
-  connect(ui->equal, SIGNAL(clicked()), this, SLOT(equalClick()));
-  connect(ui->dot, SIGNAL(clicked()), this, SLOT(dotClick()));
+  connect(ui->open, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->close, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->dot, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->xoy, &QPushButton::clicked, this, [=]() { focusInsert(""); });
 
-  connect(ui->CE, SIGNAL(clicked()), this, SLOT(ceClick()));
-  connect(ui->AC, SIGNAL(clicked()), this, SLOT(acClick()));
+  connect(ui->equal, &QPushButton::clicked, this, [=]() { equalClick(); });
 
-  connect(ui->graph, SIGNAL(clicked()), this, SLOT(on_graph_clicked()));
+  connect(ui->CE, &QPushButton::clicked, this, [=]() { ceClick(); });
+  connect(ui->AC, &QPushButton::clicked, this, [=]() { acClick(); });
+
+  connect(ui->graph, &QPushButton::clicked, this,
+          [=]() { on_graph_clicked(); });
   connect(this, &CalcView::sendData, graphWindow, &Graph::getData);
   connect(ui->resultShow, &QLineEdit::textChanged, this, [=]() {
     if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
@@ -69,33 +74,35 @@ CalcView::CalcView(QWidget *parent)
 
 CalcView::~CalcView() { delete ui; }
 
-void CalcView::mathFuncs() {
-  QPushButton *button = (QPushButton *)sender();
-  QString allStrings;
-  allStrings = (ui->resultShow->text() + button->text());
-  ui->resultShow->setText(allStrings + '(');
-}
+void CalcView::focusInsert(QString add) {
+  QPushButton *button = qobject_cast<QPushButton *>(sender());
+  QLineEdit *activeLineEdit = qApp->focusWidget()->findChild<QLineEdit *>();
+  if (activeLineEdit) {
+    // if (ui->resultShow->hasFocus()) {
+    // Перенаправление ввода с кнопок на lineEdit1
+    // QObject::connect(button, &QPushButton::clicked, ui->resultShow,
+    //                  &QLineEdit::setFocus);
+    activeLineEdit = ui->resultShow;
+    activeLineEdit->insert(button->text() + add);
+    // ui->equalX->insert(button->text() + add);
+    // } else if (ui->equalX->hasFocus()) {
+    // Перенаправление ввода с кнопок на lineEdit2
+    // QObject::connect(button, &QPushButton::clicked, ui->equalX,
+    //                  &QLineEdit::setFocus);
+    // activeLineEdit = ui->equalX;
+    // activeLineEdit->insert(button->text() + add);
+    // ui->equalX->insert(button->text() + add);
+    // }
+  }
+  // Предположим, что у вас есть активный QLineEdit с именем activeLineEdit
+  QString activeLineEditName = activeLineEdit->text();
+  qDebug() << "Название активного QLineEdit: " << activeLineEditName;
 
-void CalcView::numFuncs() {
-  QPushButton *button = (QPushButton *)sender();
-  QString newString;
-  newString = (ui->resultShow->text() + button->text());
-  ui->resultShow->setText(newString);
-}
-
-void CalcView::symbs() {
-  QPushButton *button = (QPushButton *)sender();
-  QString allStrings;
-  allStrings = (ui->resultShow->text()) + button->text();
-  ui->resultShow->setText(allStrings);
-}
-
-void CalcView::dotClick() {
-  char point = '.';
-#ifdef linux
-  point = ',';
-#endif
-  ui->resultShow->setText(ui->resultShow->text() + point);
+  // if (activeLineEdit == ui->resultShow) {
+  //   ui->resultShow->setFocus();
+  // } else if (activeLineEdit == ui->equalX) {
+  //   ui->equalX->setFocus();
+  // }
 }
 
 void CalcView::equalClick() {
@@ -127,23 +134,10 @@ void CalcView::on_debit_clicked() {
   debitWindow->show();
 }
 
-void CalcView::on_open_clicked() {
-  ui->resultShow->setText(ui->resultShow->text() + "(");
-}
-
-void CalcView::on_close_clicked() {
-  ui->resultShow->setText(ui->resultShow->text() + ")");
-}
-
 void CalcView::on_graph_clicked() {
   if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
     emit sendData(ui->resultShow->text());
     graphWindow->show();
     graphWindow->on_pushButton_clicked();
   }
-}
-
-void CalcView::on_xoy_clicked() {
-  ui->resultShow->setText(ui->resultShow->text() + "X");
-  emit sendData(ui->resultShow->text());
 }

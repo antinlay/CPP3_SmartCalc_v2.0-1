@@ -37,19 +37,20 @@ class CalcView : public QMainWindow {
   s21::CalcController resultController;
 
  private slots:
-  void mathFuncs();
-  void numFuncs();
-  void symbs();
-  void dotClick();
+//  void mathFuncs();
+//  void numFuncs();
+//  void symbs();
+//  void dotClick();
   void equalClick();
   void ceClick();
   void acClick();
+  void focusInsert(QString add);
   void on_credit_clicked();
   void on_debit_clicked();
-  void on_open_clicked();
+//  void on_open_clicked();
   void on_graph_clicked();
-  void on_xoy_clicked();
-  void on_close_clicked();
+//  void on_xoy_clicked();
+//  void on_close_clicked();
 };
 
 // }  // namespace s21

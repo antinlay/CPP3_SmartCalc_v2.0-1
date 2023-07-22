@@ -276,7 +276,7 @@
      <set>Qt::AlignJustify|Qt::AlignVCenter</set>
     </property>
     <property name="readOnly">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="add">
@@ -714,7 +714,7 @@
    </widget>
    <widget class="QLineEdit" name="equalX">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
