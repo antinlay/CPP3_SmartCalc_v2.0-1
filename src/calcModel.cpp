@@ -1,10 +1,11 @@
 #include "calcModel.h"
 
-bool s21::CalcModel::validateExpression(const std::string& expression) {
+bool s21::CalcModel::validateExpression(QString& expression) {
   std::stack<char> parenthesesStack;
 
   // Проверка на сбалансированность скобок
-  for (const char& ch : expression) {
+  for (int i = 0; i < str.length(); ++i) {
+    QChar ch = str.at(i);
     if (ch == '(')
       parenthesesStack.push(ch);
     else if (ch == ')') {
@@ -14,51 +15,58 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   }
   if (!parenthesesStack.empty()) return false;
 
-  std::regex regexAlphabet("[a-zA-ZА-я]+");
-  if (std::regex_search(expression, regexAlphabet)) {
-    std::regex regexFunc(
-        "(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod|e|E|x|X)");
-    if (!std ::regex_search(expression, regexFunc)) return false;
+  // QDoubleValidator validator;
+  // int pos = 0;
+  // QValidator::State state = validator.validate(expression, pos);
+  // return (state == QValidator::Acceptable);
 
-    // std::regex regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?");
-    // if (!std ::regex_search(expression, regexExponenta)) return false;
-  }
+  // std::regex regexAlphabet("[a-zA-ZА-я]+");
+  // if (std::regex_search(expression, regexAlphabet)) {
+  //   std::regex regexFunc("(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
+  //   if (!std ::regex_search(expression, regexFunc)) return false;
 
-  std::regex regexDotMax(
-      "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
-  if (std ::regex_search(expression, regexDotMax)) return false;
+  //   std::regex regexCloseBracket(
+  //       "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
+  //   if (std ::regex_search(expression, regexCloseBracket)) return false;
 
-  std::regex regexCloseBracket(
-      "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
-  if (std ::regex_search(expression, regexCloseBracket)) return false;
+  //   std::regex regexBeforeFunc(
+  //       "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
+  //       "log))");
+  //   if (std ::regex_search(expression, regexBeforeFunc)) return false;
 
-  std::regex regexBeforeFunc(
-      "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
-      "log))");
-  if (std ::regex_search(expression, regexBeforeFunc)) return false;
+  //   std::regex regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
+  //   if (std ::regex_search(expression, regexBeforeX)) return false;
 
-  std::regex regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
-  if (std ::regex_search(expression, regexBeforeX)) return false;
+  //   std::regex multipleFunctions(
+  //       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
+  //       "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
+  //       "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
+  //   if (std::regex_search(expression, multipleFunctions)) return false;
 
-  // Проверка на неправильное расположение операторов и функций
-  std::regex invalidOperators(
-      "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
-      "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
-      "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
-  if (std::regex_search(expression, invalidOperators)) return false;
+  //   // std::regex regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?");
+  //   // if (!std ::regex_search(expression, regexExponenta)) return false;
+  // }
 
-  // Проверка на неправильное количество операторов и функций
-  std::regex multipleOperators(
-      "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
-  if (std::regex_search(expression, multipleOperators)) return false;
+  // std::regex regexBracketDigit("\\)(?=\\d)");
+  // if (std ::regex_search(expression, regexBracketDigit)) return false;
 
-  std::regex multipleFunctions(
-      "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{1,"
-      "}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!ln\\()"
-      "ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
-  if (std::regex_search(expression, multipleFunctions)) return false;
+  // std::regex regexDotMax(
+  //     "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
+  // if (std ::regex_search(expression, regexDotMax)) return false;
 
-  return true;
+  // // Проверка на неправильное расположение операторов и функций
+  // std::regex invalidOperators(
+  //     "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
+  //     "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
+  //     "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
+  // if (std::regex_search(expression, invalidOperators)) return false;
+
+  // // Проверка на неправильное количество операторов и функций
+  // std::regex multipleOperators(
+  //     "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
+  // if (std::regex_search(expression, multipleOperators)) return false;
+
+  // return true;
 }
 
 // CHECKS

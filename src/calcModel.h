@@ -2,6 +2,7 @@
 #define CALCMODEL_H
 
 #include <QMainWindow>
+#include <QValidator>
 #include <cmath>
 #include <functional>
 #include <iostream>
@@ -50,7 +51,7 @@ class CalcModel {
   double cosCalc(double a) { return cos(a); }
   double acosCalc(double a) { return acos(a); }
   // CHECKS
-  bool validateExpression(const std::string& expression);
+  bool validateExpression(QString& expression);
   int getPriority(std::string c);
   bool isDigit(char& currentChar, std::string& infix, int& i);
   bool isOperator(const std::string& str);
@@ -68,9 +69,8 @@ class CalcModel {
   QString creditCalculate(QString& overPayment, QString& allPayment, int month,
                           double summa, QString stavkaProc, QString sumCredit,
                           QString spinBox, size_t comboBox);
-  QString debitCalculate(double& resProfit, double& resDep,
-                                         double sumDep, double percent,
-                                         int month, bool checkState);
+  QString debitCalculate(double& resProfit, double& resDep, double sumDep,
+                         double percent, int month, bool checkState);
 
  private:
   std::unordered_map<std::string, int> precedences = {

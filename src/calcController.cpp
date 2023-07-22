@@ -12,7 +12,7 @@ void s21::CalcController::calcExpression(QString& equalResult,
 }
 
 bool s21::CalcController::validateChangeOn(QString equalStr) {
-  return resultModel.validateExpression(equalStr.toStdString());
+  return resultModel.validateExpression(equalStr);
 }
 
 double s21::CalcController::calcGraph(QString graphResult, double x) {
