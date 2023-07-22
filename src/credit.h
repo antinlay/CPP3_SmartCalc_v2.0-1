@@ -2,6 +2,7 @@
 #define CREDIT_H
 
 #include <QWidget>
+#include "calcController.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,6 +22,7 @@ class Credit : public QWidget {
 
  private:
   Ui::Credit *ui;
+  s21::CalcController resultController;
 };
 
 // }  // namespace s21

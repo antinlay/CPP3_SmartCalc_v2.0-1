@@ -9,7 +9,6 @@ CalcView::CalcView(QWidget *parent)
   ui->resultShow->setValidator(val);
   ui->equalX->setValidator(val);
 
-  // Graph *graphWindow = new Graph();
   graphWindow = new Graph;
 
   connect(ui->sin, SIGNAL(clicked()), this, SLOT(mathFuncs()));
@@ -21,6 +20,7 @@ CalcView::CalcView(QWidget *parent)
   connect(ui->sqrt, SIGNAL(clicked()), this, SLOT(mathFuncs()));
   connect(ui->ln, SIGNAL(clicked()), this, SLOT(mathFuncs()));
   connect(ui->log, SIGNAL(clicked()), this, SLOT(mathFuncs()));
+  connect(ui->mod, SIGNAL(clicked()), this, SLOT(mathFuncs()));
 
   connect(ui->num0, SIGNAL(clicked()), this, SLOT(numFuncs()));
   connect(ui->num1, SIGNAL(clicked()), this, SLOT(numFuncs()));
@@ -38,7 +38,6 @@ CalcView::CalcView(QWidget *parent)
   connect(ui->add, SIGNAL(clicked()), this, SLOT(symbs()));
   connect(ui->sub, SIGNAL(clicked()), this, SLOT(symbs()));
   connect(ui->pow, SIGNAL(clicked()), this, SLOT(symbs()));
-  connect(ui->mod, SIGNAL(clicked()), this, SLOT(symbs()));
 
   connect(ui->equal, SIGNAL(clicked()), this, SLOT(equalClick()));
   connect(ui->dot, SIGNAL(clicked()), this, SLOT(dotClick()));

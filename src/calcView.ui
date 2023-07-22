@@ -504,6 +504,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="equal">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -688,6 +691,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="graph">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>570</x>

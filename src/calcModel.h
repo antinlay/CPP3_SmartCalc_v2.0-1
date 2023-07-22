@@ -1,6 +1,7 @@
 #ifndef CALCMODEL_H
 #define CALCMODEL_H
 
+#include <QMainWindow>
 #include <cmath>
 #include <functional>
 #include <iostream>
@@ -64,6 +65,12 @@ class CalcModel {
   double getFromStack(std::stack<double>& operands);
   double calculatePostfix(std::queue<std::string> postfix);
   double calculate(std::string infix);
+  QString creditCalculate(QString& overPayment, QString& allPayment, int month,
+                          double summa, QString stavkaProc, QString sumCredit,
+                          QString spinBox, size_t comboBox);
+  QString debitCalculate(double& resProfit, double& resDep,
+                                         double sumDep, double percent,
+                                         int month, bool checkState);
 
  private:
   std::unordered_map<std::string, int> precedences = {

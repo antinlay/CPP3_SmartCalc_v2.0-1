@@ -22,3 +22,19 @@ double s21::CalcController::calcGraph(QString graphResult, double x) {
   double result = resultModel.calculate(graphResult.toStdString());
   return result;
 }
+
+QString s21::CalcController::calcCredit(QString& overPayment,
+                                        QString& allPayment, int month,
+                                        double summa, QString stavkaProc,
+                                        QString sumCredit, QString spinBox,
+                                        size_t comboBox) {
+  return resultModel.creditCalculate(overPayment, allPayment, month, summa,
+                                     stavkaProc, sumCredit, spinBox, comboBox);
+}
+
+QString s21::CalcController::calcDebit(double& resProfit, double& resDep,
+                                       double sumDep, double percent, int month,
+                                       bool checkState) {
+  return resultModel.debitCalculate(resProfit, resDep, sumDep, percent, month,
+                                    checkState);
+}

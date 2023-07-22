@@ -18,7 +18,7 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   if (std ::regex_search(expression, regexDotMax)) return false;
 
   std::regex regexCloseBracket(
-      "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x)");
+      "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
   if (std ::regex_search(expression, regexCloseBracket)) return false;
 
   std::regex regexBeforeFunc(
@@ -47,7 +47,7 @@ bool s21::CalcModel::validateExpression(const std::string& expression) {
   std::regex multipleFunctions(
       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{1,"
       "}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!ln\\()"
-      "ln{2,}|(?!log\\()log{1,}|mod{2,}|X{2,}|x{2,}|\\s{1,}");
+      "ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
   if (std::regex_search(expression, multipleFunctions)) return false;
 
   return true;
@@ -234,4 +234,82 @@ double s21::CalcModel::calculatePostfix(std::queue<std::string> postfix) {
 double s21::CalcModel::calculate(std::string infix) {
   std::queue<std::string> newInfix = infixToPostfix(infix);
   return calculatePostfix(newInfix);
+}
+
+QString s21::CalcModel::creditCalculate(QString& overPayment,
+                                        QString& allPayment, int month,
+                                        double summa, QString stavkaProc,
+                                        QString sumCredit, QString spinBox,
+                                        size_t comboBox) {
+  double payment = 0, allSum = 0, pp = 0;
+  QString result;
+
+  if (stavkaProc == "" || sumCredit == "" || spinBox == "") {
+    return "ERROR";
+  } else {
+    double summaProc = summa;
+
+    for (int var = 1; var <= month; var++) {
+      double stavka = stavkaProc.toDouble();
+      QString payInfo, monthPay;
+      if (comboBox == 1) {
+        // https://www.banki.ru/wikibank/raschet_differentsirovannogo_plateja/
+        // in 31 days on month and 365 days on year
+        QString varMonth = QString::number(var);
+        payment = summa / month + summaProc * stavka * 31 / 365 / 100;
+        allSum += payment;
+        summaProc = summa - var * summa / month;
+        monthPay = QString::number(payment, 'f', 2);
+        payInfo = "Pay for " + varMonth + " month = " + monthPay + "\n";
+      } else if (comboBox == 0) {
+        // https://www.banki.ru/wikibank/raschet_annuitetnogo_plateja/
+        var = month;
+        double prStavka = stavka / 12 / 100;
+        payment = summa * (prStavka * pow(1 + prStavka, month) /
+                           (pow(1 + prStavka, month) - 1));
+        allSum = payment * month;
+        monthPay = QString::number(payment, 'f', 2);
+        payInfo = "Pay for every month = " + monthPay + "\n";
+        //                ui->listWidget->setMaximumSize(6, 6);
+      }
+
+      result += payInfo;
+    }
+    pp = allSum - summa;
+    overPayment = QString::number(pp, 'f', 2);
+    allPayment = QString::number(allSum, 'f', 2);
+  }
+  return result;
+}
+
+QString s21::CalcModel::debitCalculate(double& resProfit, double& resDep,
+                                       double sumDep, double percent, int month,
+                                       bool checkState) {
+  double resPercent = month / 12, profit = 0;
+  resProfit = (sumDep * percent * resPercent) / 100,
+  resDep = sumDep + resProfit;
+  QString result;
+
+  for (int var = 1; var <= month; ++var) {
+    QString depInfo, qDeposit, qProfit;
+    QString varMonth = QString::number(var);
+    resPercent = varMonth.toDouble() / 12;
+
+    if (checkState == false) {
+      // https://www.sravni.ru/vklady/info/kak-rasschitat-procenty-po-vklady/
+      profit = (sumDep * percent * resPercent) / 100;
+
+    } else {
+      profit = (sumDep * percent * resPercent) / 100;
+      sumDep = sumDep + profit;
+      //            sumDep = allDeposit;
+    }
+    double allDeposit = sumDep + profit;
+    qDeposit = QString::number(allDeposit, 'f', 2);
+    qProfit = QString::number(profit, 'f', 2);
+    depInfo = "Deposit for " + varMonth + " month = " + qDeposit +
+              " and profit = " + qProfit + "\n";
+    result += depInfo;
+  }
+  return result;
 }

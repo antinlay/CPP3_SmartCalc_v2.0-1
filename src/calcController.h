@@ -12,6 +12,11 @@ class CalcController {
   void calcExpression(QString& equalResult, QString& equalX);
   bool validateChangeOn(QString equalStr);
   double calcGraph(QString graphResult, double x);
+  QString calcCredit(QString& overPayment, QString& allPayment, int month,
+                     double summa, QString stavkaProc, QString sumCredit,
+                     QString spinBox, size_t comboBox);
+  QString calcDebit(double& resProfit, double& resDep, double sumDep,
+                    double percent, int month, bool checkState);
 
  private:
   s21::CalcModel resultModel;
