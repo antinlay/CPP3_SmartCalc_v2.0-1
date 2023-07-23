@@ -35,22 +35,17 @@ class CalcView : public QMainWindow {
   Debit *debitWindow;
   Graph *graphWindow;
   s21::CalcController resultController;
+  std::stack<size_t> textLengthStack;
 
  private slots:
-//  void mathFuncs();
-//  void numFuncs();
-//  void symbs();
-//  void dotClick();
+  QLineEdit* checkActiveLineEdit();
   void equalClick();
   void ceClick();
   void acClick();
   void focusInsert(QString add);
   void on_credit_clicked();
   void on_debit_clicked();
-//  void on_open_clicked();
   void on_graph_clicked();
-//  void on_xoy_clicked();
-//  void on_close_clicked();
 };
 
 // }  // namespace s21

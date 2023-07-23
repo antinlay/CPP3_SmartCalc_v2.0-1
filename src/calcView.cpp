@@ -54,10 +54,14 @@ CalcView::CalcView(QWidget *parent)
   connect(this, &CalcView::sendData, graphWindow, &Graph::getData);
   connect(ui->resultShow, &QLineEdit::textChanged, this, [=]() {
     if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
-      ui->equalX->setStyleSheet("border: 1px solid pink;");
-      ui->equalX->setEnabled(true);
-      ui->graph->setEnabled(true);
+      ui->enterX->setEnabled(true);
+      if (ui->enterX->isEnabled()) {
+        ui->equalX->setStyleSheet("border: 1px solid pink;");
+        ui->equalX->setEnabled(true);
+        ui->graph->setEnabled(true);
+      }
     } else {
+      ui->enterX->setEnabled(false);
       ui->equalX->setStyleSheet("");
       ui->equalX->setEnabled(false);
       ui->graph->setEnabled(false);
@@ -74,35 +78,24 @@ CalcView::CalcView(QWidget *parent)
 
 CalcView::~CalcView() { delete ui; }
 
+QLineEdit *CalcView::checkActiveLineEdit() {
+  QLineEdit *activeLineEdit = qApp->focusWidget()->findChild<QLineEdit *>();
+  if (!ui->enterX->isChecked()) {
+    std::cout << "RESHOW" << std::endl;
+    return ui->resultShow;
+  } else {
+    std::cout << "EQUALX" << std::endl;
+    return ui->equalX;
+  }
+}
+
 void CalcView::focusInsert(QString add) {
   QPushButton *button = qobject_cast<QPushButton *>(sender());
-  QLineEdit *activeLineEdit = qApp->focusWidget()->findChild<QLineEdit *>();
-  if (activeLineEdit) {
-    // if (ui->resultShow->hasFocus()) {
-    // Перенаправление ввода с кнопок на lineEdit1
-    // QObject::connect(button, &QPushButton::clicked, ui->resultShow,
-    //                  &QLineEdit::setFocus);
-    activeLineEdit = ui->resultShow;
-    activeLineEdit->insert(button->text() + add);
-    // ui->equalX->insert(button->text() + add);
-    // } else if (ui->equalX->hasFocus()) {
-    // Перенаправление ввода с кнопок на lineEdit2
-    // QObject::connect(button, &QPushButton::clicked, ui->equalX,
-    //                  &QLineEdit::setFocus);
-    // activeLineEdit = ui->equalX;
-    // activeLineEdit->insert(button->text() + add);
-    // ui->equalX->insert(button->text() + add);
-    // }
-  }
-  // Предположим, что у вас есть активный QLineEdit с именем activeLineEdit
-  QString activeLineEditName = activeLineEdit->text();
-  qDebug() << "Название активного QLineEdit: " << activeLineEditName;
-
-  // if (activeLineEdit == ui->resultShow) {
-  //   ui->resultShow->setFocus();
-  // } else if (activeLineEdit == ui->equalX) {
-  //   ui->equalX->setFocus();
-  // }
+  QLineEdit *activeLineEdit = checkActiveLineEdit();
+  activeLineEdit->insert(button->text() + add);
+  size_t currentlenPos;
+  currentlenPos = button->text().length() + add.length();
+  textLengthStack.push(currentlenPos);
 }
 
 void CalcView::equalClick() {
@@ -119,8 +112,17 @@ void CalcView::ceClick() {
 }
 
 void CalcView::acClick() {
-  if (!ui->resultShow->text().isEmpty()) {
-    ui->resultShow->backspace();
+  QLineEdit *activeLineEdit = checkActiveLineEdit();
+  if (!activeLineEdit->text().isEmpty()) {
+    activeLineEdit->selectionEnd();
+    size_t textButtonLenght = 1;
+    if (!textLengthStack.empty()) {
+      textButtonLenght = textLengthStack.top();
+      textLengthStack.pop();
+    }
+    while (textButtonLenght--) {
+        if (!activeLineEdit->text().isEmpty()) activeLineEdit->backspace();
+    }
   }
 }
 

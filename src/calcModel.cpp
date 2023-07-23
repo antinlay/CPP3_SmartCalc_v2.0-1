@@ -1,19 +1,19 @@
 #include "calcModel.h"
 
 bool s21::CalcModel::validateExpression(QString& expression) {
-  std::stack<char> parenthesesStack;
+  // std::stack<char> parenthesesStack;
 
-  // Проверка на сбалансированность скобок
-  for (int i = 0; i < str.length(); ++i) {
-    QChar ch = str.at(i);
-    if (ch == '(')
-      parenthesesStack.push(ch);
-    else if (ch == ')') {
-      if (parenthesesStack.empty()) return false;
-      parenthesesStack.pop();
-    }
-  }
-  if (!parenthesesStack.empty()) return false;
+  // // Проверка на сбалансированность скобок
+  // for (int i = 0; i < expression.length(); ++i) {
+  //   QChar ch = expression.at(i);
+  //   if (ch == '(')
+  //     parenthesesStack.push(ch);
+  //   else if (ch == ')') {
+  //     if (parenthesesStack.empty()) return false;
+  //     parenthesesStack.pop();
+  //   }
+  // }
+  // if (!parenthesesStack.empty()) return false;
 
   // QDoubleValidator validator;
   // int pos = 0;
@@ -66,7 +66,7 @@ bool s21::CalcModel::validateExpression(QString& expression) {
   //     "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
   // if (std::regex_search(expression, multipleOperators)) return false;
 
-  // return true;
+  return true;
 }
 
 // CHECKS
