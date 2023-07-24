@@ -5,11 +5,9 @@
 #include <QMainWindow>
 #include <QStack>
 
-//#include "calcController.h"
-//#include "credit.h"
-//#include "debit.h"
-//#include "graph.h"
-#include "qobjectdefs.h"
+#include "credit.h"
+#include "debit.h"
+#include "graph.h"
 #include "ui_calcView.h"
 
 QT_BEGIN_NAMESPACE
@@ -25,22 +23,20 @@ class CalcView : public QMainWindow {
  public:
   CalcView(QWidget *parent = nullptr);
   ~CalcView();
-//  void initCalc();
 
  signals:
   void sendData(QString res);
-  void uiEventOccurred(){};
+  void uiEventEqual(QString &equalResult, QString &equalX);
 
  private:
   Ui::CalcView *ui;
-//  Credit *creditWindow;
-//  Debit *debitWindow;
-//  Graph *graphWindow;
-//  s21::CalcController *c;
+  Credit *creditWindow;
+  Debit *debitWindow;
+  Graph *graphWindow;
   QStack<size_t> textLengthStack;
 
  private slots:
-  QLineEdit* checkActiveLineEdit();
+  QLineEdit *checkActiveLineEdit();
   void equalClick();
   void ceClick();
   void acClick();

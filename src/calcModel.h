@@ -1,12 +1,12 @@
 #ifndef CALCMODEL_H
 #define CALCMODEL_H
 
+#include <QException>
 #include <QFunctionPointer>
 #include <QMainWindow>
 #include <QQueue>
 #include <QStack>
 #include <QValidator>
-#include <QException>
 #include <cmath>
 #include <functional>
 #include <iostream>
@@ -70,6 +70,9 @@ class CalcModel {
                           QString spinBox, size_t comboBox);
   QString debitCalculate(double& resProfit, double& resDep, double sumDep,
                          double percent, int month, bool checkState);
+  void graphCalculate(int& h, double& xStart, double& yStart, double& xEnd,
+                      double& yEnd, QString graphResult, QVector<double>& x,
+                      QVector<double>& y);
 
  private:
   QMap<QString, int> precedences = {{"(", 0}, {")", 0}, {"+", 1}, {"-", 1},

@@ -5,19 +5,24 @@
 
 #include "calcModel.h"
 #include "calcView.h"
+#include "credit.h"
+#include "debit.h"
 
 namespace s21 {
 
 class CalcController : public QObject {
-    Q_OBJECT
-public slots:
-    void handleUiEvent(){};
- public:
-  CalcController(Ui::CalcView *w, s21::CalcModel *m) : m_(m), w_(w){};
+  Q_OBJECT
+
+ public slots:
   void calcEqual(QString& equalResult, QString& equalX);
+  void calcGraph(int& h, double& xStart, double& yStart, double& xEnd,
+                 double& yEnd, QString graphResult, QVector<double>& x,
+                 QVector<double>& y);
+
+ public:
+  CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
   void replaceX(QString& equalResult, QString& equalX);
   bool validateChangeOn(QString equalStr);
-  double calcGraph(QString graphResult, double x);
   QString calcCredit(QString& overPayment, QString& allPayment, int month,
                      double summa, QString stavkaProc, QString sumCredit,
                      QString spinBox, size_t comboBox);
@@ -25,8 +30,8 @@ public slots:
                     double percent, int month, bool checkState);
 
  private:
-  s21::CalcModel *m_;
-  Ui::CalcView *w_;
+  s21::CalcModel* m_;
+  Ui::CalcView* v_;
 };
 }  // namespace s21
 #endif  // CALCCONTROLLER_H

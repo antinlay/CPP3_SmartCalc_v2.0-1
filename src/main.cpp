@@ -1,21 +1,25 @@
 #include <QApplication>
 #include <QDoubleValidator>
 
-#include "calcView.h"
 #include "calcController.h"
-#include "calcModel.h"
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
   s21::CalcModel *m;
-  Ui::CalcView *w;
-  s21::CalcController c(w, m);
+  Ui::CalcView *v;
+  s21::CalcController c(v, m);
 
-  QObject::connect(&w, handleUiEvent(/* Параметры события */), &c, handleUiEvent(/* Параметры события */));
+  CalcView w;
+  w.show();
 
-  CalcView v;
-  v.show();
+  QObject::connect(&w, &CalcView::uiEventEqual, &c,
+                   &s21::CalcController::calcEqual);
+
+  Graph g;
+  QObject::connect(&g, &Graph::uiEventGraph, &c,
+                   &s21::CalcController::calcGraph);
+  QObject::connect(&w, &CalcView::sendData, &g, &Graph::getData);
 
   return a.exec();
 }

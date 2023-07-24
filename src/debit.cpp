@@ -18,7 +18,7 @@ void Debit::on_pushButtonDebit_clicked() {
          percent = ui->lineEdit_intRate->text().toDouble(),
          resDep = 0, resProfit = 0;
   bool checkState = ui->checkBox->checkState();
-
+  
   ui->lineEdit_resDep->clear();
   ui->lineEdit_resPercent->clear();
   ui->listWidget->clear();

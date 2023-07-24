@@ -2482,8 +2482,7 @@ QCPDataSelection &QCPDataSelection::operator-=(const QCPDataRange &other) {
 */
 int QCPDataSelection::dataPointCount() const {
   int result = 0;
-  foreach (QCPDataRange dataRange, mDataRanges)
-    result += dataRange.length();
+  foreach (QCPDataRange dataRange, mDataRanges) result += dataRange.length();
   return result;
 }
 
@@ -3953,8 +3952,7 @@ QVector<int> QCPLayout::getSectionSizes(QVector<int> maxSizes,
       }
       // reset all section sizes to zero that are in unfinished sections (all
       // others have been set to their minimum):
-      foreach (int secId, unfinishedSections)
-        sectionSizes[secId] = 0;
+      foreach (int secId, unfinishedSections) sectionSizes[secId] = 0;
     }
   }
   if (outerIterations == sectionCount * 2)
@@ -4675,10 +4673,8 @@ QSize QCPLayoutGrid::minimumOuterSizeHint() const {
   QVector<int> minColWidths, minRowHeights;
   getMinimumRowColSizes(&minColWidths, &minRowHeights);
   QSize result(0, 0);
-  foreach (int w, minColWidths)
-    result.rwidth() += w;
-  foreach (int h, minRowHeights)
-    result.rheight() += h;
+  foreach (int w, minColWidths) result.rwidth() += w;
+  foreach (int h, minRowHeights) result.rheight() += h;
   result.rwidth() += qMax(0, columnCount() - 1) * mColumnSpacing;
   result.rheight() += qMax(0, rowCount() - 1) * mRowSpacing;
   result.rwidth() += mMargins.left() + mMargins.right();
@@ -15383,8 +15379,7 @@ QCPAxisRect *QCustomPlot::axisRectAt(const QPointF &pos) const {
 */
 QList<QCPAxis *> QCustomPlot::selectedAxes() const {
   QList<QCPAxis *> result, allAxes;
-  foreach (QCPAxisRect *rect, axisRects())
-    allAxes << rect->axes();
+  foreach (QCPAxisRect *rect, axisRects()) allAxes << rect->axes();
 
   foreach (QCPAxis *axis, allAxes) {
     if (axis->selectedParts() != QCPAxis::spNone) result.append(axis);
@@ -15497,8 +15492,7 @@ void QCustomPlot::replot(QCustomPlot::RefreshPriority refreshPriority) {
   // draw all layered objects (grid, axes, plottables, items, legend,...) into
   // their buffers:
   setupPaintBuffers();
-  foreach (QCPLayer *layer, mLayers)
-    layer->drawToPaintBuffer();
+  foreach (QCPLayer *layer, mLayers) layer->drawToPaintBuffer();
   foreach (QSharedPointer<QCPAbstractPaintBuffer> buffer, mPaintBuffers)
     buffer->setInvalidated(false);
 
@@ -15550,11 +15544,9 @@ double QCustomPlot::replotTime(bool average) const {
 */
 void QCustomPlot::rescaleAxes(bool onlyVisiblePlottables) {
   QList<QCPAxis *> allAxes;
-  foreach (QCPAxisRect *rect, axisRects())
-    allAxes << rect->axes();
+  foreach (QCPAxisRect *rect, axisRects()) allAxes << rect->axes();
 
-  foreach (QCPAxis *axis, allAxes)
-    axis->rescale(onlyVisiblePlottables);
+  foreach (QCPAxis *axis, allAxes) axis->rescale(onlyVisiblePlottables);
 }
 
 /*!
@@ -15602,7 +15594,7 @@ void QCustomPlot::rescaleAxes(bool onlyVisiblePlottables) {
 // QCP::ExportPen exportPen, const QString &pdfCreator, const QString &pdfTitle)
 //{
 //   bool success = false;
-//#ifdef QT_NO_PRINTER
+// #ifdef QT_NO_PRINTER
 //   Q_UNUSED(fileName)
 //   Q_UNUSED(exportPen)
 //   Q_UNUSED(width)
@@ -15611,7 +15603,7 @@ void QCustomPlot::rescaleAxes(bool onlyVisiblePlottables) {
 //   Q_UNUSED(pdfTitle)
 //   qDebug() << Q_FUNC_INFO << "Qt was built without printer support
 //   (QT_NO_PRINTER). PDF not created.";
-//#else
+// #else
 //   int newWidth, newHeight;
 //   if (width == 0 || height == 0)
 //   {
@@ -15631,17 +15623,17 @@ void QCustomPlot::rescaleAxes(bool onlyVisiblePlottables) {
 //  printer.printEngine()->setProperty(QPrintEngine::PPK_DocumentName,
 //  pdfTitle); QRect oldViewport = viewport(); setViewport(QRect(0, 0, newWidth,
 //  newHeight));
-//#if QT_VERSION < QT_VERSION_CHECK(5, 3, 0)
+// #if QT_VERSION < QT_VERSION_CHECK(5, 3, 0)
 //  printer.setFullPage(true);
 //  printer.setPaperSize(viewport().size(), QPrinter::DevicePixel);
-//#else
+// #else
 //  QPageLayout pageLayout;
 //  pageLayout.setMode(QPageLayout::FullPageMode);
 //  pageLayout.setOrientation(QPageLayout::Portrait);
 //  pageLayout.setMargins(QMarginsF(0, 0, 0, 0));
 //  pageLayout.setPageSize(QPageSize(viewport().size(), QPageSize::Point,
 //  QString(), QPageSize::ExactMatch)); printer.setPageLayout(pageLayout);
-//#endif
+// #endif
 //  QCPPainter printpainter;
 //  if (printpainter.begin(&printer))
 //  {
@@ -15660,7 +15652,7 @@ void QCustomPlot::rescaleAxes(bool onlyVisiblePlottables) {
 //    success = true;
 //  }
 //  setViewport(oldViewport);
-//#endif // QT_NO_PRINTER
+// #endif // QT_NO_PRINTER
 //  return success;
 //}
 
@@ -16168,8 +16160,7 @@ void QCustomPlot::draw(QCPPainter *painter) {
   drawBackground(painter);
 
   // draw all layered objects (grid, axes, plottables, items, legend,...):
-  foreach (QCPLayer *layer, mLayers)
-    layer->draw(painter);
+  foreach (QCPLayer *layer, mLayers) layer->draw(painter);
 
   /* Debug code to draw all layout element rects
   foreach (QCPLayoutElement *el, findChildren<QCPLayoutElement*>())
@@ -18104,8 +18095,7 @@ QCPAxisRect::~QCPAxisRect() {
   delete mInsetLayout;
   mInsetLayout = nullptr;
 
-  foreach (QCPAxis *axis, axes())
-    removeAxis(axis);
+  foreach (QCPAxis *axis, axes()) removeAxis(axis);
 }
 
 /*!
@@ -18504,8 +18494,7 @@ void QCPAxisRect::update(UpdatePhase phase) {
 
   switch (phase) {
     case upPreparation: {
-      foreach (QCPAxis *axis, axes())
-        axis->setupTickVectors();
+      foreach (QCPAxis *axis, axes()) axis->setupTickVectors();
       break;
     }
     case upLayout: {
@@ -31439,8 +31428,7 @@ void QCPItemEllipse::draw(QCPPainter *painter) {
 #endif
       painter->drawEllipse(ellipseRect);
 #ifdef __EXCEPTIONS
-    }
-    catch (...) {
+    } catch (...) {
       qDebug() << Q_FUNC_INFO << "Item too large for memory, setting invisible";
       setVisible(false);
     }

@@ -1,5 +1,4 @@
 #include "calcView.h"
-//#include "calcController.h"
 
 CalcView::CalcView(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::CalcView) {
@@ -10,9 +9,9 @@ CalcView::CalcView(QWidget *parent)
   //  ui->resultShow->setValidator(val);
   //  ui->equalX->setValidator(val);
 
-//  graphWindow = new Graph;
+  //  graphWindow = new Graph;
 
-//  connect(ui->equal, &QPushButton::clicked, c, c->handleUIEvent());
+  //  connect(ui->equal, &QPushButton::clicked, c, c->handleUIEvent());
 
   connect(ui->sin, &QPushButton::clicked, this, [=]() { focusInsert("("); });
   connect(ui->cos, &QPushButton::clicked, this, [=]() { focusInsert("("); });
@@ -47,53 +46,53 @@ CalcView::CalcView(QWidget *parent)
   connect(ui->dot, &QPushButton::clicked, this, [=]() { focusInsert(""); });
   connect(ui->xoy, &QPushButton::clicked, this, [=]() { focusInsert(""); });
 
-//  connect(ui->equal, &QPushButton::clicked, this, [=]() { equalClick(); });
+  connect(ui->equal, &QPushButton::clicked, this, [=]() { equalClick(); });
 
   connect(ui->CE, &QPushButton::clicked, this, [=]() { ceClick(); });
   connect(ui->AC, &QPushButton::clicked, this, [=]() { acClick(); });
 
   connect(ui->graph, &QPushButton::clicked, this,
           [=]() { on_graph_clicked(); });
-//  connect(this, &CalcView::sendData, graphWindow, &Graph::getData);
+  //  connect(this, &CalcView::sendData, graphWindow, &Graph::getData);
   connect(ui->equalX, &QLineEdit::textChanged, this, [=]() {
-      if (ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
-          ui->equal->setEnabled(false);
-      } else {
-          ui->equal->setEnabled(true);
-      }
+    if (ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
+      ui->equal->setEnabled(false);
+    } else {
+      ui->equal->setEnabled(true);
+    }
   });
-//  connect(ui->resultShow, &QLineEdit::textChanged, this, [=]() {
-//    if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
-//      ui->enterX->setEnabled(true);
-//      if (ui->enterX->isEnabled()) {
-//        ui->equalX->setStyleSheet("border: 1px solid pink;");
-//        ui->equalX->setEnabled(true);
-//        ui->graph->setEnabled(true);
-//      }
-//    } else {
-//      ui->enterX->setEnabled(false);
-//      ui->equalX->setStyleSheet("");
-//      ui->equalX->setEnabled(false);
-//      ui->graph->setEnabled(false);
-//    }
-//    if (!resultController.validateChangeOn(ui->resultShow->text())) {
-//      ui->resultShow->setStyleSheet("border: 1px solid pink;");
-//      ui->equal->setEnabled(false);
-//    } else {
-//      ui->resultShow->setStyleSheet("");
-//      ui->equal->setEnabled(true);
-//    }
-//  });
+  connect(ui->resultShow, &QLineEdit::textChanged, this, [=]() {
+    if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
+      ui->enterX->setEnabled(true);
+      if (ui->enterX->isEnabled()) {
+        ui->equalX->setStyleSheet("border: 1px solid pink;");
+        ui->equalX->setEnabled(true);
+        ui->graph->setEnabled(true);
+      }
+    } else {
+      ui->enterX->setEnabled(false);
+      ui->equalX->setStyleSheet("");
+      ui->equalX->setEnabled(false);
+      ui->graph->setEnabled(false);
+    }
+    //    if (!resultController.validateChangeOn(ui->resultShow->text())) {
+    //      ui->resultShow->setStyleSheet("border: 1px solid pink;");
+    //      ui->equal->setEnabled(false);
+    //    } else {
+    //      ui->resultShow->setStyleSheet("");
+    //      ui->equal->setEnabled(true);
+    //    }
+  });
 }
 
 CalcView::~CalcView() { delete ui; }
 
 QLineEdit *CalcView::checkActiveLineEdit() {
   if (!ui->enterX->isChecked()) {
-//    std::cout << "RESHOW" << std::endl;
+    //    std::cout << "RESHOW" << std::endl;
     return ui->resultShow;
   } else {
-//    std::cout << "EQUALX" << std::endl;
+    //    std::cout << "EQUALX" << std::endl;
     return ui->equalX;
   }
 }
@@ -110,7 +109,7 @@ void CalcView::focusInsert(QString add) {
 void CalcView::equalClick() {
   QString equalResult = ui->resultShow->text();
   QString equalX = ui->equalX->text();
-//  resultController.calcEqual(equalResult, equalX);
+  emit uiEventEqual(equalResult, equalX);
   ui->resultShow->setText(equalResult);
 }
 
@@ -130,26 +129,22 @@ void CalcView::acClick() {
       textLengthStack.pop();
     }
     while (textButtonLenght--) {
-        if (!activeLineEdit->text().isEmpty()) activeLineEdit->backspace();
+      if (!activeLineEdit->text().isEmpty()) activeLineEdit->backspace();
     }
   }
 }
 
 void CalcView::on_credit_clicked() {
-//  Credit *creditWindow = new Credit();
-//  creditWindow->show();
+  Credit *creditWindow = new Credit();
+  creditWindow->show();
 }
 
 void CalcView::on_debit_clicked() {
-//  Debit *debitWindow = new Debit();
-//  debitWindow->show();
+  Debit *debitWindow = new Debit();
+  debitWindow->show();
 }
 
 void CalcView::on_graph_clicked() {
-//    QString equalResult = ui->resultShow->text();
-//    QString equalX = ui->equalX->text();
-//    resultController.replaceX(equalResult, equalX);
-//    emit sendData(equalResult);
-//    graphWindow->show();
-//    graphWindow->on_pushButton_clicked();
+  QString equalResult = ui->resultShow->text();
+  emit sendData(equalResult);
 }

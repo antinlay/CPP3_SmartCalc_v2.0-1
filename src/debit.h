@@ -2,7 +2,6 @@
 #define DEBIT_H
 
 #include <QWidget>
-#include "calcController.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,7 +18,7 @@ class Debit : public QWidget {
 
  private slots:
   void on_pushButtonDebit_clicked();
-
+  
  private:
   Ui::Debit *ui;
 //  s21::CalcController resultController;
