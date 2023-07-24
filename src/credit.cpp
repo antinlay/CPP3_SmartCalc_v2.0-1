@@ -32,9 +32,9 @@ void Credit::on_pushButtonCredit_clicked() {
           spinBox = ui->spinBox->text(), overPayment, allPayment;
   size_t comboBox = ui->comboBox->currentIndex();
 
-  ui->listWidget->addItem(
-      resultController.calcCredit(overPayment, allPayment, month, summa,
-                                  stavkaProc, sumCredit, spinBox, comboBox));
+//  ui->listWidget->addItem(
+//      resultController.calcCredit(overPayment, allPayment, month, summa,
+//                                  stavkaProc, sumCredit, spinBox, comboBox));
   ui->lineEdit_sumVyplat->setText(allPayment);
   ui->lineEdit_sumPereplata->setText(overPayment);
 }

@@ -4,12 +4,18 @@
 #include <QMainWindow>
 
 #include "calcModel.h"
+#include "calcView.h"
 
 namespace s21 {
 
-class CalcController {
+class CalcController : public QObject {
+    Q_OBJECT
+public slots:
+    void handleUiEvent(){};
  public:
-  void calcExpression(QString& equalResult, QString& equalX);
+  CalcController(Ui::CalcView *w, s21::CalcModel *m) : m_(m), w_(w){};
+  void calcEqual(QString& equalResult, QString& equalX);
+  void replaceX(QString& equalResult, QString& equalX);
   bool validateChangeOn(QString equalStr);
   double calcGraph(QString graphResult, double x);
   QString calcCredit(QString& overPayment, QString& allPayment, int month,
@@ -19,7 +25,8 @@ class CalcController {
                     double percent, int month, bool checkState);
 
  private:
-  s21::CalcModel resultModel;
+  s21::CalcModel *m_;
+  Ui::CalcView *w_;
 };
 }  // namespace s21
 #endif  // CALCCONTROLLER_H

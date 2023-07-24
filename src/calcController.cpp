@@ -1,25 +1,28 @@
 #include "calcController.h"
 
-void s21::CalcController::calcExpression(QString& equalResult,
+void s21::CalcController::replaceX(QString& equalResult,
                                          QString& equalX) {
-  if (equalResult.contains("X", Qt::CaseInsensitive) &&
-      !equalX.contains("X", Qt::CaseInsensitive)) {
+  if (equalResult.contains("X", Qt::CaseInsensitive) && !equalX.isEmpty()) {
     equalResult =
         equalResult.replace("X", "(" + equalX + ")", Qt::CaseInsensitive);
   }
-  double result = resultModel.calculate(equalResult.toStdString());
-  equalResult = QString::number(result, 'g', 14);
+}
+
+void s21::CalcController::calcEqual(QString& equalResult, QString& equalX) {
+    replaceX(equalResult,equalX);
+    double result = m_->calculate(equalResult);
+    equalResult = QString::number(result, 'g', 14);
 }
 
 bool s21::CalcController::validateChangeOn(QString equalStr) {
-  return resultModel.validateExpression(equalStr);
+  return m_->validateExpression(equalStr);
 }
 
 double s21::CalcController::calcGraph(QString graphResult, double x) {
   QString num = QString::number(x);
   graphResult.replace("X", num, Qt::CaseInsensitive);
 
-  double result = resultModel.calculate(graphResult.toStdString());
+  double result = m_->calculate(graphResult);
   return result;
 }
 
@@ -28,13 +31,13 @@ QString s21::CalcController::calcCredit(QString& overPayment,
                                         double summa, QString stavkaProc,
                                         QString sumCredit, QString spinBox,
                                         size_t comboBox) {
-  return resultModel.creditCalculate(overPayment, allPayment, month, summa,
+  return m_->creditCalculate(overPayment, allPayment, month, summa,
                                      stavkaProc, sumCredit, spinBox, comboBox);
 }
 
 QString s21::CalcController::calcDebit(double& resProfit, double& resDep,
                                        double sumDep, double percent, int month,
                                        bool checkState) {
-  return resultModel.debitCalculate(resProfit, resDep, sumDep, percent, month,
+  return m_->debitCalculate(resProfit, resDep, sumDep, percent, month,
                                     checkState);
 }

@@ -13,6 +13,12 @@
     <height>485</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
     <width>729</width>
@@ -312,6 +318,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>s(</string>
+    </property>
     <property name="text">
      <string>sin</string>
     </property>
@@ -330,6 +339,9 @@
       <family>Arial Black</family>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>c(</string>
     </property>
     <property name="text">
      <string>cos</string>
@@ -350,6 +362,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>t(</string>
+    </property>
     <property name="text">
      <string>tan</string>
     </property>
@@ -368,6 +383,9 @@
       <family>Arial Black</family>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>i(</string>
     </property>
     <property name="text">
      <string>asin</string>
@@ -388,6 +406,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>a(</string>
+    </property>
     <property name="text">
      <string>atan</string>
     </property>
@@ -406,6 +427,9 @@
       <family>Arial Black</family>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>o(</string>
     </property>
     <property name="text">
      <string>acos</string>
@@ -480,6 +504,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>%(</string>
+    </property>
     <property name="text">
      <string>mod</string>
     </property>
@@ -498,6 +525,9 @@
       <family>Arial Black</family>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>q(</string>
     </property>
     <property name="text">
      <string>sqrt</string>
@@ -557,6 +587,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>n(</string>
+    </property>
     <property name="text">
      <string>ln</string>
     </property>
@@ -575,6 +608,9 @@
       <family>Arial Black</family>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>g(</string>
     </property>
     <property name="text">
      <string>log</string>

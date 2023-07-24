@@ -23,8 +23,8 @@ void Debit::on_pushButtonDebit_clicked() {
   ui->lineEdit_resPercent->clear();
   ui->listWidget->clear();
 
-  ui->listWidget->addItem(resultController.calcDebit(
-      resProfit, resDep, sumDep, percent, month, checkState));
+//  ui->listWidget->addItem(resultController.calcDebit(
+//      resProfit, resDep, sumDep, percent, month, checkState));
   ui->lineEdit_resPercent->setText(QString::number(resProfit, 'f', 2));
   ui->lineEdit_resDep->setText(QString::number(resDep, 'f', 2));
 }

@@ -1,16 +1,15 @@
 #ifndef CALCMODEL_H
 #define CALCMODEL_H
 
+#include <QFunctionPointer>
 #include <QMainWindow>
+#include <QQueue>
+#include <QStack>
 #include <QValidator>
+#include <QException>
 #include <cmath>
 #include <functional>
 #include <iostream>
-#include <map>
-#include <queue>
-#include <regex>
-#include <stack>
-#include <unordered_map>
 
 namespace s21 {
 
@@ -52,20 +51,20 @@ class CalcModel {
   double acosCalc(double a) { return acos(a); }
   // CHECKS
   bool validateExpression(QString& expression);
-  int getPriority(std::string c);
-  bool isDigit(char& currentChar, std::string& infix, int& i);
-  bool isOperator(const std::string& str);
-  bool isFunction(const std::string& str);
+  int getPriority(QString c);
+  bool isDigit(QChar& currentChar, QString& infix, int& i);
+  bool isOperator(const QString& str);
+  bool isFunction(const QString& str);
   // MAP CALCULATIONS
-  double calcOperations(double a, double b, std::string c);
-  double calcFunctions(double a, std::string c);
+  double calcOperations(double a, double b, QString c);
+  double calcFunctions(double a, QString c);
   // CONVERT TO POSTFIX
-  void fixInfix(std::string& infix);
-  std::queue<std::string> infixToPostfix(std::string& infix);
+  void fixInfix(QString& infix);
+  QQueue<QString> infixToPostfix(QString& infix);
   // CALCULATE POSTFIX
-  double getFromStack(std::stack<double>& operands);
-  double calculatePostfix(std::queue<std::string> postfix);
-  double calculate(std::string infix);
+  double getFromStack(QStack<double>& operands);
+  double calculatePostfix(QQueue<QString> postfix);
+  double calculate(QString infix);
   QString creditCalculate(QString& overPayment, QString& allPayment, int month,
                           double summa, QString stavkaProc, QString sumCredit,
                           QString spinBox, size_t comboBox);
@@ -73,9 +72,8 @@ class CalcModel {
                          double percent, int month, bool checkState);
 
  private:
-  std::unordered_map<std::string, int> precedences = {
-      {"(", 0}, {")", 0}, {"+", 1}, {"-", 1},
-      {"*", 2}, {"/", 2}, {"%", 2}, {"^", 3}};
+  QMap<QString, int> precedences = {{"(", 0}, {")", 0}, {"+", 1}, {"-", 1},
+                                    {"*", 2}, {"/", 2}, {"%", 2}, {"^", 3}};
 };
 }  // namespace s21
 #endif  // CALCMODEL_H

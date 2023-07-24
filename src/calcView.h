@@ -3,11 +3,12 @@
 
 #include <QDoubleValidator>
 #include <QMainWindow>
+#include <QStack>
 
-#include "calcController.h"
-#include "credit.h"
-#include "debit.h"
-#include "graph.h"
+//#include "calcController.h"
+//#include "credit.h"
+//#include "debit.h"
+//#include "graph.h"
 #include "qobjectdefs.h"
 #include "ui_calcView.h"
 
@@ -24,18 +25,19 @@ class CalcView : public QMainWindow {
  public:
   CalcView(QWidget *parent = nullptr);
   ~CalcView();
-  void initCalc();
+//  void initCalc();
 
  signals:
   void sendData(QString res);
+  void uiEventOccurred(){};
 
  private:
   Ui::CalcView *ui;
-  Credit *creditWindow;
-  Debit *debitWindow;
-  Graph *graphWindow;
-  s21::CalcController resultController;
-  std::stack<size_t> textLengthStack;
+//  Credit *creditWindow;
+//  Debit *debitWindow;
+//  Graph *graphWindow;
+//  s21::CalcController *c;
+  QStack<size_t> textLengthStack;
 
  private slots:
   QLineEdit* checkActiveLineEdit();

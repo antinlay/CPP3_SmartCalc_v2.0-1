@@ -7,11 +7,6 @@ Graph::Graph(QWidget *parent) : QWidget(parent), ui(new Ui::Graph) {
 }
 Graph::~Graph() { delete ui; }
 
-void Graph::strConvert(QString& res, double val) {
-  QString num = QString::number(val);
-  res.replace("X", num, Qt::CaseInsensitive);
-}
-
 void Graph::on_pushButton_clicked() {
   int h = ui->spinBox->value() * 300;
 
@@ -22,9 +17,7 @@ void Graph::on_pushButton_clicked() {
   // s21::CalcModel::calculate and write all graphics points
   for (int i = 0; i <= h; ++i) {
     x[i] = xStart + i * j;
-//    strConvert(res, x[i]);
-    y[i] = resultController.calcGraph(res, x[i]);
-//    qDebug() << "i = " << i << " x = " << x[i] << " y = " << y[i];
+//    y[i] = resultController.calcGraph(res, x[i]);
   }
 
   // find max and min in elements

@@ -22,7 +22,7 @@ class Debit : public QWidget {
 
  private:
   Ui::Debit *ui;
-  s21::CalcController resultController;
+//  s21::CalcController resultController;
 };
 
 // }  // namespace s21

@@ -18,14 +18,13 @@ class Graph : public QWidget {
   explicit Graph(QWidget *parent = nullptr);
   ~Graph();
   void getData(QString res);
-  void strConvert(QString& res, double val);
 
  public slots:
   void on_pushButton_clicked();
 
  private:
   Ui::Graph *ui;
-  s21::CalcController resultController;
+//  s21::CalcController resultController;
 };
 
 // }  // namespace s21

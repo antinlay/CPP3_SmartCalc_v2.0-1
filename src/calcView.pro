@@ -25,6 +25,7 @@ HEADERS += \
     credit.h \
     debit.h \
     graph.h \
+    main.h \
     qcustomplot.h \
 
 FORMS += \
