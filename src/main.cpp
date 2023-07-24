@@ -6,9 +6,9 @@
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
-  s21::CalcModel *m;
-  Ui::CalcView *v;
-  s21::CalcController c(v, m);
+  s21::CalcModel m;
+  Ui::CalcView v;
+  s21::CalcController c(&v, &m);
 
   CalcView w;
   w.show();

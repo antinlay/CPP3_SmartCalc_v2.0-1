@@ -230,7 +230,7 @@ double s21::CalcModel::calculatePostfix(QQueue<QString> postfix) {
   QString token;
   while (!postfix.empty()) {
     token = postfix.front();
-    qDebug() << token << " ";
+    // qDebug() << token << " ";
     postfix.pop_front();
     if (isOperator(token)) {
       double operand1 = getFromStack(calcStack);
@@ -346,13 +346,23 @@ void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
     y[i] = calculate(replace);
   }
 
-  for (int i = 0; i < y.size(); i++) {
-    if (x[i] > yEnd && x[i] >= 0.000001) {
-      yEnd = x[i];
+  for (int i = 0; i < y.size() && i < x.size(); i++) {
+    if (y[i] > yEnd && y[i] >= 0.000001) {
+      yEnd = y[i];
     }
 
-    if (x[i] < yStart && x[i] >= 0.000001) {
-      yStart = x[i];
+    if (y[i] < yStart && y[i] >= 0.000001) {
+      yStart = y[i];
+    }
+
+    if (x[i] > xEnd && x[i] >= 0.000001) {
+      xEnd = x[i];
+    }
+
+    if (x[i] < xStart && x[i] >= 0.000001) {
+      xStart = x[i];
     }
   }
+  std::cout << yStart << " Y " << yEnd << std::endl;
+  std::cout << xStart << " X " << xEnd << std::endl;
 }

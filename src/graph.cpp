@@ -13,7 +13,7 @@ void Graph::on_pushButton_clicked() {
          xEnd = ui->doubleSpinBox_xEnd->value(), j = (xEnd - xStart) / h;
   QVector<double> x(h + 1), y(h + 1);
   QString graphResult = ui->lineEdit_func->text();
-  double yStart = -10, yEnd = 10;
+  double yStart = 0, yEnd = 0;
   emit uiEventGraph(h, xStart, yStart, xEnd, yEnd, graphResult, x, y);
   // create Graph and assign data to it:
   ui->widget->addGraph();
