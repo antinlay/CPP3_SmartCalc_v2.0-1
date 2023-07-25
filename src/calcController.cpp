@@ -6,22 +6,22 @@
 // QObject::connect(v_, &CalcView::uiEventEqual, m_,
 // &s21::CalcController::calcEqual);
 
-void s21::CalcController::replaceX(QString& equalResult, QString& equalX) {
-  if (equalResult.contains("X", Qt::CaseInsensitive) && !equalX.isEmpty()) {
+void s21::CalcController::replaceX(QString& equalResult, QString& equalLabel) {
+  if (equalResult.contains("X", Qt::CaseInsensitive) && !equalLabel.isEmpty()) {
     equalResult =
-        equalResult.replace("X", "(" + equalX + ")", Qt::CaseInsensitive);
+        equalResult.replace("X", "(" + equalLabel + ")", Qt::CaseInsensitive);
   }
 }
 
-void s21::CalcController::calcEqual(QString& equalResult, QString& equalX) {
-  try {
-    replaceX(equalResult, equalX);
-    double result = m_->calculate(equalResult);
-    equalResult = QString::number(result, 'g', 14);
-  } catch (const std::exception& e) {
-    // QMessageBox::critical(reinterpret_cast<QWidget*>(&v_), "Error: ",
-    // QString::fromStdString(e.what()));
-  }
+void s21::CalcController::calcEqual(QString& equalResult, QString& equalLabel) {
+  //  try {
+  replaceX(equalResult, equalLabel);
+  double result = m_->calculate(equalResult);
+  equalResult = QString::number(result, 'g', 14);
+  //  } catch (const std::exception& e) {
+  // QMessageBox::critical(reinterpret_cast<QWidget*>(&v_), "Error: ",
+  // QString::fromStdString(e.what()));
+  //  }
 }
 
 bool s21::CalcController::validateChangeOn(QString equalStr) {

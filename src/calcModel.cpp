@@ -123,11 +123,11 @@ double s21::CalcModel::calcOperations(double a, double b, QString c) {
   //   throw std::invalid_argument("Input Error: " + c.toStdString() +
   //                               " not found");
   // else
-  try {
+//  try {
     return (this->*operations.value(c))(a, b);
-  } catch (const std::exception& e) {
-    throw;
-  }
+//  } catch (const std::exception& e) {
+//    throw;
+//  }
 }
 
 double s21::CalcModel::calcFunctions(double a, QString c) {
@@ -139,11 +139,11 @@ double s21::CalcModel::calcFunctions(double a, QString c) {
       {"i", &s21::CalcModel::asinCalc}, {"c", &s21::CalcModel::cosCalc},
       {"o", &s21::CalcModel::acosCalc}};
 
-  try {
+//  try {
     return (this->*functions.value(c))(a);
-  } catch (const std::exception& e) {
-    throw;
-  }
+//  } catch (const std::exception& e) {
+//    throw;
+//  }
   // if (!functions.contains(c))
   //   throw std::invalid_argument("Input Error: " + c.toStdString() +
   //                               " not found");
@@ -240,25 +240,22 @@ double s21::CalcModel::calculatePostfix(QQueue<QString> postfix) {
   QString token;
   while (!postfix.empty()) {
     token = postfix.front();
-    // qDebug() << token << " ";
     postfix.pop_front();
     if (isOperator(token)) {
-      try {
+//        if (!error_.isEmpty()) return 0;
         double operand1 = getFromStack(calcStack);
         double operand2 = getFromStack(calcStack);
-        double result = calcOperations(operand2, operand1, token);
-      } catch (const std::exception& e) {
-        std::cout << e << std::endl;
-        error_ = e;
-      }
-      calcStack.push(result);
+        double resultOperation = calcOperations(operand2, operand1, token);
+      calcStack.push(resultOperation);
     } else if (isFunction(token)) {
+//      if (!error_.isEmpty()) return 0;
       double topStack = getFromStack(calcStack);
-      double debug = calcFunctions(topStack, token);
-      calcStack.push(debug);
+      double resultFunc = calcFunctions(topStack, token);
+      calcStack.push(resultFunc);
     } else {
-      double debug = token.toDouble();
-      calcStack.push(debug);
+//      if (!error_.isEmpty()) return 0;
+      double result = token.toDouble();
+      calcStack.push(result);
     }
   }
   return calcStack.top();
@@ -266,11 +263,6 @@ double s21::CalcModel::calculatePostfix(QQueue<QString> postfix) {
 
 double s21::CalcModel::calculate(QString infix) {
   QQueue<QString> newInfix = infixToPostfix(infix);
-  double result = 0;
-  try {
-    result = calculatePostfix(newInfix);
-  } catch (std::exception& e) {
-  }
   return calculatePostfix(newInfix);
 }
 

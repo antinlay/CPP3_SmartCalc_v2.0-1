@@ -3,6 +3,7 @@
 
 #include <QDoubleValidator>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QStack>
 
 #include "credit.h"
@@ -26,7 +27,7 @@ class CalcView : public QMainWindow {
 
  signals:
   void sendData(QString res);
-  void uiEventEqual(QString &equalResult, QString &equalX);
+  void uiEventEqual(QString &equalResult, QString &equalLabel);
 
  private:
   Ui::CalcView *ui;

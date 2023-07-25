@@ -17,14 +17,14 @@ class CalcController : public QObject {
   Q_OBJECT
 
  public slots:
-  void calcEqual(QString& equalResult, QString& equalX);
+  void calcEqual(QString& equalResult, QString& equalLabel);
   void calcGraph(int& h, double& xStart, double& yStart, double& xEnd,
                  double& yEnd, QString graphResult, QVector<double>& x,
                  QVector<double>& y);
 
  public:
   CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
-  void replaceX(QString& equalResult, QString& equalX);
+  void replaceX(QString& equalResult, QString& equalLabel);
   bool validateChangeOn(QString equalStr);
   QString calcCredit(QString& overPayment, QString& allPayment, int month,
                      double summa, QString stavkaProc, QString sumCredit,
