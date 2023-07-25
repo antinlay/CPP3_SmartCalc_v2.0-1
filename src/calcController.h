@@ -1,7 +1,10 @@
 #ifndef CALCCONTROLLER_H
 #define CALCCONTROLLER_H
 
+// #include <QException>
 #include <QMainWindow>
+#include <QMessageBox>
+#include <QWidget>
 
 #include "calcModel.h"
 #include "calcView.h"

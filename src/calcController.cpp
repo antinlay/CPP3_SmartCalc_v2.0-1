@@ -3,7 +3,8 @@
 // void s21::CalcController::handleUiEvent() {
 
 //}
-//QObject::connect(v_, &CalcView::uiEventEqual, m_, &s21::CalcController::calcEqual);
+// QObject::connect(v_, &CalcView::uiEventEqual, m_,
+// &s21::CalcController::calcEqual);
 
 void s21::CalcController::replaceX(QString& equalResult, QString& equalX) {
   if (equalResult.contains("X", Qt::CaseInsensitive) && !equalX.isEmpty()) {
@@ -13,9 +14,14 @@ void s21::CalcController::replaceX(QString& equalResult, QString& equalX) {
 }
 
 void s21::CalcController::calcEqual(QString& equalResult, QString& equalX) {
-  replaceX(equalResult, equalX);
-  double result = m_->calculate(equalResult);
-  equalResult = QString::number(result, 'g', 14);
+  try {
+    replaceX(equalResult, equalX);
+    double result = m_->calculate(equalResult);
+    equalResult = QString::number(result, 'g', 14);
+  } catch (const std::exception& e) {
+    // QMessageBox::critical(reinterpret_cast<QWidget*>(&v_), "Error: ",
+    // QString::fromStdString(e.what()));
+  }
 }
 
 bool s21::CalcController::validateChangeOn(QString equalStr) {

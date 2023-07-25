@@ -119,10 +119,15 @@ double s21::CalcModel::calcOperations(double a, double b, QString c) {
                                          {"/", &s21::CalcModel::divideCalc},
                                          {"%", &s21::CalcModel::modCalc},
                                          {"^", &s21::CalcModel::powerCalc}};
-  //  if (!operations.contains(c))
-  //    throw QString("Ошибка ввода: " + c + " не найдено");
-  //  else
-  return (this->*operations.value(c))(a, b);
+  // if (!operations.contains(c))
+  //   throw std::invalid_argument("Input Error: " + c.toStdString() +
+  //                               " not found");
+  // else
+  try {
+    return (this->*operations.value(c))(a, b);
+  } catch (const std::exception& e) {
+    throw;
+  }
 }
 
 double s21::CalcModel::calcFunctions(double a, QString c) {
@@ -133,11 +138,16 @@ double s21::CalcModel::calcFunctions(double a, QString c) {
       {"a", &s21::CalcModel::atanCalc}, {"s", &s21::CalcModel::sinCalc},
       {"i", &s21::CalcModel::asinCalc}, {"c", &s21::CalcModel::cosCalc},
       {"o", &s21::CalcModel::acosCalc}};
-  //  if (!functions.contains(c))
-  //    throw std::invalid_argument("Input Error: " + c.toStdString() +
-  //                                " not found");
-  //  else
-  return (this->*functions.value(c))(a);
+
+  try {
+    return (this->*functions.value(c))(a);
+  } catch (const std::exception& e) {
+    throw;
+  }
+  // if (!functions.contains(c))
+  //   throw std::invalid_argument("Input Error: " + c.toStdString() +
+  //                               " not found");
+  // else
 }
 
 void s21::CalcModel::fixInfix(QString& infix) {
@@ -233,9 +243,14 @@ double s21::CalcModel::calculatePostfix(QQueue<QString> postfix) {
     // qDebug() << token << " ";
     postfix.pop_front();
     if (isOperator(token)) {
-      double operand1 = getFromStack(calcStack);
-      double operand2 = getFromStack(calcStack);
-      double result = calcOperations(operand2, operand1, token);
+      try {
+        double operand1 = getFromStack(calcStack);
+        double operand2 = getFromStack(calcStack);
+        double result = calcOperations(operand2, operand1, token);
+      } catch (const std::exception& e) {
+        std::cout << e << std::endl;
+        error_ = e;
+      }
       calcStack.push(result);
     } else if (isFunction(token)) {
       double topStack = getFromStack(calcStack);
@@ -251,6 +266,11 @@ double s21::CalcModel::calculatePostfix(QQueue<QString> postfix) {
 
 double s21::CalcModel::calculate(QString infix) {
   QQueue<QString> newInfix = infixToPostfix(infix);
+  double result = 0;
+  try {
+    result = calculatePostfix(newInfix);
+  } catch (std::exception& e) {
+  }
   return calculatePostfix(newInfix);
 }
 
@@ -353,14 +373,6 @@ void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
 
     if (y[i] < yStart && y[i] >= 0.000001) {
       yStart = y[i];
-    }
-
-    if (x[i] > xEnd && x[i] >= 0.000001) {
-      xEnd = x[i];
-    }
-
-    if (x[i] < xStart && x[i] >= 0.000001) {
-      xStart = x[i];
     }
   }
   std::cout << yStart << " Y " << yEnd << std::endl;
