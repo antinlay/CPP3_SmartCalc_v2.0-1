@@ -10,9 +10,19 @@ CalcView::CalcView(QWidget *parent)
   //  ui->equalX->setValidator(val);
 
   //  graphWindow = new Graph;
+  ui->resultShow->setFocus();
 
-//  connect(ui->activate, &QPushButton::clicked, this, [=]() {focusInsert("");});
-//  connect(ui->activateX, &QPushButton::clicked, this, [=]() {focusInsert("");});
+  connect(ui->resultShow, &QLineEdit::editingFinished, this, [=](){
+      ui->equalX->clearFocus();
+  });
+
+  connect(ui->equalX, &QLineEdit::editingFinished, this, [=](){
+      ui->resultShow->clearFocus();
+  });
+
+//  connect(ui->resultShow, &QLineEdit::cursorPositionChanged, this, &CalcView::onLineEditCursorPositionChanged);
+//  connect(ui->equalX, &QLineEdit::cursorPositionChanged, this, &CalcView::onLineEditCursorPositionChanged);
+  connect(qApp, &QApplication::focusChanged, this, &CalcView::onLineEditFocusChanged);
 
   connect(ui->sin, &QPushButton::clicked, this, [=]() { focusInsert("("); });
   connect(ui->cos, &QPushButton::clicked, this, [=]() { focusInsert("("); });
@@ -56,6 +66,7 @@ CalcView::CalcView(QWidget *parent)
           [=]() { on_graph_clicked(); });
   //  connect(this, &CalcView::sendData, graphWindow, &Graph::getData);
   connect(ui->equalX, &QLineEdit::textChanged, this, [=]() {
+//      ui->equalX->setCursorPosition(ui->equalX->text().length());
     if (ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
       ui->equal->setEnabled(false);
     } else {
@@ -63,6 +74,8 @@ CalcView::CalcView(QWidget *parent)
     }
   });
   connect(ui->resultShow, &QLineEdit::textChanged, this, [=]() {
+//      ui->resultShow->setCursorPosition(ui->resultShow->text().length());
+    ui->progressBar->setValue(ui->resultShow->text().length());
     if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
         ui->equalX->setStyleSheet("border: 1px solid pink;");
 //        ui->equalX->setEnabled(true);
@@ -85,8 +98,8 @@ CalcView::CalcView(QWidget *parent)
 CalcView::~CalcView() { delete ui; }
 
 QLineEdit *CalcView::checkActiveLineEdit() {
-  if (ui->resultShow->hasFocus()) {
-    ui->resultShow->selectionEnd();
+  if (ui->resultShow->isActiveWindow()) {
+    ui->resultShow->setCursorPosition(ui->resultShow->text().length());
 //    ui->activateX->setChecked(false);
 //    ui->activate->setChecked(true);
 //    ui->equalX->setEnabled(false);
@@ -94,8 +107,8 @@ QLineEdit *CalcView::checkActiveLineEdit() {
     ui->resultShow->setEnabled(true);
     ui->resultShow->setStyleSheet("border: 1px solid white;");
     return ui->resultShow;
-  } else if (ui->equalX->hasFocus()){
-    ui->equalX->selectionEnd();
+  } else if (ui->equalX->isActiveWindow()){
+    ui->equalX->setCursorPosition(ui->resultShow->text().length());
     ui->equalX->setEnabled(true);
 //    ui->activate->setChecked(false);
 //    ui->activateX->setChecked(true);
@@ -108,10 +121,16 @@ QLineEdit *CalcView::checkActiveLineEdit() {
 
 void CalcView::focusInsert(QString add) {
   QPushButton *button = qobject_cast<QPushButton *>(sender());
-  QLineEdit *activeLineEdit = checkActiveLineEdit();
-//  if (activeLineEdit != ui->resultShow && activeLineEdit != ui->equalX) activeLineEdit = ui->resultShow;
+//  QLineEdit *activeLineEdit = checkActiveLineEdit();
+  if (!lastActiveLineEdit) lastActiveLineEdit = ui->resultShow;
 //  activeLineEdit->selectionEnd();
-  activeLineEdit->insert(button->text() + add);
+  if (lastActiveLineEdit) {
+      QString lineEditName = lastActiveLineEdit->objectName();
+      qDebug() << "Название текущего QLineEdit: " << lineEditName;
+  } else {
+      qDebug() << "Курсор не находится в QLineEdit.";
+  }
+  lastActiveLineEdit->insert(button->text() + add);
   size_t currentlenPos;
   currentlenPos = button->text().length() + add.length();
   textLengthStack.push(currentlenPos);
@@ -136,7 +155,7 @@ void CalcView::ceClick() {
 }
 
 void CalcView::acClick() {
-  QPushButton *button = qobject_cast<QPushButton *>(sender());
+//  QPushButton *button = qobject_cast<QPushButton *>(sender());
   QLineEdit *activeLineEdit = checkActiveLineEdit();
   if (!activeLineEdit->text().isEmpty()) {
     activeLineEdit->selectionEnd();

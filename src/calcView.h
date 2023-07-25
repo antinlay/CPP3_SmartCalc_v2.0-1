@@ -35,8 +35,25 @@ class CalcView : public QMainWindow {
   Debit *debitWindow;
   Graph *graphWindow;
   QStack<size_t> textLengthStack;
+  QLineEdit* lastActiveLineEdit = nullptr;
 
  private slots:
+  void onLineEditFocusChanged(QWidget* oldWidget, QWidget* newWidget)
+  {
+      QLineEdit* lineEdit = qobject_cast<QLineEdit*>(newWidget);
+      if (lineEdit)
+      {
+          lastActiveLineEdit = lineEdit;
+      }
+  }
+//  void onLineEditCursorPositionChanged()
+//  {
+//      QLineEdit* lineEdit = qobject_cast<QLineEdit*>(sender());
+//      if (lineEdit)
+//      {
+//          lastActiveLineEdit = lineEdit;
+//      }
+//  }
   QLineEdit *checkActiveLineEdit();
   void equalClick();
   void ceClick();
