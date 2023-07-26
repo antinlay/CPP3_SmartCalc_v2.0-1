@@ -31,9 +31,9 @@ class CalcController : public QObject {
   void validateChangeOn(QString equalStr, bool& status) {
     status = m_->validateExpression(equalStr);
   };
-  QString calcCredit(QString& overPayment, QString& allPayment, int month,
-                     double summa, QString stavkaProc, QString sumCredit,
-                     QString spinBox, size_t comboBox);
+  void calcCredit(QString& overPayment, QString& allPayment, int month,
+                  double summa, QString stavkaProc, QString sumCredit,
+                  QString spinBox, size_t comboBox, QString& result);
   QString calcDebit(double& resProfit, double& resDep, double sumDep,
                     double percent, int month, bool checkState);
 

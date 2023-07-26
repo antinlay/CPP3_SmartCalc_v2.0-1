@@ -16,12 +16,16 @@ class Credit : public QWidget {
   explicit Credit(QWidget *parent = nullptr);
   ~Credit();
 
+signals:
+    void calcCredit(QString& overPayment, QString& allPayment, int month,
+                       double summa, QString stavkaProc, QString sumCredit,
+                       QString spinBox, size_t comboBox, QString& result);
+
  private slots:
   void on_pushButtonCredit_clicked();
   
  private:
   Ui::Credit *ui;
-//  s21::CalcController resultController;
 };
 
 // }  // namespace s21

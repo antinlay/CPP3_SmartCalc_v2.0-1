@@ -20,50 +20,52 @@ bool s21::CalcModel::validateExpression(QString& expression) {
   // QValidator::State state = validator.validate(expression, pos);
   // return (state == QValidator::Acceptable);
 
-  QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
-  if (regexAlphabet.match(expression).hasMatch()) {
-    QRegularExpression regexFunc(
-        "(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
-    if (!regexFunc.match(expression).hasMatch()) return false;
+  QRegularExpression validChars("[^0-9.(),+\\-*/^sqrtancolimdxX]+");
+  if (validChars.match(expression).hasMatch()) return false;
 
-    QRegularExpression regexCloseBracket(
-        "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
-    if (regexCloseBracket.match(expression).hasMatch()) return false;
+  // QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
+  // if (regexAlphabet.match(expression).hasMatch()) {
+  QRegularExpression regexFunc("(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
+  if (!regexFunc.match(expression).hasMatch()) return false;
 
-    QRegularExpression regexBeforeFunc(
-        "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
-        "log))");
-    if (regexBeforeFunc.match(expression).hasMatch()) return false;
+  //   QRegularExpression regexCloseBracket(
+  //       "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
+  //   if (regexCloseBracket.match(expression).hasMatch()) return false;
 
-    QRegularExpression regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
-    if (regexBeforeX.match(expression).hasMatch()) return false;
+  //   QRegularExpression regexBeforeFunc(
+  //       "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
+  //       "log))");
+  //   if (regexBeforeFunc.match(expression).hasMatch()) return false;
 
-    QRegularExpression multipleFunctions(
-        "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
-        "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
-        "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
-    if (multipleFunctions.match(expression).hasMatch()) return false;
+  //   QRegularExpression regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
+  //   if (regexBeforeX.match(expression).hasMatch()) return false;
 
-    // QRegularExpression
-    // regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?");
-    //  if (!regexExponenta.match(expression).hasMatch()) return false;
-  }
+  //   QRegularExpression multipleFunctions(
+  //       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
+  //       "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
+  //       "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
+  //   if (multipleFunctions.match(expression).hasMatch()) return false;
 
-  QRegularExpression regexBracketDigit("\\)(?=\\d)");
-  if (regexBracketDigit.match(expression).hasMatch()) return false;
-  QRegularExpression regexDotMax(
-      "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
-  if (regexDotMax.match(expression).hasMatch()) return false;
-  // Проверка на неправильное расположение операторов и функций
-  QRegularExpression invalidOperators(
-      "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
-      "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
-      "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
-  if (invalidOperators.match(expression).hasMatch()) return false;
-  // Проверка на неправильное количество операторов и функций
-  QRegularExpression multipleOperators(
-      "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
-  if (multipleOperators.match(expression).hasMatch()) return false;
+  //   QRegularExpression regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?");
+  //   if (!regexExponenta.match(expression).hasMatch()) return false;
+  //   return true;
+  // }
+
+  // QRegularExpression regexBracketDigit("\\)(?=\\d)");
+  // if (regexBracketDigit.match(expression).hasMatch()) return false;
+  // QRegularExpression regexDotMax(
+  //     "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
+  // if (regexDotMax.match(expression).hasMatch()) return false;
+  // // Проверка на неправильное расположение операторов и функций
+  // QRegularExpression invalidOperators(
+  //     "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
+  //     "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
+  //     "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
+  // if (invalidOperators.match(expression).hasMatch()) return false;
+  // // Проверка на неправильное количество операторов и функций
+  // QRegularExpression multipleOperators(
+  //     "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
+  // if (multipleOperators.match(expression).hasMatch()) return false;
 
   return true;
 }
@@ -103,28 +105,23 @@ double s21::CalcModel::sqrtCalc(double a) {
 double s21::CalcModel::lnCalc(double a) { return log(a); }
 double s21::CalcModel::logCalc(double a) { return log10(a); }
 double s21::CalcModel::tanCalc(double a) {
-  a = getDegreeMode(a);
-  return tan(a);
+  ;
+  return qTan(changeDegreesToRadians(a));
 }
 double s21::CalcModel::atanCalc(double a) {
-  a = getDegreeMode(a);
-  return atan(a);
+  return qAtan(changeDegreesToRadians(a));
 }
 double s21::CalcModel::sinCalc(double a) {
-  a = getDegreeMode(a);
-  return sin(a);
+  return qSin(changeDegreesToRadians(a));
 }
 double s21::CalcModel::asinCalc(double a) {
-  a = getDegreeMode(a);
-  return asin(a);
+  return qAsin(changeDegreesToRadians(a));
 }
 double s21::CalcModel::cosCalc(double a) {
-  a = getDegreeMode(a);
-  return cos(a);
+  return qCos(changeDegreesToRadians(a));
 }
 double s21::CalcModel::acosCalc(double a) {
-  a = getDegreeMode(a);
-  return acos(a);
+  return qAcos(changeDegreesToRadians(a));
 }
 
 // CHECKS
@@ -198,9 +195,6 @@ double s21::CalcModel::calcFunctions(double a, QString c) {
 }
 
 void s21::CalcModel::fixInfix(QString& infix) {
-  QRegularExpression pattern("(\\d+\\.?\\d*)([a-zA-Z]+)");
-  QString modifiedExpression = infix.replace(pattern, "$1*$2");
-
   for (auto it = keyFunctions.begin(); it != keyFunctions.end(); ++it) {
     int pos = 0;
     while ((pos = infix.indexOf(it.key(), pos)) != -1) {
@@ -208,6 +202,9 @@ void s21::CalcModel::fixInfix(QString& infix) {
       pos += it.value().length();
     }
   }
+  QTextStream out(stdout);
+
+  out << infix << Qt::endl;
 }
 
 // CONVERT TO POSTFIX
@@ -215,50 +212,48 @@ QQueue<QString> s21::CalcModel::infixToPostfix(QString& infix) {
   QStack<QString> operatorStack;
   QQueue<QString> outputQueue;
   QString currentToken = "";
-  if (!infix.isEmpty()) {
-    fixInfix(infix);
+  fixInfix(infix);
 
-    for (int i = 0; i < infix.length(); i++) {
-      QChar currentChar = infix[i];
-      if (isDigit(currentChar, infix, i)) {
-        if (currentChar == 'e') {
-          currentToken += currentChar;
-          currentChar = infix[++i];
-        }
+  for (int i = 0; i < infix.length(); i++) {
+    QChar currentChar = infix[i];
+    if (isDigit(currentChar, infix, i)) {
+      if (currentChar == 'e') {
         currentToken += currentChar;
-      } else {
-        if (!currentToken.isEmpty()) {
-          outputQueue.push_back(currentToken);
-          currentToken = "";
-        }
-        if (currentChar == '(') {
-          operatorStack.push(QString(1, currentChar));
-        } else if (currentChar == ')') {
-          while (operatorStack.top() != "(") {
-            outputQueue.push_back(operatorStack.top());
-            operatorStack.pop();
-          }
+        currentChar = infix[++i];
+      }
+      currentToken += currentChar;
+    } else {
+      if (!currentToken.isEmpty()) {
+        outputQueue.push_back(currentToken);
+        currentToken = "";
+      }
+      if (currentChar == '(') {
+        operatorStack.push(QString(1, currentChar));
+      } else if (currentChar == ')') {
+        while (operatorStack.top() != "(") {
+          outputQueue.push_back(operatorStack.top());
           operatorStack.pop();
-        } else {
-          while (!operatorStack.empty() && operatorStack.top() != "(" &&
-                 getPriority(QString(1, currentChar)) <=
-                     getPriority(operatorStack.top())) {
-            outputQueue.push_back(operatorStack.top());
-            operatorStack.pop();
-          }
-          operatorStack.push(QString(1, currentChar));
         }
+        operatorStack.pop();
+      } else {
+        while (!operatorStack.empty() && operatorStack.top() != "(" &&
+               getPriority(QString(1, currentChar)) <=
+                   getPriority(operatorStack.top())) {
+          outputQueue.push_back(operatorStack.top());
+          operatorStack.pop();
+        }
+        operatorStack.push(QString(1, currentChar));
       }
     }
+  }
 
-    if (!currentToken.isEmpty()) {
-      outputQueue.push_back(currentToken);
-    }
+  if (!currentToken.isEmpty()) {
+    outputQueue.push_back(currentToken);
+  }
 
-    while (!operatorStack.empty()) {
-      outputQueue.push_back(operatorStack.top());
-      operatorStack.pop();
-    }
+  while (!operatorStack.empty()) {
+    outputQueue.push_back(operatorStack.top());
+    operatorStack.pop();
   }
   return outputQueue;
 }
@@ -301,16 +296,15 @@ double s21::CalcModel::calculate(QString infix) {
   return calculatePostfix(newInfix);
 }
 
-QString s21::CalcModel::creditCalculate(QString& overPayment,
-                                        QString& allPayment, int month,
-                                        double summa, QString stavkaProc,
-                                        QString sumCredit, QString spinBox,
-                                        size_t comboBox) {
+void s21::CalcModel::creditCalculate(QString& overPayment, QString& allPayment,
+                                     int month, double summa,
+                                     QString stavkaProc, QString sumCredit,
+                                     QString spinBox, size_t comboBox,
+                                     QString& result) {
   double payment = 0, allSum = 0, pp = 0;
-  QString result;
 
   if (stavkaProc == "" || sumCredit == "" || spinBox == "") {
-    return "ERROR";
+    result = "ERROR";
   } else {
     double summaProc = summa;
 
@@ -344,7 +338,6 @@ QString s21::CalcModel::creditCalculate(QString& overPayment,
     overPayment = QString::number(pp, 'f', 2);
     allPayment = QString::number(allSum, 'f', 2);
   }
-  return result;
 }
 
 QString s21::CalcModel::debitCalculate(double& resProfit, double& resDep,

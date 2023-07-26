@@ -13,6 +13,9 @@ int main(int argc, char *argv[]) {
   CalcView w;
   w.show();
 
+  QObject::connect(&w, &CalcView::setDegreeMode , &c,
+                   &s21::CalcController::setDegreeMode);
+
   QObject::connect(&w, &CalcView::uiEventEqual, &c,
                    &s21::CalcController::calcEqual);
 
@@ -22,6 +25,9 @@ int main(int argc, char *argv[]) {
   QObject::connect(&g, &Graph::uiEventGraph, &c,
                    &s21::CalcController::calcGraph);
   QObject::connect(&w, &CalcView::sendData, &g, &Graph::getData);
+
+  Credit r;
+  QObject::connect(&r, &Credit::calcCredit, &c, &s21::CalcController::calcCredit);
 
   return a.exec();
 }

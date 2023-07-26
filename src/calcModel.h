@@ -5,10 +5,10 @@
 #include <QException>
 #include <QMainWindow>
 #include <QQueue>
-#include <QStack>
-#include <QValidator>
 #include <QRegularExpressionValidator>
-#include <regex.h>
+#include <QStack>
+#include <QTextStream>
+#include <QValidator>
 #include <cmath>
 #include <iostream>
 
@@ -55,9 +55,9 @@ class CalcModel {
   double getFromStack(QStack<double>& operands);
   double calculatePostfix(QQueue<QString> postfix);
   double calculate(QString infix);
-  QString creditCalculate(QString& overPayment, QString& allPayment, int month,
+  void creditCalculate(QString& overPayment, QString& allPayment, int month,
                           double summa, QString stavkaProc, QString sumCredit,
-                          QString spinBox, size_t comboBox);
+                          QString spinBox, size_t comboBox, QString& result);
   QString debitCalculate(double& resProfit, double& resDep, double sumDep,
                          double percent, int month, bool checkState);
   void graphCalculate(int& h, double& xStart, double& yStart, double& xEnd,
@@ -66,7 +66,7 @@ class CalcModel {
 
   // DEGREE MODE
   void setDegreeMode(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
-  double getDegreeMode(double a) {
+  double changeDegreesToRadians(double& a) {
     if (useDegree_) {
       a = qDegreesToRadians(a);
     }

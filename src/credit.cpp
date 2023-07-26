@@ -29,13 +29,15 @@ void Credit::on_pushButtonCredit_clicked() {
 
   QString stavkaProc = ui->lineEdit_stavkaProc->text(),
           sumCredit = ui->lineEdit_sumCredit->text(),
-          spinBox = ui->spinBox->text(), overPayment, allPayment;
+          spinBox = ui->spinBox->text(), overPayment, allPayment, result;
   size_t comboBox = ui->comboBox->currentIndex();
 
-  //  ui->listWidget->addItem(
-  //      resultController.calcCredit(overPayment, allPayment, month, summa,
-  //                                  stavkaProc, sumCredit, spinBox,
-  //                                  comboBox));
+  emit calcCredit(overPayment, allPayment, month, summa,
+                                            stavkaProc, sumCredit, spinBox,
+                                            comboBox, result);
+
+  ui->listWidget->addItem(result);
+
   ui->lineEdit_sumVyplat->setText(allPayment);
   ui->lineEdit_sumPereplata->setText(overPayment);
 }
