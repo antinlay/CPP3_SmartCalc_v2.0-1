@@ -20,55 +20,111 @@ bool s21::CalcModel::validateExpression(QString& expression) {
   // QValidator::State state = validator.validate(expression, pos);
   // return (state == QValidator::Acceptable);
 
-  // QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
-  // if (regexAlphabet.match(expression).hasMatch()) {
-  //   QRegularExpression regexFunc(
-  //       "(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
-  //   if (!regexFunc.match(expression).hasMatch()) return false;
+  QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
+  if (regexAlphabet.match(expression).hasMatch()) {
+    QRegularExpression regexFunc(
+        "(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
+    if (!regexFunc.match(expression).hasMatch()) return false;
 
-  //   QRegularExpression regexCloseBracket(
-  //       "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
-  //   if (regexCloseBracket.match(expression).hasMatch()) return false;
+    QRegularExpression regexCloseBracket(
+        "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
+    if (regexCloseBracket.match(expression).hasMatch()) return false;
 
-  //   QRegularExpression regexBeforeFunc(
-  //       "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
-  //       "log))");
-  //   if (regexBeforeFunc.match(expression).hasMatch()) return false;
+    QRegularExpression regexBeforeFunc(
+        "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
+        "log))");
+    if (regexBeforeFunc.match(expression).hasMatch()) return false;
 
-  //   QRegularExpression regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
-  //   if (regexBeforeX.match(expression).hasMatch()) return false;
+    QRegularExpression regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
+    if (regexBeforeX.match(expression).hasMatch()) return false;
 
-  //   QRegularExpression multipleFunctions(
-  //       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
-  //       "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
-  //       "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
-  //   if (multipleFunctions.match(expression).hasMatch()) return false;
+    QRegularExpression multipleFunctions(
+        "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
+        "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
+        "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
+    if (multipleFunctions.match(expression).hasMatch()) return false;
 
-  //   // QRegularExpression
-  //   regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?");
-  //   // if (!regexExponenta.match(expression).hasMatch()) return false;
-  // }
+    // QRegularExpression
+    // regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?");
+    //  if (!regexExponenta.match(expression).hasMatch()) return false;
+  }
 
-  // std::regex regexBracketDigit("\\)(?=\\d)");
-  // if (std ::regex_search(expression, regexBracketDigit)) return false;
-
-  // std::regex regexDotMax(
-  //     "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
-  // if (std ::regex_search(expression, regexDotMax)) return false;
-
-  // // Проверка на неправильное расположение операторов и функций
-  // std::regex invalidOperators(
-  //     "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
-  //     "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
-  //     "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
-  // if (std::regex_search(expression, invalidOperators)) return false;
-
-  // // Проверка на неправильное количество операторов и функций
-  // std::regex multipleOperators(
-  //     "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
-  // if (std::regex_search(expression, multipleOperators)) return false;
+  QRegularExpression regexBracketDigit("\\)(?=\\d)");
+  if (regexBracketDigit.match(expression).hasMatch()) return false;
+  QRegularExpression regexDotMax(
+      "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
+  if (regexDotMax.match(expression).hasMatch()) return false;
+  // Проверка на неправильное расположение операторов и функций
+  QRegularExpression invalidOperators(
+      "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
+      "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
+      "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
+  if (invalidOperators.match(expression).hasMatch()) return false;
+  // Проверка на неправильное количество операторов и функций
+  QRegularExpression multipleOperators(
+      "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
+  if (multipleOperators.match(expression).hasMatch()) return false;
 
   return true;
+}
+
+double s21::CalcModel::addCalc(double a, double b) { return a + b; }
+double s21::CalcModel::subtractCalc(double a, double b) { return a - b; }
+double s21::CalcModel::multiplyCalc(double a, double b) { return a * b; }
+double s21::CalcModel::divideCalc(double a, double b) {
+  if (b == 0) {
+    if (b == 0) {
+      throw std::runtime_error("Undefined divide zero: " + std::to_string(a) +
+                               " / " + std::to_string(b));
+    }
+  }
+  return a / b;
+}
+
+double s21::CalcModel::modCalc(double a, double b) {
+  if (b == 0) {
+    throw std::runtime_error("Undefined divide zero: " + std::to_string(a) +
+                             " mod " + std::to_string(b));
+  }
+  return fmod(a, b);
+}
+
+double s21::CalcModel::powerCalc(double a, double b) { return pow(a, b); }
+
+double s21::CalcModel::sqrtCalc(double a) {
+  if (a < 0) {
+    throw std::runtime_error("Undefined square root of a negative number: " +
+                             std::to_string(a));
+  }
+
+  return qSqrt(qAbs(a));
+}
+// FUNCTIONS
+double s21::CalcModel::lnCalc(double a) { return log(a); }
+double s21::CalcModel::logCalc(double a) { return log10(a); }
+double s21::CalcModel::tanCalc(double a) {
+  a = getDegreeMode(a);
+  return tan(a);
+}
+double s21::CalcModel::atanCalc(double a) {
+  a = getDegreeMode(a);
+  return atan(a);
+}
+double s21::CalcModel::sinCalc(double a) {
+  a = getDegreeMode(a);
+  return sin(a);
+}
+double s21::CalcModel::asinCalc(double a) {
+  a = getDegreeMode(a);
+  return asin(a);
+}
+double s21::CalcModel::cosCalc(double a) {
+  a = getDegreeMode(a);
+  return cos(a);
+}
+double s21::CalcModel::acosCalc(double a) {
+  a = getDegreeMode(a);
+  return acos(a);
 }
 
 // CHECKS
@@ -77,7 +133,7 @@ int s21::CalcModel::getPriority(QString c) {
   if (isFunction(c)) {
     res = 4;
   } else {
-    res = precedences.value(c);
+    res = precedences_.value(c);
   }
   return res;
 }
@@ -119,45 +175,32 @@ double s21::CalcModel::calcOperations(double a, double b, QString c) {
                                          {"/", &s21::CalcModel::divideCalc},
                                          {"%", &s21::CalcModel::modCalc},
                                          {"^", &s21::CalcModel::powerCalc}};
-  // if (!operations.contains(c))
-  //   throw std::invalid_argument("Input Error: " + c.toStdString() +
-  //                               " not found");
-  // else
-//  try {
-    return (this->*operations.value(c))(a, b);
-//  } catch (const std::exception& e) {
-//    throw;
-//  }
+  if (!operations.contains(c))
+    throw std::invalid_argument("Input Error: " + c.toStdString() +
+                                " not found");
+
+  return (this->*operations.value(c))(a, b);
 }
 
 double s21::CalcModel::calcFunctions(double a, QString c) {
-  typedef double (s21::CalcModel::*Functions)(double);
-  QMap<QString, Functions> functions = {
+  typedef double (s21::CalcModel::*Function)(double);
+  QMap<QString, Function> functions = {
       {"q", &s21::CalcModel::sqrtCalc}, {"n", &s21::CalcModel::lnCalc},
       {"g", &s21::CalcModel::logCalc},  {"t", &s21::CalcModel::tanCalc},
       {"a", &s21::CalcModel::atanCalc}, {"s", &s21::CalcModel::sinCalc},
       {"i", &s21::CalcModel::asinCalc}, {"c", &s21::CalcModel::cosCalc},
       {"o", &s21::CalcModel::acosCalc}};
+  if (!functions.contains(c))
+    throw std::invalid_argument("Input Error: " + c.toStdString() +
+                                " not found");
 
-//  try {
-    return (this->*functions.value(c))(a);
-//  } catch (const std::exception& e) {
-//    throw;
-//  }
-  // if (!functions.contains(c))
-  //   throw std::invalid_argument("Input Error: " + c.toStdString() +
-  //                               " not found");
-  // else
+  return (this->*functions.value(c))(a);
 }
 
 void s21::CalcModel::fixInfix(QString& infix) {
   QRegularExpression pattern("(\\d+\\.?\\d*)([a-zA-Z]+)");
   QString modifiedExpression = infix.replace(pattern, "$1*$2");
 
-  static const QHash<QString, QString> keyFunctions = {
-      {"sqrt", "q"}, {"ln", "n"},  {"log", "g"},  {"tan", "t"},
-      {"atan", "a"}, {"sin", "s"}, {"asin", "i"}, {"cos", "c"},
-      {"acos", "o"}, {"mod", "%"}, {"x", "X"}};
   for (auto it = keyFunctions.begin(); it != keyFunctions.end(); ++it) {
     int pos = 0;
     while ((pos = infix.indexOf(it.key(), pos)) != -1) {
@@ -172,56 +215,51 @@ QQueue<QString> s21::CalcModel::infixToPostfix(QString& infix) {
   QStack<QString> operatorStack;
   QQueue<QString> outputQueue;
   QString currentToken = "";
-  fixInfix(infix);
+  if (!infix.isEmpty()) {
+    fixInfix(infix);
 
-  for (int i = 0; i < infix.length(); i++) {
-    QChar currentChar = infix[i];
-    if (isDigit(currentChar, infix, i)) {
-      if (currentChar == 'e') {
+    for (int i = 0; i < infix.length(); i++) {
+      QChar currentChar = infix[i];
+      if (isDigit(currentChar, infix, i)) {
+        if (currentChar == 'e') {
+          currentToken += currentChar;
+          currentChar = infix[++i];
+        }
         currentToken += currentChar;
-        currentChar = infix[++i];
-      }
-      currentToken += currentChar;
-    } else {
-      if (!currentToken.isEmpty()) {
-        outputQueue.push_back(currentToken);
-        currentToken = "";
-      }
-      if (currentChar == '(') {
-        operatorStack.push(QString(1, currentChar));
-      } else if (currentChar == ')') {
-        while (operatorStack.top() != "(") {
-          outputQueue.push_back(operatorStack.top());
-          operatorStack.pop();
-        }
-        operatorStack.pop();
-        // } else if (isFunction(infix.mid(i, 1))) {
-        //   if (i == 0) operatorStack.push(infix.mid(i, 1));
       } else {
-        while (!operatorStack.empty() && operatorStack.top() != "(" &&
-               getPriority(QString(1, currentChar)) <=
-                   getPriority(operatorStack.top())) {
-          outputQueue.push_back(operatorStack.top());
-          operatorStack.pop();
+        if (!currentToken.isEmpty()) {
+          outputQueue.push_back(currentToken);
+          currentToken = "";
         }
-        operatorStack.push(QString(1, currentChar));
+        if (currentChar == '(') {
+          operatorStack.push(QString(1, currentChar));
+        } else if (currentChar == ')') {
+          while (operatorStack.top() != "(") {
+            outputQueue.push_back(operatorStack.top());
+            operatorStack.pop();
+          }
+          operatorStack.pop();
+        } else {
+          while (!operatorStack.empty() && operatorStack.top() != "(" &&
+                 getPriority(QString(1, currentChar)) <=
+                     getPriority(operatorStack.top())) {
+            outputQueue.push_back(operatorStack.top());
+            operatorStack.pop();
+          }
+          operatorStack.push(QString(1, currentChar));
+        }
       }
     }
-  }
 
-  if (!currentToken.isEmpty()) {
-    outputQueue.push_back(currentToken);
-  }
+    if (!currentToken.isEmpty()) {
+      outputQueue.push_back(currentToken);
+    }
 
-  while (!operatorStack.empty()) {
-    // if (operatorStack.top() == "(") {
-    //   std::cout << "Error: mismatched paranthesis";
-    //   std::exit(1);
-    // }
-    outputQueue.push_back(operatorStack.top());
-    operatorStack.pop();
+    while (!operatorStack.empty()) {
+      outputQueue.push_back(operatorStack.top());
+      operatorStack.pop();
+    }
   }
-
   return outputQueue;
 }
 
@@ -242,18 +280,15 @@ double s21::CalcModel::calculatePostfix(QQueue<QString> postfix) {
     token = postfix.front();
     postfix.pop_front();
     if (isOperator(token)) {
-//        if (!error_.isEmpty()) return 0;
-        double operand1 = getFromStack(calcStack);
-        double operand2 = getFromStack(calcStack);
-        double resultOperation = calcOperations(operand2, operand1, token);
+      double operand1 = getFromStack(calcStack);
+      double operand2 = getFromStack(calcStack);
+      double resultOperation = calcOperations(operand2, operand1, token);
       calcStack.push(resultOperation);
     } else if (isFunction(token)) {
-//      if (!error_.isEmpty()) return 0;
       double topStack = getFromStack(calcStack);
       double resultFunc = calcFunctions(topStack, token);
       calcStack.push(resultFunc);
     } else {
-//      if (!error_.isEmpty()) return 0;
       double result = token.toDouble();
       calcStack.push(result);
     }

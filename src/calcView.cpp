@@ -85,13 +85,15 @@ CalcView::CalcView(QWidget *parent)
 //      ui->equalX->setEnabled(false);
       ui->graph->setEnabled(false);
     }
-    //    if (!resultController.validateChangeOn(ui->resultShow->text())) {
-    //      ui->resultShow->setStyleSheet("border: 1px solid pink;");
-    //      ui->equal->setEnabled(false);
-    //    } else {
-    //      ui->resultShow->setStyleSheet("");
-    //      ui->equal->setEnabled(true);
-    //    }
+    emit validateChangedOn(ui->resultShow->text(), status_);
+        if (!status_) {
+          ui->resultShow->setStyleSheet("border: 1px solid pink;");
+          ui->equal->setEnabled(false);
+        } else {
+          ui->resultShow->setStyleSheet("");
+          ui->equal->setEnabled(true);
+          equalClick();
+        }
   });
 }
 
@@ -141,7 +143,7 @@ void CalcView::equalClick() {
   QString equalX = ui->equalX->text();
   try {
     emit uiEventEqual(equalResult, equalX);
-    ui->resultShow->setText(equalResult);
+    ui->result->setText(equalResult);
   } catch (std::exception &e) {
       QMessageBox::warning(this , "Warning!" ,QString::fromStdString(e.what()));
 //      std::cout << e.what() << std::endl;
@@ -184,3 +186,9 @@ void CalcView::on_graph_clicked() {
   QString equalResult = ui->resultShow->text();
   emit sendData(equalResult);
 }
+
+void CalcView::on_radioButton_clicked(bool checked)
+{
+    emit setDegreeMode(checked);
+}
+

@@ -21,11 +21,16 @@ class CalcController : public QObject {
   void calcGraph(int& h, double& xStart, double& yStart, double& xEnd,
                  double& yEnd, QString graphResult, QVector<double>& x,
                  QVector<double>& y);
+  void setDegreeMode(bool statusDegreeMode) {
+    m_->setDegreeMode(statusDegreeMode);
+  };
 
  public:
   CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
   void replaceX(QString& equalResult, QString& equalLabel);
-  bool validateChangeOn(QString equalStr);
+  void validateChangeOn(QString equalStr, bool& status) {
+    status = m_->validateExpression(equalStr);
+  };
   QString calcCredit(QString& overPayment, QString& allPayment, int month,
                      double summa, QString stavkaProc, QString sumCredit,
                      QString spinBox, size_t comboBox);

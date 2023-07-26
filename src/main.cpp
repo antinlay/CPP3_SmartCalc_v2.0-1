@@ -16,6 +16,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(&w, &CalcView::uiEventEqual, &c,
                    &s21::CalcController::calcEqual);
 
+  QObject::connect(&w, &CalcView::validateChangedOn, &c,
+                   &s21::CalcController::validateChangeOn);
   Graph g;
   QObject::connect(&g, &Graph::uiEventGraph, &c,
                    &s21::CalcController::calcGraph);

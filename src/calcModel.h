@@ -1,10 +1,14 @@
 #ifndef CALCMODEL_H
 #define CALCMODEL_H
 
+#include <QCoreApplication>
+#include <QException>
 #include <QMainWindow>
 #include <QQueue>
 #include <QStack>
 #include <QValidator>
+#include <QRegularExpressionValidator>
+#include <regex.h>
 #include <cmath>
 #include <iostream>
 
@@ -16,39 +20,25 @@ class CalcModel {
   ~CalcModel() = default;
 
  public:
-  QString getError() { return error_; }
   // OPERATIONS
-  double addCalc(double a, double b) { return a + b; }
-  double subtractCalc(double a, double b) { return a - b; }
-  double multiplyCalc(double a, double b) { return a * b; }
-  double divideCalc(double a, double b) {
-    if (b == 0) {
-      throw std::runtime_error("Undefined divide zero: ");
-    }
-    //   error_ = "Undefined divide zero: " + QString::number(a) + " / " +
-    //   QString::number(b);
-    return a / b;
-  }
+  double addCalc(double a, double b);
+  double subtractCalc(double a, double b);
+  double multiplyCalc(double a, double b);
+  double divideCalc(double a, double b);
+  double modCalc(double a, double b);
+  double powerCalc(double a, double b);
+  double sqrtCalc(double a);
 
-  double modCalc(double a, double b) {
-    if (b == 0)
-      error_ = "Undefined divide zero: " + QString::number(a) + " mod " +
-               QString::number(b);
-    return fmod(a, b);
-  }
-
-  double powerCalc(double a, double b) { return pow(a, b); }
-
-  double sqrtCalc(double a) { return sqrt(abs(a)); }
   // FUNCTIONS
-  double lnCalc(double a) { return log(a); }
-  double logCalc(double a) { return log10(a); }
-  double tanCalc(double a) { return tan(a); }
-  double atanCalc(double a) { return atan(a); }
-  double sinCalc(double a) { return sin(a); }
-  double asinCalc(double a) { return asin(a); }
-  double cosCalc(double a) { return cos(a); }
-  double acosCalc(double a) { return acos(a); }
+  double lnCalc(double a);
+  double logCalc(double a);
+  double tanCalc(double a);
+  double atanCalc(double a);
+  double sinCalc(double a);
+  double asinCalc(double a);
+  double cosCalc(double a);
+  double acosCalc(double a);
+
   // CHECKS
   bool validateExpression(QString& expression);
   int getPriority(QString c);
@@ -74,10 +64,23 @@ class CalcModel {
                       double& yEnd, QString graphResult, QVector<double>& x,
                       QVector<double>& y);
 
+  // DEGREE MODE
+  void setDegreeMode(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
+  double getDegreeMode(double a) {
+    if (useDegree_) {
+      a = qDegreesToRadians(a);
+    }
+    return a;
+  };
+
  private:
-  QString error_ = "";
-  QMap<QString, int> precedences = {{"(", 0}, {")", 0}, {"+", 1}, {"-", 1},
-                                    {"*", 2}, {"/", 2}, {"%", 2}, {"^", 3}};
-};
+  bool useDegree_ = false;
+  QMap<QString, int> precedences_ = {{"(", 0}, {")", 0}, {"+", 1}, {"-", 1},
+                                     {"*", 2}, {"/", 2}, {"%", 2}, {"^", 3}};
+  const QHash<QString, QString> keyFunctions = {
+      {"sqrt", "q"}, {"ln", "n"},  {"log", "g"},  {"tan", "t"},
+      {"atan", "a"}, {"sin", "s"}, {"asin", "i"}, {"cos", "c"},
+      {"acos", "o"}, {"mod", "%"}, {"x", "X"}};
+};  // namespace s21
 }  // namespace s21
 #endif  // CALCMODEL_H

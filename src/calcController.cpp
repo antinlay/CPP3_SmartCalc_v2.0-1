@@ -1,8 +1,5 @@
 #include "calcController.h"
 
-// void s21::CalcController::handleUiEvent() {
-
-//}
 // QObject::connect(v_, &CalcView::uiEventEqual, m_,
 // &s21::CalcController::calcEqual);
 
@@ -14,19 +11,14 @@ void s21::CalcController::replaceX(QString& equalResult, QString& equalLabel) {
 }
 
 void s21::CalcController::calcEqual(QString& equalResult, QString& equalLabel) {
-  //  try {
   replaceX(equalResult, equalLabel);
   double result = m_->calculate(equalResult);
   equalResult = QString::number(result, 'g', 14);
-  //  } catch (const std::exception& e) {
-  // QMessageBox::critical(reinterpret_cast<QWidget*>(&v_), "Error: ",
-  // QString::fromStdString(e.what()));
-  //  }
 }
 
-bool s21::CalcController::validateChangeOn(QString equalStr) {
-  return m_->validateExpression(equalStr);
-}
+//void s21::CalcController::validateChangeOn(QString equalStr, bool status) {
+//  status = m_->validateExpression(equalStr, status);
+//}
 
 void s21::CalcController::calcGraph(int& h, double& xStart, double& yStart,
                                     double& xEnd, double& yEnd,

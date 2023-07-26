@@ -28,6 +28,8 @@ class CalcView : public QMainWindow {
  signals:
   void sendData(QString res);
   void uiEventEqual(QString &equalResult, QString &equalLabel);
+  void setDegreeMode(bool statusDegreeMode);
+  void validateChangedOn(QString expression, bool& status);
 
  private:
   Ui::CalcView *ui;
@@ -36,9 +38,10 @@ class CalcView : public QMainWindow {
   Graph *graphWindow;
   QStack<size_t> textLengthStack;
   QLineEdit* lastActiveLineEdit = nullptr;
+  bool status_ = false;
 
  private slots:
-  void onLineEditFocusChanged(QWidget* oldWidget, QWidget* newWidget)
+  void onLineEditFocusChanged(QWidget* newWidget)
   {
       QLineEdit* lineEdit = qobject_cast<QLineEdit*>(newWidget);
       if (lineEdit)
@@ -62,6 +65,7 @@ class CalcView : public QMainWindow {
   void on_credit_clicked();
   void on_debit_clicked();
   void on_graph_clicked();
+  void on_radioButton_clicked(bool checked);
 };
 
 // }  // namespace s21
