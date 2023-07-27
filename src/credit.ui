@@ -116,19 +116,32 @@
        </font>
       </property>
       <property name="text">
-       <string>Months</string>
+       <string>Start date:</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QSpinBox" name="spinBox">
+     <widget class="QDateEdit" name="startDate">
+      <property name="locale">
+       <locale language="Russian" country="Russia"/>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_6">
       <property name="font">
        <font>
         <family>Arial Black</family>
         <bold>true</bold>
        </font>
       </property>
+      <property name="text">
+       <string>End date:</string>
+      </property>
      </widget>
+    </item>
+    <item>
+     <widget class="QDateEdit" name="endDate"/>
     </item>
     <item>
      <widget class="QLabel" name="label_3">
