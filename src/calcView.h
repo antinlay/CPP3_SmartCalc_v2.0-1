@@ -26,18 +26,17 @@ class CalcView : public QMainWindow {
   ~CalcView();
   void setLineEdit(QLineEdit* ActiveLineEdit) {lastActiveLineEdit_ = ActiveLineEdit;};
 
-
  signals:
-  void sendData(QString res);
+  void uiEventReplaceX(QString& resultShow, QString& equalX);
   void uiEventEqual(QString &equalResult, QString &equalLabel);
   void setDegreeMode(bool statusDegreeMode);
   void validateChangedOn(QString expression, bool& status);
+  void uiEventSendResult(QString equalResult);
 
  private:
   Ui::CalcView *ui;
   Credit *creditWindow;
   Debit *debitWindow;
-  Graph *graphWindow;
   QStack<size_t> textLengthStack;
   bool status_ = false;
   QLineEdit* lastActiveLineEdit_ = nullptr;
@@ -49,10 +48,10 @@ class CalcView : public QMainWindow {
   void ceClick();
   void acClick();
   void focusInsert(QString add);
-  void on_credit_clicked();
-  void on_debit_clicked();
-  void on_graph_clicked();
-  void on_radioButton_clicked(bool checked);
+  void creditClicked();
+  void debitClicked();
+  void graphClicked();
+  void degreeModeClicked(bool checked);
 };
 
 // }  // namespace s21

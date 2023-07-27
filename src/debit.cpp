@@ -12,7 +12,7 @@ Debit::Debit(QWidget *parent) : QWidget(parent), ui(new Ui::Debit) {
 
 Debit::~Debit() { delete ui; }
 
-void Debit::on_pushButtonDebit_clicked() {
+void Debit::debitClicked() {
   int month = ui->spinBox_months->text().toInt();
   double sumDep = ui->lineEdit_sumDep->text().toDouble(),
          percent = ui->lineEdit_intRate->text().toDouble(),

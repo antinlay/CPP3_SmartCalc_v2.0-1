@@ -17,11 +17,10 @@ class Debit : public QWidget {
   ~Debit();
 
  private slots:
-  void on_pushButtonDebit_clicked();
+  void debitClicked();
   
  private:
   Ui::Debit *ui;
-//  s21::CalcController resultController;
 };
 
 // }  // namespace s21

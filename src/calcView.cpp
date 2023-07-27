@@ -2,14 +2,9 @@
 
 CalcView::CalcView(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::CalcView) {
-  //  auto val = new QDoubleValidator();
 
   ui->setupUi(this);
 
-  //  ui->resultShow->setValidator(val);
-  //  ui->equalX->setValidator(val);
-
-  //  graphWindow = new Graph;
   ui->resultShow->setFocus();
 
   connect(ui->resultShow, &QLineEdit::editingFinished, this, [=](){
@@ -20,9 +15,7 @@ CalcView::CalcView(QWidget *parent)
       ui->resultShow->clearFocus();
   });
 
-//  connect(ui->resultShow, &QLineEdit::cursorPositionChanged, this, &CalcView::onLineEditCursorPositionChanged);
-//  connect(ui->equalX, &QLineEdit::cursorPositionChanged, this, &CalcView::onLineEditCursorPositionChanged);
-//  connect(qApp, &QApplication::focusChanged, this, &CalcView::onLineEditFocusChanged);
+  connect(qApp, &QApplication::focusChanged, this, &CalcView::onLineEditFocusChanged);
 
   connect(ui->sin, &QPushButton::clicked, this, [=]() { focusInsert("("); });
   connect(ui->cos, &QPushButton::clicked, this, [=]() { focusInsert("("); });
@@ -62,11 +55,13 @@ CalcView::CalcView(QWidget *parent)
   connect(ui->CE, &QPushButton::clicked, this, [=]() { ceClick(); });
   connect(ui->AC, &QPushButton::clicked, this, [=]() { acClick(); });
 
+  connect(ui->credit, &QPushButton::clicked, this, &CalcView::creditClicked);
+  connect(ui->debit, &QPushButton::clicked, this, &CalcView::debitClicked);
+
   connect(ui->graph, &QPushButton::clicked, this,
-          [=]() { on_graph_clicked(); });
+          [=]() { graphClicked(); });
 
   connect(ui->equalX, &QLineEdit::textChanged, this, [=]() {
-//      if ()
     if (ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
       ui->equal->setEnabled(false);
     } else {
@@ -74,15 +69,12 @@ CalcView::CalcView(QWidget *parent)
     }
   });
   connect(ui->resultShow, &QLineEdit::textChanged, this, [=]() {
-//      ui->resultShow->setCursorPosition(ui->resultShow->text().length());
     ui->progressBar->setValue(ui->resultShow->text().length());
     if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
         ui->equalX->setStyleSheet("border: 1px solid pink;");
-//        ui->equalX->setEnabled(true);
         ui->graph->setEnabled(true);
     } else {
       ui->equalX->setStyleSheet("");
-//      ui->equalX->setEnabled(false);
       ui->graph->setEnabled(false);
     }
     emit validateChangedOn(ui->resultShow->text(), status_);
@@ -103,9 +95,6 @@ CalcView::~CalcView() { delete ui; }
 QLineEdit *CalcView::checkActiveLineEdit() {
   if (ui->resultShow->isActiveWindow()) {
     ui->resultShow->setCursorPosition(ui->resultShow->text().length());
-//    ui->activateX->setChecked(false);
-//    ui->activate->setChecked(true);
-//    ui->equalX->setEnabled(false);
     ui->equalX->setStyleSheet("");
     ui->resultShow->setEnabled(true);
     ui->resultShow->setStyleSheet("border: 1px solid white;");
@@ -113,9 +102,6 @@ QLineEdit *CalcView::checkActiveLineEdit() {
   } else if (ui->equalX->isActiveWindow()){
     ui->equalX->setCursorPosition(ui->resultShow->text().length());
     ui->equalX->setEnabled(true);
-//    ui->activate->setChecked(false);
-//    ui->activateX->setChecked(true);
-//    ui->resultShow->setEnabled(false);
     ui->resultShow->setStyleSheet("");
     ui->equalX->setStyleSheet("border: 1px solid white;");
     return ui->equalX;
@@ -134,9 +120,7 @@ void CalcView::onLineEditFocusChanged(QWidget* newWidget)
 
 void CalcView::focusInsert(QString add) {
   QPushButton *button = qobject_cast<QPushButton *>(sender());
-//  QLineEdit *activeLineEdit = checkActiveLineEdit();
   if (!lastActiveLineEdit_) lastActiveLineEdit_ = ui->resultShow;
-//  activeLineEdit->selectionEnd();
   if (lastActiveLineEdit_) {
       QString lineEditName = lastActiveLineEdit_->objectName();
       qDebug() << "Название текущего QLineEdit: " << lineEditName;
@@ -161,48 +145,46 @@ void CalcView::equalClick() {
       }
   } catch (std::exception &e) {
       QMessageBox::warning(this , "Warning!" ,QString::fromStdString(e.what()));
-//      std::cout << e.what() << std::endl;
   }
 }
 
 void CalcView::ceClick() {
-  if (!ui->resultShow->text().isEmpty()) {
-    ui->resultShow->clear();
+  if (!lastActiveLineEdit_->text().isEmpty()) {
+    lastActiveLineEdit_->clear();
   }
 }
 
 void CalcView::acClick() {
-//  QPushButton *button = qobject_cast<QPushButton *>(sender());
-  QLineEdit *activeLineEdit = checkActiveLineEdit();
-  if (!activeLineEdit->text().isEmpty()) {
-    activeLineEdit->selectionEnd();
+  if (!lastActiveLineEdit_->text().isEmpty()) {
+    lastActiveLineEdit_->selectionEnd();
     size_t textButtonLenght = 1;
     if (!textLengthStack.empty()) {
       textButtonLenght = textLengthStack.top();
       textLengthStack.pop();
     }
     while (textButtonLenght--) {
-      if (!activeLineEdit->text().isEmpty()) activeLineEdit->backspace();
+      if (!lastActiveLineEdit_->text().isEmpty()) lastActiveLineEdit_->backspace();
     }
   }
 }
 
-void CalcView::on_credit_clicked() {
+void CalcView::creditClicked() {
   Credit *creditWindow = new Credit();
   creditWindow->show();
 }
 
-void CalcView::on_debit_clicked() {
+void CalcView::debitClicked() {
   Debit *debitWindow = new Debit();
   debitWindow->show();
 }
 
-void CalcView::on_graph_clicked() {
-  QString equalResult = ui->resultShow->text();
-  emit sendData(equalResult);
+void CalcView::graphClicked() {
+  QString equalResult = ui->resultShow->text(), equalX = ui->equalX->text();
+  emit uiEventReplaceX(equalResult, equalX);
+  emit uiEventSendResult(equalResult);
 }
 
-void CalcView::on_radioButton_clicked(bool checked)
+void CalcView::degreeModeClicked(bool checked)
 {
     qDebug() << checked;
     emit setDegreeMode(checked);

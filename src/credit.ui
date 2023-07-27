@@ -7,19 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>314</width>
-    <height>550</height>
+    <height>700</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
     <width>314</width>
-    <height>550</height>
+    <height>700</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>314</width>
-    <height>550</height>
+    <height>700</height>
    </size>
   </property>
   <property name="font">
@@ -40,7 +46,7 @@
      <x>10</x>
      <y>10</y>
      <width>291</width>
-     <height>521</height>
+     <height>681</height>
     </rect>
    </property>
    <property name="font">
@@ -51,7 +57,7 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QComboBox" name="comboBox">
+     <widget class="QComboBox" name="caseCredit">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -61,7 +67,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="labelSumm">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -74,7 +80,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_sumCredit">
+     <widget class="QLineEdit" name="summa">
       <property name="enabled">
        <bool>true</bool>
       </property>
@@ -108,7 +114,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="labelStartDate">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -128,7 +134,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_6">
+     <widget class="QLabel" name="labelEndDate">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -144,7 +150,7 @@
      <widget class="QDateEdit" name="endDate"/>
     </item>
     <item>
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="labelPercent">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -152,12 +158,12 @@
        </font>
       </property>
       <property name="text">
-       <string>Percent</string>
+       <string>Annual interest rate:</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_stavkaProc">
+     <widget class="QLineEdit" name="percent">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -167,7 +173,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButtonCredit">
+     <widget class="QPushButton" name="calculate">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -180,7 +186,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="labelPayment">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -193,7 +199,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_sumVyplat">
+     <widget class="QLineEdit" name="payment">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -206,7 +212,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_5">
+     <widget class="QLabel" name="labelOverpayment">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -219,7 +225,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_sumPereplata">
+     <widget class="QLineEdit" name="overpayment">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -232,7 +238,13 @@
      </widget>
     </item>
     <item>
-     <widget class="QListWidget" name="listWidget">
+     <widget class="QListWidget" name="info">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="font">
        <font>
         <family>Arial Black</family>

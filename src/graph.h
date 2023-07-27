@@ -20,12 +20,11 @@ class Graph : public QWidget {
   ~Graph();
 
  public slots:
-  void on_pushButton_clicked();
-  void getData(QString res);
+  void graphClicked();
+  void uiEventSendResult(QString equalResult);
 
  private:
   Ui::Graph *ui;
-  //  s21::CalcController resultController;
 };
 
 // }  // namespace s21

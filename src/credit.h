@@ -22,7 +22,7 @@ signals:
                        QString spinBox, size_t comboBox, QString& result);
 
  private slots:
-  void on_pushButtonCredit_clicked();
+  void calcClicked();
   
  private:
   Ui::Credit *ui;

@@ -23,33 +23,34 @@ bool s21::CalcModel::validateExpression(QString& expression) {
   QRegularExpression validChars("[^0-9.(),+\\-*/^sqrtancolimdxX]+");
   if (validChars.match(expression).hasMatch()) return false;
 
-  // QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
-  // if (regexAlphabet.match(expression).hasMatch()) {
-  QRegularExpression regexFunc("(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
-  if (!regexFunc.match(expression).hasMatch()) return false;
+  QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
+  if (regexAlphabet.match(expression).hasMatch()) {
+    QRegularExpression regexFunc(
+        "(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
+    if (!regexFunc.match(expression).hasMatch()) return false;
 
-  //   QRegularExpression regexCloseBracket(
-  //       "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
-  //   if (regexCloseBracket.match(expression).hasMatch()) return false;
+    //   QRegularExpression regexCloseBracket(
+    //       "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
+    //   if (regexCloseBracket.match(expression).hasMatch()) return false;
 
-  //   QRegularExpression regexBeforeFunc(
-  //       "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
-  //       "log))");
-  //   if (regexBeforeFunc.match(expression).hasMatch()) return false;
+    //   QRegularExpression regexBeforeFunc(
+    //       "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
+    //       "log))");
+    //   if (regexBeforeFunc.match(expression).hasMatch()) return false;
 
-  //   QRegularExpression regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
-  //   if (regexBeforeX.match(expression).hasMatch()) return false;
+    //   QRegularExpression regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
+    //   if (regexBeforeX.match(expression).hasMatch()) return false;
 
-  //   QRegularExpression multipleFunctions(
-  //       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
-  //       "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
-  //       "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
-  //   if (multipleFunctions.match(expression).hasMatch()) return false;
+    //   QRegularExpression multipleFunctions(
+    //       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
+    //       "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
+    //       "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
+    //   if (multipleFunctions.match(expression).hasMatch()) return false;
 
-  //   QRegularExpression regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?");
-  //   if (!regexExponenta.match(expression).hasMatch()) return false;
-  //   return true;
-  // }
+    //   QRegularExpression
+    //   regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?"); if
+    //   (!regexExponenta.match(expression).hasMatch()) return false;
+  }
 
   // QRegularExpression regexBracketDigit("\\)(?=\\d)");
   // if (regexBracketDigit.match(expression).hasMatch()) return false;
@@ -378,12 +379,15 @@ void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
                                     QVector<double>& y) {
   double j = (xEnd - xStart) / h;
   for (int i = 0; i <= h; ++i) {
-    // double x = xStart + i * j;
-    QString replace = graphResult;
-    x[i] = xStart + i * j;
-    QString num = QString::number(x[i]);
-    replace.replace("X", num, Qt::CaseInsensitive);
-    y[i] = calculate(replace);
+    try {
+      QString replace = graphResult;
+      x[i] = xStart + i * j;
+      QString num = QString::number(x[i]);
+      replace.replace("X", num, Qt::CaseInsensitive);
+      y[i] = calculate(replace);
+    } catch (std::exception& e) {
+      continue;
+    }
   }
 
   for (int i = 0; i < y.size() && i < x.size(); i++) {

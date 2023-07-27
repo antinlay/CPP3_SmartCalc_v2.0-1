@@ -16,9 +16,9 @@ void s21::CalcController::calcEqual(QString& equalResult, QString& equalLabel) {
   equalResult = QString::number(result, 'g', 14);
 }
 
-// void s21::CalcController::validateChangeOn(QString equalStr, bool status) {
-//   status = m_->validateExpression(equalStr, status);
-// }
+void s21::CalcController::validateChangeOn(QString equalStr, bool& status) {
+  status = m_->validateExpression(equalStr);
+}
 
 void s21::CalcController::calcGraph(int& h, double& xStart, double& yStart,
                                     double& xEnd, double& yEnd,
@@ -29,13 +29,13 @@ void s21::CalcController::calcGraph(int& h, double& xStart, double& yStart,
   //  std::endl;
 }
 
-void s21::CalcController::calcCredit(QString& overPayment,
-                                        QString& allPayment, int month,
-                                        double summa, QString stavkaProc,
-                                        QString sumCredit, QString spinBox,
-                                        size_t comboBox, QString& result) {
+void s21::CalcController::calcCredit(QString& overPayment, QString& allPayment,
+                                     int month, double summa,
+                                     QString stavkaProc, QString sumCredit,
+                                     QString spinBox, size_t comboBox,
+                                     QString& result) {
   m_->creditCalculate(overPayment, allPayment, month, summa, stavkaProc,
-                             sumCredit, spinBox, comboBox, result);
+                      sumCredit, spinBox, comboBox, result);
 }
 
 QString s21::CalcController::calcDebit(double& resProfit, double& resDep,

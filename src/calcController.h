@@ -28,9 +28,7 @@ class CalcController : public QObject {
  public:
   CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
   void replaceX(QString& equalResult, QString& equalLabel);
-  void validateChangeOn(QString equalStr, bool& status) {
-    status = m_->validateExpression(equalStr);
-  };
+  void validateChangeOn(QString equalStr, bool& status);
   void calcCredit(QString& overPayment, QString& allPayment, int month,
                   double summa, QString stavkaProc, QString sumCredit,
                   QString spinBox, size_t comboBox, QString& result);

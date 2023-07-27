@@ -24,7 +24,8 @@ int main(int argc, char *argv[]) {
   Graph g;
   QObject::connect(&g, &Graph::uiEventGraph, &c,
                    &s21::CalcController::calcGraph);
-  QObject::connect(&w, &CalcView::sendData, &g, &Graph::getData);
+  QObject::connect(&w, &CalcView::uiEventReplaceX, &c, &s21::CalcController::replaceX);
+  QObject::connect(&w, &CalcView::uiEventSendResult, &g, &Graph::uiEventSendResult);
 
   Credit r;
   QObject::connect(&r, &Credit::calcCredit, &c, &s21::CalcController::calcCredit);
