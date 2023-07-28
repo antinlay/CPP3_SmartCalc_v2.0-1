@@ -169,8 +169,7 @@ void CalcView::acClick() {
 }
 
 void CalcView::creditClicked() {
-  Credit *creditWindow = new Credit();
-  creditWindow->show();
+    emit uiEventShowCredit();
 }
 
 void CalcView::debitClicked() {

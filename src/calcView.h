@@ -32,6 +32,7 @@ class CalcView : public QMainWindow {
   void setDegreeMode(bool statusDegreeMode);
   void validateChangedOn(QString expression, bool& status);
   void uiEventSendResult(QString equalResult);
+  void uiEventShowCredit();
 
  private:
   Ui::CalcView *ui;

@@ -56,8 +56,9 @@ class CalcModel {
   double calculatePostfix(QQueue<QString> postfix);
   double calculate(QString infix);
   // CREDIT CALCULATE
-  double paymentAnnuityCalc(double S, double i, size_t n);
-  double overpaymentAnnuityCalc(double S, double i, size_t n);
+  void paymentAnnuityCalc(double& S, double& i, size_t n);
+  void paymentDifferentialCalc(double& p, double& o, double S, double i,
+                               size_t n, size_t m);
   QString debitCalculate(double& resProfit, double& resDep, double sumDep,
                          double percent, int month, bool checkState);
   void graphCalculate(int& h, double& xStart, double& yStart, double& xEnd,

@@ -297,13 +297,25 @@ double s21::CalcModel::calculate(QString infix) {
   return calculatePostfix(newInfix);
 }
 
-double s21::CalcModel::paymentAnnuityCalc(double S, double i, size_t n) {
-  return (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
+void s21::CalcModel::paymentAnnuityCalc(double& S, double& i, size_t n) {
+  /* Кредитный калькулятор с аннуитетными платежами можно рассчитать по
+   следующей формуле: p = (S * i * (1 + i)^n) / ((1 + i)^n - 1)? где: p -
+   размер ежемесячного платежа, S - сумма кредита, i - процентная ставка в
+   месяц,  n - количество месяцев, O - общая переплата, o - месячная
+   переплата, P - обшая переплата */
+  S = (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
+  i = S * n;
 }
 
-double s21::CalcModel::overpaymentAnnuityCalc(double S, double i, size_t n) {
-  double P = paymentAnnuityCalc(S, i, n) * n, O = P - S;
-  return O / n;
+void s21::CalcModel::paymentDifferentialCalc(double& p, double& o, double S,
+                                             double i, size_t n, size_t m) {
+  /* Формула для расчета дифференцированного платежа выглядит следующим
+   образом : P = (S / n) + (S - (m - 1) * (S / n)) * i, где: P - размер
+   дифференцированного платежа, S - сумма кредита, n - срок кредита в
+   месяцах, m - номер текущего месяца, i - годовая процентная ставка,
+   деленная на 12 месяцев. i = (S - (m - 1) * (S / n)) * i */
+  p = (S / n) + (S - (m - 1) * (S / n)) * i;
+  o = (S - (m - 1) * (S / n)) * i;
 }
 
 QString s21::CalcModel::debitCalculate(double& resProfit, double& resDep,

@@ -24,13 +24,12 @@ class CalcController : public QObject {
   void setDegreeMode(bool statusDegreeMode) {
     m_->setDegreeMode(statusDegreeMode);
   };
-  void uiEventPaymentCalc(double& S, double i, size_t n) {
-    S = m_->paymentAnnuityCalc(S, i, n);
-    qDebug() << S << "Controller";
+  void creditAnnuityCalc(double& S, double& i, size_t n) {
+    m_->paymentAnnuityCalc(S, i, n);
   };
-  void uiEventOverpaymentCalc(double& S, double i, size_t n) {
-    S = m_->overpaymentAnnuityCalc(S, i, n);
-    qDebug() << S << "Controller";
+  void creditDifferentialCalc(double& p, double& o, double S, double i,
+                              size_t n, size_t m) {
+    m_->paymentDifferentialCalc(p, o, S, i, n, m);
   };
 
  public:

@@ -16,10 +16,12 @@ class Credit : public QWidget {
  public:
   explicit Credit(QWidget *parent = nullptr);
   ~Credit();
+   void showCredit() {this->show();};
 
 signals:
-    void uiEventPaymentCalc(double& S, double i, size_t n);
-    void uiEventOverpaymentCalc(double& S, double i, size_t n);
+    void uiEventAnnuityCalc(double& S, double& i, size_t n);
+    void uiEventDifferentialCalc(double& p, double& o, double S, double i,
+                                  size_t n, size_t m);
 
  private slots:
   void calcClicked();

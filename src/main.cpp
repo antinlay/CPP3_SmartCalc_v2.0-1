@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
   CalcView w;
   w.show();
 
-  QObject::connect(&w, &CalcView::setDegreeMode , &c,
+  QObject::connect(&w, &CalcView::setDegreeMode, &c,
                    &s21::CalcController::setDegreeMode);
 
   QObject::connect(&w, &CalcView::uiEventEqual, &c,
@@ -24,12 +24,17 @@ int main(int argc, char *argv[]) {
   Graph g;
   QObject::connect(&g, &Graph::uiEventGraph, &c,
                    &s21::CalcController::calcGraph);
-  QObject::connect(&w, &CalcView::uiEventReplaceX, &c, &s21::CalcController::replaceX);
-  QObject::connect(&w, &CalcView::uiEventSendResult, &g, &Graph::uiEventSendResult);
+  QObject::connect(&w, &CalcView::uiEventReplaceX, &c,
+                   &s21::CalcController::replaceX);
+  QObject::connect(&w, &CalcView::uiEventSendResult, &g,
+                   &Graph::uiEventSendResult);
 
   Credit r;
-  QObject::connect(&r, &Credit::uiEventPaymentCalc, &c, &s21::CalcController::uiEventPaymentCalc);
-  QObject::connect(&r, &Credit::uiEventOverpaymentCalc, &c, &s21::CalcController::uiEventOverpaymentCalc);
+  QObject::connect(&r, &Credit::uiEventAnnuityCalc, &c,
+                   &s21::CalcController::creditAnnuityCalc);
+  QObject::connect(&r, &Credit::uiEventDifferentialCalc, &c,
+                   &s21::CalcController::creditDifferentialCalc);
+  QObject::connect(&w, &CalcView::uiEventShowCredit, &r, &Credit::showCredit);
 
   return a.exec();
 }

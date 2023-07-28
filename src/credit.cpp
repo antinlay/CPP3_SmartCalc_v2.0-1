@@ -36,7 +36,8 @@ Credit::~Credit() { delete ui; }
 
 void Credit::calcClicked() {
   size_t n = (ui->endDate->date().year() - ui->startDate->date().year()) * 12 +
-             ui->endDate->date().month() - ui->startDate->date().month();
+             ui->endDate->date().month() - ui->startDate->date().month(),
+         m = 1;
   double S = ui->summa->text().toDouble(),
          i = QString(ui->percent->text()).toDouble() / 12 / 100;
 
@@ -44,48 +45,36 @@ void Credit::calcClicked() {
     if (ui->summa->text().isEmpty() || !n || ui->percent->text().isEmpty()) {
       throw std::invalid_argument("Invalid argument in Credit view!");
     } else {
-      /* Кредитный калькулятор с аннуитетными платежами можно рассчитать по
-         следующей формуле: p = (S * i * (1 + i)^n) / ((1 + i)^n - 1)? где: p -
-         размер ежемесячного платежа, S - сумма кредита, i - процентная ставка в
-         месяц,  n - количество месяцев, O - общая переплата, o - месячная
-         переплата, P - обшая переплата */
       QDate currentDate = ui->startDate->date(), endDate = ui->endDate->date();
       QString anuInfo;
-      double m = 1, o = S, O = 0, p = S, P = 0;
+      double o = 0, O = 0, p = S, P = i;
 
       ui->payment->clear();
       ui->overpayment->clear();
       ui->info->clear();
 
       if (ui->caseCredit->currentIndex() == 0) {
-          emit uiEventPaymentCalc(p, i, n);
-          emit uiEventOverpaymentCalc(o, i, n);
-
-          qDebug() << p;
-          qDebug() << o;
+        emit uiEventAnnuityCalc(p, P, n);
+        O = P - S;
 
         while (currentDate <= endDate) {
           QString currentYear = QString::number(currentDate.year());
           QString currentMonth = QLocale().monthName(currentDate.month());
+
           anuInfo += "Pay for " + currentMonth + " " + currentYear + ": " +
                      QString::number(p, 'f', 2) +
-                     " overpayment: " + QString::number(o, 'f', 2) + "\n";
+                     " overpayment: " + QString::number(O / n, 'f', 2) + "\n";
 
           currentDate = currentDate.addMonths(1);
         }
       } else if (ui->caseCredit->currentIndex() == 1) {
-        /* Формула для расчета дифференцированного платежа выглядит следующим
-           образом : P = (S / n) + (S - (m - 1) * (S / n)) * i, где: P - размер
-           дифференцированного платежа, S - сумма кредита, n - срок кредита в
-           месяцах, m - номер текущего месяца, i - годовая процентная ставка,
-           деленная на 12 месяцев. i = (S - (m - 1) * (S / n)) * i */
-
         while (m <= n) {
           QString currentYear = QString::number(currentDate.year());
           QString currentMonth = QLocale().monthName(currentDate.month());
 
-          p = (S / n) + (S - (m - 1) * (S / n)) * i;
-          o = (S - (m - 1) * (S / n)) * i;
+//          p = (S / n) + (S - (m - 1) * (S / n)) * i;
+//          o = (S - (m - 1) * (S / n)) * i;
+          emit uiEventDifferentialCalc(p, o, S, i, n, m);
           P += p;
           O += o;
 
