@@ -341,6 +341,28 @@ void s21::CalcModel::creditCalculate(QString& overPayment, QString& allPayment,
   }
 }
 
+void s21::CalcModel::annuityCreditCalculate() {
+  double m = 1, o = 0, O = 0, p = 0, P = 0;
+  p = (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
+  P = p * n;
+  O = P - S;
+  o = O / n;
+}
+
+QString s21::CaclcModel::annuityCreditOutput(QString& currentDate) {
+  QString anuInfo;
+  while (currentDate <= endDate) {
+    QString currentYear = QString::number(currentDate.year());
+    QString currentMonth = QLocale().monthName(currentDate.month());
+    anuInfo += "Pay for " + currentMonth + " " + currentYear + ": " +
+               QString::number(p, 'f', 2) +
+               " overpayment: " + QString::number(o, 'f', 2) + "\n";
+
+    currentDate = currentDate.addMonths(1);
+  }
+  return anuInfo;
+}
+
 QString s21::CalcModel::debitCalculate(double& resProfit, double& resDep,
                                        double sumDep, double percent, int month,
                                        bool checkState) {
