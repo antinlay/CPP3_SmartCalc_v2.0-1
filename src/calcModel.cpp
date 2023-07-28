@@ -297,70 +297,13 @@ double s21::CalcModel::calculate(QString infix) {
   return calculatePostfix(newInfix);
 }
 
-void s21::CalcModel::creditCalculate(QString& overPayment, QString& allPayment,
-                                     int month, double summa,
-                                     QString stavkaProc, QString sumCredit,
-                                     QString spinBox, size_t comboBox,
-                                     QString& result) {
-  double payment = 0, allSum = 0, pp = 0;
-
-  if (stavkaProc == "" || sumCredit == "" || spinBox == "") {
-    result = "ERROR";
-  } else {
-    double summaProc = summa;
-
-    for (int var = 1; var <= month; var++) {
-      double stavka = stavkaProc.toDouble();
-      QString payInfo, monthPay;
-      if (comboBox == 1) {
-        // https://www.banki.ru/wikibank/raschet_differentsirovannogo_plateja/
-        // in 31 days on month and 365 days on year
-        QString varMonth = QString::number(var);
-        payment = summa / month + summaProc * stavka * 31 / 365 / 100;
-        allSum += payment;
-        summaProc = summa - var * summa / month;
-        monthPay = QString::number(payment, 'f', 2);
-        payInfo = "Pay for " + varMonth + " month = " + monthPay + "\n";
-      } else if (comboBox == 0) {
-        // https://www.banki.ru/wikibank/raschet_annuitetnogo_plateja/
-        var = month;
-        double prStavka = stavka / 12 / 100;
-        payment = summa * (prStavka * pow(1 + prStavka, month) /
-                           (pow(1 + prStavka, month) - 1));
-        allSum = payment * month;
-        monthPay = QString::number(payment, 'f', 2);
-        payInfo = "Pay for every month = " + monthPay + "\n";
-        //                ui->listWidget->setMaximumSize(6, 6);
-      }
-
-      result += payInfo;
-    }
-    pp = allSum - summa;
-    overPayment = QString::number(pp, 'f', 2);
-    allPayment = QString::number(allSum, 'f', 2);
-  }
+double s21::CalcModel::paymentAnnuityCalc(double S, double i, size_t n) {
+  return (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
 }
 
-void s21::CalcModel::annuityCreditCalculate() {
-  double m = 1, o = 0, O = 0, p = 0, P = 0;
-  p = (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
-  P = p * n;
-  O = P - S;
-  o = O / n;
-}
-
-QString s21::CaclcModel::annuityCreditOutput(QString& currentDate) {
-  QString anuInfo;
-  while (currentDate <= endDate) {
-    QString currentYear = QString::number(currentDate.year());
-    QString currentMonth = QLocale().monthName(currentDate.month());
-    anuInfo += "Pay for " + currentMonth + " " + currentYear + ": " +
-               QString::number(p, 'f', 2) +
-               " overpayment: " + QString::number(o, 'f', 2) + "\n";
-
-    currentDate = currentDate.addMonths(1);
-  }
-  return anuInfo;
+double s21::CalcModel::overpaymentAnnuityCalc(double S, double i, size_t n) {
+  double P = paymentAnnuityCalc(S, i, n) * n, O = P - S;
+  return O / n;
 }
 
 QString s21::CalcModel::debitCalculate(double& resProfit, double& resDep,

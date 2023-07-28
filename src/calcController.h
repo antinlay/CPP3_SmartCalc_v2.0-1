@@ -24,14 +24,19 @@ class CalcController : public QObject {
   void setDegreeMode(bool statusDegreeMode) {
     m_->setDegreeMode(statusDegreeMode);
   };
+  void uiEventPaymentCalc(double& S, double i, size_t n) {
+    S = m_->paymentAnnuityCalc(S, i, n);
+    qDebug() << S << "Controller";
+  };
+  void uiEventOverpaymentCalc(double& S, double i, size_t n) {
+    S = m_->overpaymentAnnuityCalc(S, i, n);
+    qDebug() << S << "Controller";
+  };
 
  public:
   CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
   void replaceX(QString& equalResult, QString& equalLabel);
   void validateChangeOn(QString equalStr, bool& status);
-  void calcCredit(QString& overPayment, QString& allPayment, int month,
-                  double summa, QString stavkaProc, QString sumCredit,
-                  QString spinBox, size_t comboBox, QString& result);
   QString calcDebit(double& resProfit, double& resDep, double sumDep,
                     double percent, int month, bool checkState);
 

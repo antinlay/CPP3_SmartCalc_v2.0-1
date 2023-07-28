@@ -18,9 +18,8 @@ class Credit : public QWidget {
   ~Credit();
 
 signals:
-    void calcCredit(QString& overPayment, QString& allPayment, int month,
-                       double summa, QString stavkaProc, QString sumCredit,
-                       QString spinBox, size_t comboBox, QString& result);
+    void uiEventPaymentCalc(double& S, double i, size_t n);
+    void uiEventOverpaymentCalc(double& S, double i, size_t n);
 
  private slots:
   void calcClicked();

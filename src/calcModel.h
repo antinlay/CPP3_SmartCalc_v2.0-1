@@ -55,9 +55,9 @@ class CalcModel {
   double getFromStack(QStack<double>& operands);
   double calculatePostfix(QQueue<QString> postfix);
   double calculate(QString infix);
-  void creditCalculate(QString& overPayment, QString& allPayment, int month,
-                          double summa, QString stavkaProc, QString sumCredit,
-                          QString spinBox, size_t comboBox, QString& result);
+  // CREDIT CALCULATE
+  double paymentAnnuityCalc(double S, double i, size_t n);
+  double overpaymentAnnuityCalc(double S, double i, size_t n);
   QString debitCalculate(double& resProfit, double& resDep, double sumDep,
                          double percent, int month, bool checkState);
   void graphCalculate(int& h, double& xStart, double& yStart, double& xEnd,

@@ -28,7 +28,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(&w, &CalcView::uiEventSendResult, &g, &Graph::uiEventSendResult);
 
   Credit r;
-  QObject::connect(&r, &Credit::calcCredit, &c, &s21::CalcController::calcCredit);
+  QObject::connect(&r, &Credit::uiEventPaymentCalc, &c, &s21::CalcController::uiEventPaymentCalc);
+  QObject::connect(&r, &Credit::uiEventOverpaymentCalc, &c, &s21::CalcController::uiEventOverpaymentCalc);
 
   return a.exec();
 }

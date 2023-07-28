@@ -51,17 +51,18 @@ void Credit::calcClicked() {
          переплата, P - обшая переплата */
       QDate currentDate = ui->startDate->date(), endDate = ui->endDate->date();
       QString anuInfo;
-      double m = 1, o = 0, O = 0, p = 0, P = 0;
+      double m = 1, o = S, O = 0, p = S, P = 0;
 
       ui->payment->clear();
       ui->overpayment->clear();
       ui->info->clear();
 
       if (ui->caseCredit->currentIndex() == 0) {
-        p = (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
-        P = p * n;
-        O = P - S;
-        o = O / n;
+          emit uiEventPaymentCalc(p, i, n);
+          emit uiEventOverpaymentCalc(o, i, n);
+
+          qDebug() << p;
+          qDebug() << o;
 
         while (currentDate <= endDate) {
           QString currentYear = QString::number(currentDate.year());
