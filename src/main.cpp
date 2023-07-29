@@ -36,5 +36,7 @@ int main(int argc, char *argv[]) {
                    &s21::CalcController::creditDifferentialCalc);
   QObject::connect(&w, &CalcView::uiEventShowCredit, &r, &Credit::showCredit);
 
+  Debit d;
+  QObject::connect(&w, &CalcView::uiEventShowDebit, &d, &Debit::showDedit);
   return a.exec();
 }

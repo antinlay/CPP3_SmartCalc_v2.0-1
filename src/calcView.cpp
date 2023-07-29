@@ -173,8 +173,7 @@ void CalcView::creditClicked() {
 }
 
 void CalcView::debitClicked() {
-  Debit *debitWindow = new Debit();
-  debitWindow->show();
+    emit uiEventShowDebit();
 }
 
 void CalcView::graphClicked() {

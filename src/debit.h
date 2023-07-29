@@ -15,6 +15,7 @@ class Debit : public QWidget {
  public:
   explicit Debit(QWidget *parent = nullptr);
   ~Debit();
+   void showDedit() {this->show();};
 
  private slots:
   void debitClicked();

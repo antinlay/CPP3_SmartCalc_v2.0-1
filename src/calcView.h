@@ -33,6 +33,7 @@ class CalcView : public QMainWindow {
   void validateChangedOn(QString expression, bool& status);
   void uiEventSendResult(QString equalResult);
   void uiEventShowCredit();
+  void uiEventShowDebit();
 
  private:
   Ui::CalcView *ui;
