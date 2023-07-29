@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>314</width>
-    <height>550</height>
+    <width>450</width>
+    <height>711</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>314</width>
-    <height>550</height>
+    <width>450</width>
+    <height>711</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>314</width>
-    <height>550</height>
+    <width>450</width>
+    <height>711</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -34,8 +34,8 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>291</width>
-     <height>531</height>
+     <width>431</width>
+     <height>727</height>
     </rect>
    </property>
    <property name="font">
@@ -46,7 +46,7 @@
    </property>
    <layout class="QVBoxLayout" name="enterValue">
     <item>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="labelDeposit">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -59,7 +59,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_sumDep">
+     <widget class="QLineEdit" name="deposit">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -75,7 +75,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="labelStartDate">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -83,22 +83,31 @@
        </font>
       </property>
       <property name="text">
-       <string>Months</string>
+       <string>Start date</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QSpinBox" name="spinBox_months">
+     <widget class="QDateEdit" name="startDate"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelEndDate">
       <property name="font">
        <font>
         <family>Arial Black</family>
         <bold>true</bold>
        </font>
       </property>
+      <property name="text">
+       <string>End date</string>
+      </property>
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_5">
+     <widget class="QDateEdit" name="endDate"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelRate">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -111,7 +120,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_intRate">
+     <widget class="QLineEdit" name="rate">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -124,7 +133,17 @@
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="checkBox">
+     <widget class="QLabel" name="labelPeriod">
+      <property name="text">
+       <string>Periodicity of payments</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="casePeriod"/>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="capitalization">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -137,7 +156,59 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButtonDebit">
+     <layout class="QHBoxLayout" name="reDeposit">
+      <property name="spacing">
+       <number>-1</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QComboBox" name="casePeriodDep"/>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="depositDate"/>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="summDep"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QPushButton" name="addDeposit">
+      <property name="text">
+       <string>+ RE-DEPOSIT</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="withdraw">
+      <property name="spacing">
+       <number>-1</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QComboBox" name="casePeriodWithdraw"/>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="withdrawDate"/>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="summWithdraw"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QPushButton" name="addWithdraw">
+      <property name="text">
+       <string>+ WITHDRAWAL</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="buttounCalculate">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -154,7 +225,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_10">
+     <widget class="QLabel" name="labelProfit">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -167,7 +238,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_resPercent">
+     <widget class="QLineEdit" name="profit">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -183,7 +254,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="label_14">
+     <widget class="QLabel" name="labelSumm">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -196,7 +267,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_resDep">
+     <widget class="QLineEdit" name="summ">
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -209,7 +280,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QListWidget" name="listWidget">
+     <widget class="QListWidget" name="shedule">
       <property name="font">
        <font>
         <family>Arial Black</family>
