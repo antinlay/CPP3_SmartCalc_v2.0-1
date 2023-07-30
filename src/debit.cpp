@@ -38,13 +38,17 @@ Debit::Debit(QWidget* parent) : QWidget(parent), ui(new Ui::Debit) {
   ui->withdrawDate->setCalendarPopup(true);
   ui->withdrawDate->setDate(QDate::currentDate());
 
+  ui->groupBoxDep->setVisible(false);
+  ui->groupBoxWithdraw->setVisible(false);
+
   connect(ui->startDate, &QDateEdit::dateChanged,
           [=](const QDate& date) { ui->endDate->setMinimumDate(date); });
 
-  ui->groupBox->setVisible(false);
-
   connect(ui->buttounCalculate, &QPushButton::clicked, this,
           &Debit::debitClicked);
+
+  connect(ui->addDeposit, &QPushButton::clicked, this, [=]() {ui->groupBoxDep->setVisible(true);});
+  connect(ui->addWithdraw, &QPushButton::clicked, this, [=]() {ui->groupBoxWithdraw->setVisible(true);});
 }
 
 Debit::~Debit() { delete ui; }
@@ -109,6 +113,16 @@ void Debit::debitClicked() {
                " interest: " + QString::number(interest, 'f', 2) + "\n";
     qDebug() << currentDate.daysTo(endDate) << "CR - ED";
     qDebug() << ittWeek << "ITT";
+    if (!ui->summDep->text().isEmpty()) {
+        QDate depositDate = ui->depositDate->date();
+        if (ui->casePeriodDep->currentIndex() == 0) {
+            if (currentDate <= depositDate && itterator >= depositDate) {
+                anuInfo += "Deposite for " + QString::number(depositDate.day()) + " " +  QLocale().monthName(depositDate.month()) + " " +
+                        QString::number(depositDate.year()) + ": " + QString::number(finalAmount, 'f', 2) +
+                        " interest: " + QString::number(interest, 'f', 2) + "\n";
+            }
+        }
+    }
   }
   qDebug() << daysOnYear;
   ui->profit->clear();

@@ -10,6 +10,12 @@
     <height>850</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
     <width>450</width>
@@ -19,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>450</width>
-    <height>850</height>
+    <height>1850</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -143,28 +149,58 @@
      <widget class="QComboBox" name="casePeriod"/>
     </item>
     <item>
-     <widget class="QCheckBox" name="capitalization">
-      <property name="font">
-       <font>
-        <family>Arial Black</family>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>% to deposit</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="capitalization">
+        <property name="font">
+         <font>
+          <family>Arial Black</family>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>% to deposit</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="addDeposit">
+        <property name="text">
+         <string>+ RE-DEPOSIT</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="addWithdraw">
+        <property name="text">
+         <string>+ WITHDRAWAL</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QGroupBox" name="groupBox">
-      <property name="title">
-       <string>GroupBox</string>
+     <widget class="QGroupBox" name="groupBoxDep">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-      <widget class="QWidget" name="">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
-         <x>-20</x>
-         <y>10</y>
+         <x>0</x>
+         <y>0</y>
          <width>419</width>
          <height>32</height>
         </rect>
@@ -187,11 +223,30 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="">
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBoxWithdraw">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QWidget" name="layoutWidget_5">
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>10</y>
+         <y>0</y>
          <width>419</width>
          <height>32</height>
         </rect>
@@ -214,20 +269,6 @@
         </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="addDeposit">
-      <property name="text">
-       <string>+ RE-DEPOSIT</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="addWithdraw">
-      <property name="text">
-       <string>+ WITHDRAWAL</string>
-      </property>
      </widget>
     </item>
     <item>

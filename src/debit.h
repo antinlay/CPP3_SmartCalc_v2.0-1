@@ -2,6 +2,7 @@
 #define DEBIT_H
 
 #include <QWidget>
+#include <QtWidgets>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,6 +20,23 @@ class Debit : public QWidget {
 
  private slots:
   void debitClicked();
+//  void addHBoxLayout() {
+//      QGroupBox *groupBox = new QGroupBox("GroupBox");
+//      QHBoxLayout *hBoxLayout = new QHBoxLayout;
+//      groupBox->setLayout(hBoxLayout);
+//      QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(centralWidget()->layout());
+//      layout->addWidget(groupBox);
+
+//      QPushButton *deleteButton = new QPushButton("Удалить QHBoxLayout");
+//      connect(deleteButton, &QPushButton::clicked, [hBoxLayout, groupBox]() {
+//          groupBox->layout()->removeItem(hBoxLayout);
+//          delete hBoxLayout;
+//          delete deleteButton;
+//          groupBox->adjustSize();
+//      });
+//      hBoxLayout->addWidget(deleteButton);
+//      groupBox->adjustSize();
+//  };
   
  private:
   Ui::Debit *ui;
