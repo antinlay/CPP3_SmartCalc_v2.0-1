@@ -2,7 +2,7 @@
 
 #include "ui_debit.h"
 
-Debit::Debit(QWidget *parent) : QWidget(parent), ui(new Ui::Debit) {
+Debit::Debit(QWidget* parent) : QWidget(parent), ui(new Ui::Debit) {
   auto validator = new QDoubleValidator();
 
   ui->setupUi(this);
@@ -39,30 +39,28 @@ Debit::Debit(QWidget *parent) : QWidget(parent), ui(new Ui::Debit) {
   ui->withdrawDate->setDate(QDate::currentDate());
 
   connect(ui->startDate, &QDateEdit::dateChanged,
-          [=](const QDate& date) { ui->endDate->setMinimumDate(date);});
+          [=](const QDate& date) { ui->endDate->setMinimumDate(date); });
 
   ui->groupBox->setVisible(false);
 
-  connect(ui->buttounCalculate, &QPushButton::clicked, this, &Debit::debitClicked);
+  connect(ui->buttounCalculate, &QPushButton::clicked, this,
+          &Debit::debitClicked);
 }
 
 Debit::~Debit() { delete ui; }
 
 void Debit::debitClicked() {
-//  int month = ui->spinBox_months->text().toInt();
-//  double sumDep = ui->lineEdit_sumDep->text().toDouble(),
-//         percent = ui->lineEdit_intRate->text().toDouble(),
-//         resDep = 0, resProfit = 0;
-//  bool checkState = ui->checkBox->checkState();
-    QDate currentDate = ui->startDate->date(), endDate = ui->endDate->date();
-    size_t daysOnYear = currentDate.daysTo(currentDate.addYears(1));
+  QDate currentDate = ui->startDate->date(), endDate = ui->endDate->date();
+  size_t daysOnYear = currentDate.daysTo(currentDate.addYears(1));
 
-    double deposit = ui->deposit->text().toDouble(), interestRate = ui->rate->text().toDouble()/100/daysOnYear, finalAmount = deposit, profit = 0;
-    bool isCapitalized = ui->capitalization->isChecked();
+  double deposit = ui->deposit->text().toDouble(),
+         interestRate = ui->rate->text().toDouble() / 100 / daysOnYear,
+         finalAmount = deposit, profit = 0;
+  bool isCapitalized = ui->capitalization->isChecked();
 
-    QString anuInfo;
+  QString anuInfo;
 
-    /* Формула для вычисления процентов вклада с капитализацией:
+  /* Формула для вычисления процентов вклада с капитализацией:
 Проценты = (Основная сумма * Процентная ставка * Период) / 100
 
 Формула для вычисления процентов вклада без капитализации:
@@ -72,35 +70,46 @@ void Debit::debitClicked() {
 - Основная сумма - сумма депозита
 - Процентная ставка - годовая процентная ставка
 - Период - количество месяцев */
-
-    while (currentDate <= endDate) {
-        double interest;
-        QDate itterator;
-        size_t ittWeek = 7;
-        if (currentDate.daysTo(endDate) < ittWeek) ittWeek = currentDate.daysTo(endDate);
-        if (ui->casePeriod->currentIndex() == 1) itterator = currentDate.addMonths(1);
-        if (ui->casePeriod->currentIndex() == 0) itterator = currentDate.addDays(ittWeek);
-        if (isCapitalized) {
-            interest = finalAmount * interestRate * currentDate.daysTo(itterator);
-        } else {
-            interest = deposit * interestRate * currentDate.daysTo(itterator);
-        }
-        finalAmount += interest;
-        profit += interest;
-        qDebug() << finalAmount;
-        qDebug() << profit;
-
-      QString currentYear = QString::number(currentDate.year());
-      QString currentMonth = QLocale().monthName(currentDate.month());
-
-      anuInfo += "Pay for " + currentMonth + " " + currentYear + ": " +
-                 QString::number(finalAmount, 'f', 2) +
-                 " interest: " + QString::number(interest, 'f', 2) + "\n";
-      qDebug() << currentDate.daysTo(endDate);
-      qDebug() << ittWeek;
-      if (ui->casePeriod->currentIndex() == 1) currentDate = currentDate.addMonths(1);
-      if (ui->casePeriod->currentIndex() == 0) currentDate = currentDate.addDays(ittWeek);
+  auto currentDay = currentDate.day();
+  while (currentDate.daysTo(endDate) > 0) {
+    double interest;
+    auto ittWeek = 7;
+    QDate itterator;
+    if (ui->casePeriod->currentIndex() == 1) {
+      currentDate = currentDate.addMonths(1);
+      if (currentDate.month() != 2) currentDate.setDate(currentDate.year(), currentDate.month(), currentDay);
+      itterator = currentDate.addMonths(1);
+      if (itterator.month() != 2) itterator.setDate(itterator.year(), itterator.month(), currentDay);
     }
+    if (ui->casePeriod->currentIndex() == 0) {
+      if (currentDate.daysTo(endDate) <= ittWeek) {
+        ittWeek = currentDate.daysTo(endDate);
+      }
+      currentDate = currentDate.addDays(ittWeek);
+      itterator = currentDate.addDays(ittWeek);
+    }
+    if (isCapitalized) {
+        qDebug() << currentDate.daysTo(itterator) << "CD to ITT";
+      interest = finalAmount * interestRate * currentDate.daysTo(itterator);
+      qDebug() << interest << "CD to ITT";
+    } else {
+      interest = deposit * interestRate * currentDate.daysTo(itterator);
+    }
+    finalAmount += interest;
+    profit += interest;
+    qDebug() << finalAmount << "FA";
+    qDebug() << profit << "PR";
+
+    QString currentYear = QString::number(currentDate.year());
+    QString currentMonth = QLocale().monthName(currentDate.month());
+    QString currentDay = QString::number(currentDate.day());
+
+    anuInfo += "Pay for " + currentDay + " " + currentMonth + " " +
+               currentYear + ": " + QString::number(finalAmount, 'f', 2) +
+               " interest: " + QString::number(interest, 'f', 2) + "\n";
+    qDebug() << currentDate.daysTo(endDate) << "CR - ED";
+    qDebug() << ittWeek << "ITT";
+  }
   qDebug() << daysOnYear;
   ui->profit->clear();
   ui->summ->clear();
