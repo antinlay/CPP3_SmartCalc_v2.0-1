@@ -47,14 +47,18 @@ Debit::Debit(QWidget* parent) : QWidget(parent), ui(new Ui::Debit) {
   connect(ui->buttounCalculate, &QPushButton::clicked, this,
           &Debit::debitClicked);
 
-  connect(ui->addDeposit, &QPushButton::clicked, this, [=]() {ui->groupBoxDep->setVisible(true);});
-  connect(ui->addWithdraw, &QPushButton::clicked, this, [=]() {ui->groupBoxWithdraw->setVisible(true);});
+  connect(ui->addDeposit, &QPushButton::clicked, this,
+          [=]() { ui->groupBoxDep->setVisible(true); });
+  connect(ui->addWithdraw, &QPushButton::clicked, this,
+          [=]() { ui->groupBoxWithdraw->setVisible(true); });
 }
 
 Debit::~Debit() { delete ui; }
 
 void Debit::debitClicked() {
-  QDate currentDate = ui->startDate->date(), endDate = ui->endDate->date();
+  QDate currentDate = ui->startDate->date(), endDate = ui->endDate->date(),
+        depositDate = ui->depositDate->date(),
+        withdrawDate = ui->withdrawDate->date();
   size_t daysOnYear = currentDate.daysTo(currentDate.addYears(1));
 
   double deposit = ui->deposit->text().toDouble(),
@@ -69,21 +73,24 @@ void Debit::debitClicked() {
 
 Формула для вычисления процентов вклада без капитализации:
 Проценты = (Основная сумма * Процентная ставка * Период) / (12 * 100)
-
 Где:
 - Основная сумма - сумма депозита
 - Процентная ставка - годовая процентная ставка
 - Период - количество месяцев */
   auto currentDay = currentDate.day();
+
   while (currentDate.daysTo(endDate) > 0) {
     double interest;
     auto ittWeek = 7;
     QDate itterator;
     if (ui->casePeriod->currentIndex() == 1) {
       currentDate = currentDate.addMonths(1);
-      if (currentDate.month() != 2) currentDate.setDate(currentDate.year(), currentDate.month(), currentDay);
+      if (currentDate.month() != 2 || currentDay == 31)
+        currentDate.setDate(currentDate.year(), currentDate.month(),
+                            currentDate.daysInMonth());
       itterator = currentDate.addMonths(1);
-      if (itterator.month() != 2) itterator.setDate(itterator.year(), itterator.month(), currentDay);
+      if (itterator.month() != 2 || currentDay == 31)
+        itterator.setDate(itterator.year(), itterator.month(), currentDate.daysInMonth());
     }
     if (ui->casePeriod->currentIndex() == 0) {
       if (currentDate.daysTo(endDate) <= ittWeek) {
@@ -93,7 +100,7 @@ void Debit::debitClicked() {
       itterator = currentDate.addDays(ittWeek);
     }
     if (isCapitalized) {
-        qDebug() << currentDate.daysTo(itterator) << "CD to ITT";
+      qDebug() << currentDate.daysTo(itterator) << "CD to ITT";
       interest = finalAmount * interestRate * currentDate.daysTo(itterator);
       qDebug() << interest << "CD to ITT";
     } else {
@@ -113,15 +120,46 @@ void Debit::debitClicked() {
                " interest: " + QString::number(interest, 'f', 2) + "\n";
     qDebug() << currentDate.daysTo(endDate) << "CR - ED";
     qDebug() << ittWeek << "ITT";
+
     if (!ui->summDep->text().isEmpty()) {
-        QDate depositDate = ui->depositDate->date();
-        if (ui->casePeriodDep->currentIndex() == 0) {
-            if (currentDate <= depositDate && itterator >= depositDate) {
-                anuInfo += "Deposite for " + QString::number(depositDate.day()) + " " +  QLocale().monthName(depositDate.month()) + " " +
-                        QString::number(depositDate.year()) + ": " + QString::number(finalAmount, 'f', 2) +
-                        " interest: " + QString::number(interest, 'f', 2) + "\n";
-            }
+      if (ui->casePeriodDep->currentIndex() == 0 ||
+          ui->casePeriodDep->currentIndex() == 1) {
+        if (currentDate <= depositDate && itterator >= depositDate &&
+            endDate >= depositDate) {
+          finalAmount += ui->summDep->text().toDouble();
+          anuInfo += "Deposite for " + QString::number(depositDate.day()) +
+                     " " + QLocale().monthName(depositDate.month()) + " " +
+                     QString::number(depositDate.year()) + ": " +
+                     QString::number(finalAmount, 'f', 2) + " amount: " +
+                     QString::number(ui->summDep->text().toDouble(), 'f', 2) +
+                     "\n";
+          if (ui->casePeriodDep->currentIndex() == 1) {
+            depositDate = depositDate.addMonths(1);
+          }
         }
+      }
+    }
+
+    if (!ui->summWithdraw->text().isEmpty()) {
+      if (ui->casePeriodWithdraw->currentIndex() == 0 ||
+          ui->casePeriodWithdraw->currentIndex() == 1) {
+        if (currentDate <= withdrawDate && itterator >= withdrawDate &&
+            endDate >= withdrawDate) {
+          if (finalAmount > ui->summWithdraw->text().toDouble()) {
+            finalAmount -= ui->summWithdraw->text().toDouble();
+            anuInfo +=
+                "Withdraw for " + QString::number(withdrawDate.day()) + " " +
+                QLocale().monthName(withdrawDate.month()) + " " +
+                QString::number(withdrawDate.year()) + ": " +
+                QString::number(finalAmount, 'f', 2) + " amount: " +
+                QString::number(ui->summWithdraw->text().toDouble(), 'f', 2) +
+                "\n";
+            if (ui->casePeriodWithdraw->currentIndex() == 1) {
+              withdrawDate = withdrawDate.addMonths(1);
+            }
+          }
+        }
+      }
     }
   }
   qDebug() << daysOnYear;
