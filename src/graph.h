@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include <QWidget>
+#include <QtAlgorithms>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

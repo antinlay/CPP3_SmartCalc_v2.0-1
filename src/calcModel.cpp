@@ -76,10 +76,8 @@ double s21::CalcModel::subtractCalc(double a, double b) { return a - b; }
 double s21::CalcModel::multiplyCalc(double a, double b) { return a * b; }
 double s21::CalcModel::divideCalc(double a, double b) {
   if (b == 0) {
-    if (b == 0) {
-      throw std::runtime_error("Undefined divide zero: " + std::to_string(a) +
-                               " / " + std::to_string(b));
-    }
+    throw std::runtime_error("Undefined divide zero: " + std::to_string(a) +
+                             " / " + std::to_string(b));
   }
   return a / b;
 }
@@ -100,7 +98,7 @@ double s21::CalcModel::sqrtCalc(double a) {
                              std::to_string(a));
   }
 
-  return qSqrt(qAbs(a));
+  return qSqrt(a);
 }
 // FUNCTIONS
 double s21::CalcModel::lnCalc(double a) { return log(a); }
@@ -366,7 +364,7 @@ void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
       continue;
     }
   }
-
+  // get xy range
   for (int i = 0; i < y.size() && i < x.size(); i++) {
     if (y[i] > yEnd && y[i] >= 0.000001) {
       yEnd = y[i];
@@ -376,6 +374,8 @@ void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
       yStart = y[i];
     }
   }
-  std::cout << yStart << " Y " << yEnd << std::endl;
-  std::cout << xStart << " X " << xEnd << std::endl;
+  // xStart = *qMin(x.constBegin(), x.constEnd());
+  // xEnd = *qMax(x.constBegin(), x.constEnd());
+  // yStart = *qMin(y.constBegin(), y.constEnd());
+  // yEnd = *qMax(y.constBegin(), y.constEnd());
 }
