@@ -159,7 +159,7 @@
          </font>
         </property>
         <property name="text">
-         <string>% to deposit</string>
+         <string>capitalization</string>
         </property>
        </widget>
       </item>
@@ -194,13 +194,13 @@
        </size>
       </property>
       <property name="title">
-       <string/>
+       <string>RE-DEPOSIT</string>
       </property>
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>0</y>
+         <y>30</y>
          <width>419</width>
          <height>32</height>
         </rect>
@@ -240,13 +240,13 @@
        </size>
       </property>
       <property name="title">
-       <string/>
+       <string>WITHDRAWAL</string>
       </property>
       <widget class="QWidget" name="layoutWidget_5">
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>0</y>
+         <y>30</y>
          <width>419</width>
          <height>32</height>
         </rect>

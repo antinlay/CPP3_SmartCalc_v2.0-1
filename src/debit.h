@@ -20,6 +20,7 @@ class Debit : public QWidget {
 
  private slots:
   void debitClicked();
+  void initDate();
 //  void addHBoxLayout() {
 //      QGroupBox *groupBox = new QGroupBox("GroupBox");
 //      QHBoxLayout *hBoxLayout = new QHBoxLayout;

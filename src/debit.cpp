@@ -38,11 +38,14 @@ Debit::Debit(QWidget* parent) : QWidget(parent), ui(new Ui::Debit) {
   ui->withdrawDate->setCalendarPopup(true);
   ui->withdrawDate->setDate(QDate::currentDate());
 
+  initDate();
+
   ui->groupBoxDep->setVisible(false);
   ui->groupBoxWithdraw->setVisible(false);
 
-  connect(ui->startDate, &QDateEdit::dateChanged,
-          [=](const QDate& date) { ui->endDate->setMinimumDate(date); });
+  connect(ui->startDate, &QDateEdit::dateChanged, [=](const QDate& date) {
+      initDate();
+  });
 
   connect(ui->buttounCalculate, &QPushButton::clicked, this,
           &Debit::debitClicked);
@@ -54,6 +57,12 @@ Debit::Debit(QWidget* parent) : QWidget(parent), ui(new Ui::Debit) {
 }
 
 Debit::~Debit() { delete ui; }
+
+void Debit::initDate() {
+    ui->endDate->setMinimumDate(ui->startDate->date().addMonths(1));
+    ui->depositDate->setMinimumDate(ui->startDate->date().addMonths(1));
+    ui->withdrawDate->setMinimumDate(ui->startDate->date().addMonths(1));
+}
 
 void Debit::debitClicked() {
   QDate currentDate = ui->startDate->date(), endDate = ui->endDate->date(),
@@ -77,7 +86,8 @@ void Debit::debitClicked() {
 - Основная сумма - сумма депозита
 - Процентная ставка - годовая процентная ставка
 - Период - количество месяцев */
-  auto currentDay = currentDate.day();
+  auto startCurrentDay = currentDate.day(), startDepDay = depositDate.day(),
+       startWithdrawDay = withdrawDate.day();
 
   while (currentDate.daysTo(endDate) > 0) {
     double interest;
@@ -85,12 +95,13 @@ void Debit::debitClicked() {
     QDate itterator;
     if (ui->casePeriod->currentIndex() == 1) {
       currentDate = currentDate.addMonths(1);
-      if (currentDate.month() != 2 || currentDay == 31)
+      if (currentDate.month() != 2 || startCurrentDay == 31)
         currentDate.setDate(currentDate.year(), currentDate.month(),
                             currentDate.daysInMonth());
       itterator = currentDate.addMonths(1);
-      if (itterator.month() != 2 || currentDay == 31)
-        itterator.setDate(itterator.year(), itterator.month(), currentDate.daysInMonth());
+      if (itterator.month() != 2 || startCurrentDay == 31)
+        itterator.setDate(itterator.year(), itterator.month(),
+                          itterator.daysInMonth());
     }
     if (ui->casePeriod->currentIndex() == 0) {
       if (currentDate.daysTo(endDate) <= ittWeek) {
@@ -135,6 +146,9 @@ void Debit::debitClicked() {
                      "\n";
           if (ui->casePeriodDep->currentIndex() == 1) {
             depositDate = depositDate.addMonths(1);
+            if (depositDate.month() != 2 || startDepDay == 31)
+              depositDate.setDate(depositDate.year(), depositDate.month(),
+                                  depositDate.daysInMonth());
           }
         }
       }
@@ -156,6 +170,9 @@ void Debit::debitClicked() {
                 "\n";
             if (ui->casePeriodWithdraw->currentIndex() == 1) {
               withdrawDate = withdrawDate.addMonths(1);
+              if (withdrawDate.month() != 2 || startWithdrawDay == 31)
+                withdrawDate.setDate(withdrawDate.year(), withdrawDate.month(),
+                                     withdrawDate.daysInMonth());
             }
           }
         }

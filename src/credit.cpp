@@ -29,7 +29,7 @@ Credit::Credit(QWidget* parent) : QWidget(parent), ui(new Ui::Credit) {
   connect(ui->calculate, &QPushButton::clicked, this, &Credit::calcClicked);
 
   connect(ui->startDate, &QDateEdit::dateChanged,
-          [=](const QDate& date) { ui->endDate->setMinimumDate(date); });
+          [=](const QDate& date) { ui->endDate->setMinimumDate(date.addMonths(1)); });
 }
 
 Credit::~Credit() { delete ui; }
@@ -71,9 +71,6 @@ void Credit::calcClicked() {
         while (m <= n) {
           QString currentYear = QString::number(currentDate.year());
           QString currentMonth = QLocale().monthName(currentDate.month());
-
-//          p = (S / n) + (S - (m - 1) * (S / n)) * i;
-//          o = (S - (m - 1) * (S / n)) * i;
           emit uiEventDifferentialCalc(p, o, S, i, n, m);
           P += p;
           O += o;
