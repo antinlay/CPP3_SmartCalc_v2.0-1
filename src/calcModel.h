@@ -9,6 +9,7 @@
 #include <QStack>
 #include <QTextStream>
 #include <QValidator>
+#include <QDate>
 #include <cmath>
 #include <iostream>
 
@@ -56,14 +57,16 @@ class CalcModel {
   double calculatePostfix(QQueue<QString> postfix);
   double calculate(QString infix);
   // CREDIT CALCULATE
+  void outputCredit(int caseIndex, double& S, double& i, QDate currentDate, size_t n, QString& anuInfo);
   void paymentAnnuityCalc(double& S, double& i, size_t n);
   void paymentDifferentialCalc(double& p, double& o, double S, double i,
                                size_t n, size_t m);
-  QString debitCalculate(double& resProfit, double& resDep, double sumDep,
-                         double percent, int month, bool checkState);
+  // DEBIT CALCULATE
+  void outputDebit(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo);
   void graphCalculate(int& h, double& xStart, double& yStart, double& xEnd,
                       double& yEnd, QString graphResult, QVector<double>& x,
                       QVector<double>& y);
+  void reDepositWithdrawCalculate(QString summ, int caseIndex, QDate& currentDate, QDate endDate, QDate& pasteDate, QDate& itterator, double& finalAmount, QString& anuInfo, bool flag);
 
   // DEGREE MODE
   void setDegreeMode(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }

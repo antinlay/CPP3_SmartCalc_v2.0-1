@@ -24,12 +24,11 @@ class CalcController : public QObject {
   void setDegreeMode(bool statusDegreeMode) {
     m_->setDegreeMode(statusDegreeMode);
   };
-  void creditAnnuityCalc(double& S, double& i, size_t n) {
-    m_->paymentAnnuityCalc(S, i, n);
+  void creditOutputInfo(int caseIndex, double& S, double& i, QDate currentDate, size_t n, QString& anuInfo) {
+      m_->outputCredit(caseIndex, S, i, currentDate, n, anuInfo);
   };
-  void creditDifferentialCalc(double& p, double& o, double S, double i,
-                              size_t n, size_t m) {
-    m_->paymentDifferentialCalc(p, o, S, i, n, m);
+  void outputDebitInfo(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo) {
+      m_->outputDebit(summDep, summWithdraw, currentDate, endDate, depositDate, withdrawDate, caseIndex, caseIndexDep, caseIndexWithdraw, isCapitalized, deposit, interestRate,  anuInfo);
   };
 
  public:

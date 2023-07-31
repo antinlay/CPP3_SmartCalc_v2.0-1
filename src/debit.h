@@ -18,6 +18,9 @@ class Debit : public QWidget {
   ~Debit();
    void showDedit() {this->show();};
 
+ signals:
+   void uiEventOutputInfo(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo);
+
  private slots:
   void debitClicked();
   void initDate();

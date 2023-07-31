@@ -1,7 +1,5 @@
 #include "credit.h"
 
-#include <cmath>
-
 #include "ui_credit.h"
 
 Credit::Credit(QWidget* parent) : QWidget(parent), ui(new Ui::Credit) {
@@ -26,6 +24,8 @@ Credit::Credit(QWidget* parent) : QWidget(parent), ui(new Ui::Credit) {
   ui->endDate->setCalendarPopup(true);
   ui->endDate->setDate(QDate::currentDate());
 
+  ui->endDate->setMinimumDate(ui->startDate->date().addMonths(1));
+
   connect(ui->calculate, &QPushButton::clicked, this, &Credit::calcClicked);
 
   connect(ui->startDate, &QDateEdit::dateChanged,
@@ -36,57 +36,27 @@ Credit::~Credit() { delete ui; }
 
 void Credit::calcClicked() {
   size_t n = (ui->endDate->date().year() - ui->startDate->date().year()) * 12 +
-             ui->endDate->date().month() - ui->startDate->date().month(),
-         m = 1;
+             ui->endDate->date().month() - ui->startDate->date().month();
+  int caseIndex = ui->caseCredit->currentIndex();
   double S = ui->summa->text().toDouble(),
          i = QString(ui->percent->text()).toDouble() / 12 / 100;
+  QDate currentDate = ui->startDate->date();
+  QString anuInfo;
 
   try {
     if (ui->summa->text().isEmpty() || !n || ui->percent->text().isEmpty()) {
       throw std::invalid_argument("Invalid argument in Credit view!");
     } else {
-      QDate currentDate = ui->startDate->date(), endDate = ui->endDate->date();
-      QString anuInfo;
-      double o = 0, O = 0, p = S, P = i;
+        emit uiEventOutputInfo(caseIndex, S, i, currentDate, n, anuInfo);
 
+      // clear fields
       ui->payment->clear();
       ui->overpayment->clear();
       ui->info->clear();
-
-      if (ui->caseCredit->currentIndex() == 0) {
-        emit uiEventAnnuityCalc(p, P, n);
-        O = P - S;
-
-        while (currentDate <= endDate) {
-          QString currentYear = QString::number(currentDate.year());
-          QString currentMonth = QLocale().monthName(currentDate.month());
-
-          anuInfo += "Pay for " + currentMonth + " " + currentYear + ": " +
-                     QString::number(p, 'f', 2) +
-                     " overpayment: " + QString::number(O / n, 'f', 2) + "\n";
-
-          currentDate = currentDate.addMonths(1);
-        }
-      } else if (ui->caseCredit->currentIndex() == 1) {
-        while (m <= n) {
-          QString currentYear = QString::number(currentDate.year());
-          QString currentMonth = QLocale().monthName(currentDate.month());
-          emit uiEventDifferentialCalc(p, o, S, i, n, m);
-          P += p;
-          O += o;
-
-          anuInfo += "Pay for " + currentMonth + " " + currentYear + ": " +
-                     QString::number(p, 'f', 2) +
-                     " interest amount: " + QString::number(o, 'f', 2) + "\n";
-
-          currentDate = currentDate.addMonths(1);
-          ++m;
-        }
-      }
-
+      // add info to fields
       ui->info->addItem(anuInfo);
-      ui->payment->setText(QString::number(P, 'f', 2));
-      ui->overpayment->setText(QString::number(O, 'f', 2));
+      ui->payment->setText(QString::number(S, 'f', 2));
+      ui->overpayment->setText(QString::number(i, 'f', 2));
     }
   } catch (std::exception& e) {
     QMessageBox::warning(

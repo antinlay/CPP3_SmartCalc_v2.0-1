@@ -23,10 +23,3 @@ void s21::CalcController::calcGraph(int& h, double& xStart, double& yStart,
                                     QVector<double>& y) {
   m_->graphCalculate(h, xStart, yStart, xEnd, yEnd, graphResult, x, y);
 }
-
-QString s21::CalcController::calcDebit(double& resProfit, double& resDep,
-                                       double sumDep, double percent, int month,
-                                       bool checkState) {
-  return m_->debitCalculate(resProfit, resDep, sumDep, percent, month,
-                            checkState);
-}

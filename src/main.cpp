@@ -30,13 +30,15 @@ int main(int argc, char *argv[]) {
                    &Graph::uiEventSendResult);
 
   Credit r;
-  QObject::connect(&r, &Credit::uiEventAnnuityCalc, &c,
-                   &s21::CalcController::creditAnnuityCalc);
-  QObject::connect(&r, &Credit::uiEventDifferentialCalc, &c,
-                   &s21::CalcController::creditDifferentialCalc);
+  QObject::connect(&r, &Credit::uiEventOutputInfo, &c,
+                   &s21::CalcController::creditOutputInfo);
+//  QObject::connect(&r, &Credit::uiEventDifferentialCalc, &c,
+//                   &s21::CalcController::creditDifferentialCalc);
   QObject::connect(&w, &CalcView::uiEventShowCredit, &r, &Credit::showCredit);
 
   Debit d;
+  QObject::connect(&d, &Debit::uiEventOutputInfo, &c,
+                   &s21::CalcController::outputDebitInfo);
   QObject::connect(&w, &CalcView::uiEventShowDebit, &d, &Debit::showDedit);
   return a.exec();
 }
