@@ -44,8 +44,8 @@ class CalcController : public QObject {
   QString calcDebit(double& resProfit, double& resDep, double sumDep,
                     double percent, int month, bool checkState);
 
-QObject::connect(d_, &Debit::uiEventOutputInfo, c_, &CalcController::outputDebitInfo);
-QObject::connect(v_, &CalcView::uiEventShowDebit, d_, &Debit::showDedit);
+  QObject::connect(d_, &Debit::uiEventOutputInfo, this, &CalcController::outputDebitInfo);
+  QObject::connect(v_, &CalcView::uiEventShowDebit, debit, &Debit::showDedit);
 
  private:
   CalcController* c_;
