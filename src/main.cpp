@@ -8,7 +8,8 @@ int main(int argc, char *argv[]) {
 
   s21::CalcModel m;
   Ui::CalcView v;
-  s21::CalcController c(&v, &m);
+  Ui::Debit d;
+  s21::CalcController c(&v, &m, &d);
 
   CalcView w;
   w.show();
@@ -36,9 +37,10 @@ int main(int argc, char *argv[]) {
 //                   &s21::CalcController::creditDifferentialCalc);
   QObject::connect(&w, &CalcView::uiEventShowCredit, &r, &Credit::showCredit);
 
-//  Debit d;
-//  QObject::connect(&d, &Debit::uiEventOutputInfo, &c,
-//                   &s21::CalcController::outputDebitInfo);
-//  QObject::connect(&w, &CalcView::uiEventShowDebit, &d, &Debit::showDedit);
+  Debit t;
+  QObject::connect(&t, &Debit::uiEventOutputInfo, &c,
+                   &s21::CalcController::outputDebitInfo);
+  QObject::connect(&w, &CalcView::uiEventShowDebit, &t, &Debit::showDedit);
+
   return a.exec();
 }

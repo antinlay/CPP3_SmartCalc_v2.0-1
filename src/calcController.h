@@ -38,14 +38,15 @@ class CalcController : public QObject {
   }
 
  public:
-  CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
+  CalcController(Ui::CalcView* v, s21::CalcModel* m, Ui::Debit* d) : m_(m), v_(v), d_(d) {};
+//  CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
   void replaceX(QString& equalResult, QString& equalLabel);
   void validateChangeOn(QString equalStr, bool& status);
   QString calcDebit(double& resProfit, double& resDep, double sumDep,
                     double percent, int month, bool checkState);
 
-  QObject::connect(d_, &Debit::uiEventOutputInfo, this, &CalcController::outputDebitInfo);
-  QObject::connect(v_, &CalcView::uiEventShowDebit, debit, &Debit::showDedit);
+//  QObject::connect(d_, &Debit::uiEventOutputInfo, this, &CalcController::outputDebitInfo);
+//  QObject::connect(v_, &CalcView::uiEventShowDebit, debit, &Debit::showDedit);
 
  private:
   CalcController* c_;
