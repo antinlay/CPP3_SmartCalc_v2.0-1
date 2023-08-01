@@ -1,8 +1,6 @@
 #ifndef CALCCONTROLLER_H
 #define CALCCONTROLLER_H
 
-// #include <QException>
-#include <QMainWindow>
 #include <QMessageBox>
 #include <QWidget>
 
@@ -24,14 +22,19 @@ class CalcController : public QObject {
   void setDegreeMode(bool statusDegreeMode) {
     m_->setDegreeMode(statusDegreeMode);
   };
-  void creditOutputInfo(int caseIndex, double& S, double& i, QDate currentDate, size_t n, QString& anuInfo) {
-      m_->outputCredit(caseIndex, S, i, currentDate, n, anuInfo);
+  void creditOutputInfo(int caseIndex, double& S, double& i, QDate currentDate,
+                        size_t n, QString& anuInfo) {
+    m_->outputCredit(caseIndex, S, i, currentDate, n, anuInfo);
   };
-//  void outputDebitInfo(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo) {
-//      m_->outputDebit(summDep, summWithdraw, currentDate, endDate, depositDate, withdrawDate, caseIndex, caseIndexDep, caseIndexWithdraw, isCapitalized, deposit, interestRate,  anuInfo);
-//  };
-  void creditOutputInfo(const Debit& args) {
-      m_->outputDebit(args);
+
+  void outputDebitInfo(QString& anuInfo, QString& summResult, QString& profit) {
+    m_->setDepStructureValues(
+        d_->deposit->text().toDouble(), d_->rate->text().toDouble(),
+        d_->casePeriod->currentIndex(), d_->capitalization->isChecked(),
+        d_->startDate->date(), d_->endDate->date());
+    m_->setReDepStructureValues(d_->summDep->text(), d_->depositDate->date(), d_->casePeriodDep->currentIndex());
+    m_->setWithdrawStructureValues(d_->summWithdraw->text(), d_->withdrawDate->date(), d_->casePeriodWithdraw->currentIndex());
+    m_->outputDebit(anuInfo, summResult, profit);
   }
 
  public:
@@ -41,9 +44,14 @@ class CalcController : public QObject {
   QString calcDebit(double& resProfit, double& resDep, double sumDep,
                     double percent, int month, bool checkState);
 
+QObject::connect(d_, &Debit::uiEventOutputInfo, c_, &CalcController::outputDebitInfo);
+QObject::connect(v_, &CalcView::uiEventShowDebit, d_, &Debit::showDedit);
+
  private:
+  CalcController* c_;
   s21::CalcModel* m_;
   Ui::CalcView* v_;
+  Ui::Debit* d_;
 };
 }  // namespace s21
 #endif  // CALCCONTROLLER_H

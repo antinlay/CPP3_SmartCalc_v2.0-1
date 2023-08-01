@@ -104,23 +104,28 @@ double s21::CalcModel::sqrtCalc(double a) {
 double s21::CalcModel::lnCalc(double a) { return log(a); }
 double s21::CalcModel::logCalc(double a) { return log10(a); }
 double s21::CalcModel::tanCalc(double a) {
-  ;
-  return qTan(changeDegreesToRadians(a));
+  changeDegreesToRadians(a);
+  return qTan(a);
 }
 double s21::CalcModel::atanCalc(double a) {
-  return qAtan(changeDegreesToRadians(a));
+    changeDegreesToRadians(a);
+  return qAtan(a);
 }
 double s21::CalcModel::sinCalc(double a) {
-  return qSin(changeDegreesToRadians(a));
+    changeDegreesToRadians(a);
+  return qSin(a);
 }
 double s21::CalcModel::asinCalc(double a) {
-  return qAsin(changeDegreesToRadians(a));
+    changeDegreesToRadians(a);
+  return qAsin(a);
 }
 double s21::CalcModel::cosCalc(double a) {
-  return qCos(changeDegreesToRadians(a));
+    changeDegreesToRadians(a);
+  return qCos(a);
 }
 double s21::CalcModel::acosCalc(double a) {
-  return qAcos(changeDegreesToRadians(a));
+    changeDegreesToRadians(a);
+  return qAcos(a);
 }
 
 // CHECKS
@@ -385,26 +390,19 @@ void s21::CalcModel::reDepositWithdrawCalculate(QString summ, int caseIndex,
   }
 }
 
-void s21::CalcModel::outputDebit(QString summDep, QString summWithdraw,
-                                 QDate currentDate, QDate endDate,
-                                 QDate depositDate, QDate withdrawDate,
-                                 int caseIndex, int caseIndexDep,
-                                 int caseIndexWithdraw, bool isCapitalized,
-                                 double deposit, double interestRate,
-                                 QString& anuInfo) {
-  auto startCurrentDay = currentDate.day();
+void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
+                                 QString& profitStr) {
+  auto startCurrentDay = DepStruct.currentDate.day();
 
-  size_t daysOnYear = currentDate.daysTo(currentDate.addYears(1));
-  double finalAmount = deposit, profit = 0;
+  size_t daysOnYear = DepStruct.currentDate.daysTo(DepStruct.currentDate.addYears(1));
+  double finalAmount = DepStruct.summ, profit = 0, interestRate = DepStruct.interestRate / 100 / daysOnYear;
+  QDate itterator, currentDate, endDate = DepStruct.endDate;
 
-  interestRate = interestRate / 100 / daysOnYear;
-
-  while (currentDate.daysTo(endDate) > 0) {
+  while (DepStruct.currentDate.daysTo(DepStruct.endDate) > 0) {
     double interest;
     auto ittWeek = 7;
-    QDate itterator;
-    if (caseIndex == 1) {
-      currentDate = currentDate.addMonths(1);
+    if (DepStruct.caseIndex == 1) {
+      currentDate = DepStruct.currentDate.addMonths(1);
       if (currentDate.month() != 2 || startCurrentDay == 31)
         currentDate.setDate(currentDate.year(), currentDate.month(),
                             currentDate.daysInMonth());
@@ -413,19 +411,19 @@ void s21::CalcModel::outputDebit(QString summDep, QString summWithdraw,
         itterator.setDate(itterator.year(), itterator.month(),
                           itterator.daysInMonth());
     }
-    if (caseIndex == 0) {
-      if (currentDate.daysTo(endDate) <= ittWeek) {
-        ittWeek = currentDate.daysTo(endDate);
+    if (DepStruct.caseIndex == 0) {
+      if (currentDate.daysTo(DepStruct.endDate) <= ittWeek) {
+        ittWeek = currentDate.daysTo(DepStruct.endDate);
       }
       currentDate = currentDate.addDays(ittWeek);
       itterator = currentDate.addDays(ittWeek);
     }
-    if (isCapitalized) {
+    if (DepStruct.isCapitalized) {
       qDebug() << currentDate.daysTo(itterator) << "CD to ITT";
       interest = finalAmount * interestRate * currentDate.daysTo(itterator);
       qDebug() << interest << "CD to ITT";
     } else {
-      interest = deposit * interestRate * currentDate.daysTo(itterator);
+      interest = DepStruct.summ * interestRate * currentDate.daysTo(itterator);
     }
     finalAmount += interest;
     profit += interest;
@@ -442,13 +440,15 @@ void s21::CalcModel::outputDebit(QString summDep, QString summWithdraw,
     qDebug() << currentDate.daysTo(endDate) << "CR - ED";
     qDebug() << ittWeek << "ITT";
 
-    reDepositWithdrawCalculate(summDep, caseIndexDep, currentDate, endDate,
-                               depositDate, itterator, finalAmount, anuInfo,
+    reDepositWithdrawCalculate(ReDepositStruct.summDep, ReDepositStruct.caseIndexDep,currentDate, endDate,
+                               ReDepositStruct.depositDate, itterator, finalAmount, anuInfo,
                                false);
-    reDepositWithdrawCalculate(summWithdraw, caseIndexWithdraw, currentDate,
-                               endDate, withdrawDate, itterator, finalAmount,
+    reDepositWithdrawCalculate(WithdrawStruct.summWithdraw, WithdrawStruct.caseIndexWithdraw, currentDate,
+                               endDate, WithdrawStruct.withdrawDate, itterator, finalAmount,
                                anuInfo, true);
   }
+  summResult = QString::number(finalAmount, 'f', 2);
+  profitStr = QString::number(profit, 'f', 2);
 }
 
 void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
@@ -464,6 +464,8 @@ void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
       replace.replace("X", num, Qt::CaseInsensitive);
       y[i] = calculate(replace);
     } catch (std::exception& e) {
+      x.remove(i);
+      --i;
       continue;
     }
   }

@@ -2,7 +2,6 @@
 #define CALCVIEW_H
 
 #include <QDoubleValidator>
-#include <QMainWindow>
 #include <QMessageBox>
 #include <QStack>
 
@@ -27,21 +26,15 @@ class CalcView : public QMainWindow {
   void setLineEdit(QLineEdit* ActiveLineEdit) {lastActiveLineEdit_ = ActiveLineEdit;};
 
  signals:
-  void uiEventReplaceX(QString& resultShow, QString& equalX);
-  void uiEventEqual(QString &equalResult, QString &equalLabel);
   void setDegreeMode(bool statusDegreeMode);
   void validateChangedOn(QString expression, bool& status);
+
+  void uiEventReplaceX(QString& resultShow, QString& equalX);
+  void uiEventEqual(QString &equalResult, QString &equalLabel);
   void uiEventSendResult(QString equalResult);
+
   void uiEventShowCredit();
   void uiEventShowDebit();
-
- private:
-  Ui::CalcView *ui;
-  Credit *creditWindow;
-  Debit *debitWindow;
-  QStack<size_t> textLengthStack;
-  bool status_ = false;
-  QLineEdit* lastActiveLineEdit_ = nullptr;
 
  private slots:
   QLineEdit *checkActiveLineEdit();
@@ -54,6 +47,14 @@ class CalcView : public QMainWindow {
   void debitClicked();
   void graphClicked();
   void degreeModeClicked(bool checked);
+
+private:
+ Ui::CalcView *ui;
+//  Credit *creditWindow;
+//  Debit *debitWindow;
+ QStack<size_t> textLengthStack;
+ bool status_ = false;
+ QLineEdit* lastActiveLineEdit_ = nullptr;
 };
 
 // }  // namespace s21

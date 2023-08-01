@@ -2,6 +2,7 @@
 #define CALCMODEL_H
 
 #include <QCoreApplication>
+#include <QDate>
 #include <QException>
 #include <QMainWindow>
 #include <QQueue>
@@ -9,11 +10,28 @@
 #include <QStack>
 #include <QTextStream>
 #include <QValidator>
-#include <QDate>
-#include <cmath>
 #include <iostream>
 
 namespace s21 {
+
+struct Deposit {
+  double summ;
+  double interestRate;
+  short caseIndex;
+  bool isCapitalized;
+  QDate currentDate;
+  QDate endDate;
+};
+struct ReDeposit {
+  QString summDep;
+  short caseIndexDep;
+  QDate depositDate;
+};
+struct Withdrawal {
+  QString summWithdraw;
+  short caseIndexWithdraw;
+  QDate withdrawDate;
+};
 
 class CalcModel {
  public:
@@ -57,34 +75,71 @@ class CalcModel {
   double calculatePostfix(QQueue<QString> postfix);
   double calculate(QString infix);
   // CREDIT CALCULATE
-  void outputCredit(int caseIndex, double& S, double& i, QDate currentDate, size_t n, QString& anuInfo);
+  void outputCredit(int caseIndex, double& S, double& i, QDate currentDate,
+                    size_t n, QString& anuInfo);
   void paymentAnnuityCalc(double& S, double& i, size_t n);
   void paymentDifferentialCalc(double& p, double& o, double S, double i,
                                size_t n, size_t m);
   // DEBIT CALCULATE
-  void outputDebit(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo);
+  void outputDebit(QString& anuInfo, QString& summResult, QString& profit);
   void graphCalculate(int& h, double& xStart, double& yStart, double& xEnd,
                       double& yEnd, QString graphResult, QVector<double>& x,
                       QVector<double>& y);
-  void reDepositWithdrawCalculate(QString summ, int caseIndex, QDate& currentDate, QDate endDate, QDate& pasteDate, QDate& itterator, double& finalAmount, QString& anuInfo, bool flag);
+  void reDepositWithdrawCalculate(QString summ, int caseIndex,
+                                  QDate& currentDate, QDate endDate,
+                                  QDate& pasteDate, QDate& itterator,
+                                  double& finalAmount, QString& anuInfo,
+                                  bool flag);
 
   // DEGREE MODE
   void setDegreeMode(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
-  double changeDegreesToRadians(double& a) {
+  void changeDegreesToRadians(double& a) {
     if (useDegree_) {
       a = qDegreesToRadians(a);
     }
-    return a;
   };
 
+  // STRUCT GET-SET
+  Deposit getDepStructure() { return DepStruct; };
+  void setDepStructureValues(double summ, double interestRate, short caseIndex,
+                          bool isCapitalized, QDate currentDate,
+                          QDate endDate) {
+    DepStruct.summ = summ;
+    DepStruct.interestRate = interestRate;
+    DepStruct.caseIndex = caseIndex;
+    DepStruct.isCapitalized = isCapitalized;
+    DepStruct.currentDate = currentDate;
+    DepStruct.endDate = endDate;
+  }
+  ReDeposit getReDepStructure() { return ReDepositStruct; };
+  void setReDepStructureValues(QString summDep,QDate depositDate,
+                          short caseIndexDep) {
+    ReDepositStruct.summDep = summDep;
+    ReDepositStruct.depositDate = depositDate;
+    ReDepositStruct.caseIndexDep = caseIndexDep;
+  }
+  Withdrawal getWithdrawStructure() { return WithdrawStruct; };
+  void setWithdrawStructureValues(QString summWithdraw,QDate withdrawDate,
+                          short caseIndexWithdraw) {
+    WithdrawStruct.summWithdraw = summWithdraw;
+    WithdrawStruct.withdrawDate = withdrawDate;
+    WithdrawStruct.caseIndexWithdraw = caseIndexWithdraw;
+  }
+
  private:
+  // STRUCTURES
+  Deposit DepStruct;
+  ReDeposit ReDepositStruct;
+  Withdrawal WithdrawStruct;
+  // DEGREE FLAG
   bool useDegree_ = false;
+  // OPERATORS && FUNCTIONS
   QMap<QString, int> precedences_ = {{"(", 0}, {")", 0}, {"+", 1}, {"-", 1},
                                      {"*", 2}, {"/", 2}, {"%", 2}, {"^", 3}};
   const QHash<QString, QString> keyFunctions = {
       {"sqrt", "q"}, {"ln", "n"},  {"log", "g"},  {"tan", "t"},
       {"atan", "a"}, {"sin", "s"}, {"asin", "i"}, {"cos", "c"},
       {"acos", "o"}, {"mod", "%"}, {"x", "X"}};
-};  // namespace s21
+};
 }  // namespace s21
 #endif  // CALCMODEL_H

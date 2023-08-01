@@ -1,26 +1,27 @@
 #ifndef DEBIT_H
 #define DEBIT_H
 
-#include <QWidget>
-#include <QtWidgets>
+//#include <QtWidgets>
+#include "ui_debit.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class Debit;
 }
 QT_END_NAMESPACE
+
 // namespace s21 {
 class Debit : public QWidget {
   Q_OBJECT
 
  public:
-  explicit Debit(QWidget *parent = nullptr);
+  Debit(QWidget *parent = nullptr);
   ~Debit();
    void showDedit() {this->show();};
 
  signals:
 //   void uiEventOutputInfo(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo);
-   void uiEventOutputInfo(const Debit& args);
+   void uiEventOutputInfo(QString& anuInfo, QString& summResult, QString& profit);
 
  private slots:
   void debitClicked();
@@ -45,20 +46,6 @@ class Debit : public QWidget {
   
  private:
   Ui::Debit *ui;
-  struct deposit {
-      double summ;
-      double interestRate;
-      short caseIndex;
-      bool isCapitalized;
-      QDate currentDate;
-      QDate endDate;
-  };
-  struct reDepWithdraw {
-      QString summ;
-      short caseIndex;
-      QDate& pasteDate;
-      bool flagWithdraw;
-  };
 
 };
 
