@@ -19,7 +19,8 @@ class Debit : public QWidget {
    void showDedit() {this->show();};
 
  signals:
-   void uiEventOutputInfo(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo);
+//   void uiEventOutputInfo(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo);
+   void uiEventOutputInfo(const Debit& args);
 
  private slots:
   void debitClicked();
@@ -44,6 +45,21 @@ class Debit : public QWidget {
   
  private:
   Ui::Debit *ui;
+  struct deposit {
+      double summ;
+      double interestRate;
+      short caseIndex;
+      bool isCapitalized;
+      QDate currentDate;
+      QDate endDate;
+  };
+  struct reDepWithdraw {
+      QString summ;
+      short caseIndex;
+      QDate& pasteDate;
+      bool flagWithdraw;
+  };
+
 };
 
 // }  // namespace s21

@@ -27,9 +27,12 @@ class CalcController : public QObject {
   void creditOutputInfo(int caseIndex, double& S, double& i, QDate currentDate, size_t n, QString& anuInfo) {
       m_->outputCredit(caseIndex, S, i, currentDate, n, anuInfo);
   };
-  void outputDebitInfo(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo) {
-      m_->outputDebit(summDep, summWithdraw, currentDate, endDate, depositDate, withdrawDate, caseIndex, caseIndexDep, caseIndexWithdraw, isCapitalized, deposit, interestRate,  anuInfo);
-  };
+//  void outputDebitInfo(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo) {
+//      m_->outputDebit(summDep, summWithdraw, currentDate, endDate, depositDate, withdrawDate, caseIndex, caseIndexDep, caseIndexWithdraw, isCapitalized, deposit, interestRate,  anuInfo);
+//  };
+  void creditOutputInfo(const Debit& args) {
+      m_->outputDebit(args);
+  }
 
  public:
   CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};

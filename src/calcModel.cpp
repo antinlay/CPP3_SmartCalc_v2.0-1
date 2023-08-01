@@ -316,169 +316,139 @@ void s21::CalcModel::paymentDifferentialCalc(double& p, double& o, double S,
   o = (S - (m - 1) * (S / n)) * i;
 }
 
-void s21::CalcModel::outputCredit(int caseIndex, double& S, double& i, QDate currentDate, size_t n, QString& anuInfo) {
-    size_t m = 1;
-    double o = 0, O = 0, p = S, P = i;
-    QString rateOrPayment = " overpayment: ";
+void s21::CalcModel::outputCredit(int caseIndex, double& S, double& i,
+                                  QDate currentDate, size_t n,
+                                  QString& anuInfo) {
+  size_t m = 1;
+  double o = 0, O = 0, p = S, P = i;
+  QString rateOrPayment = " overpayment: ";
 
-    if (caseIndex == 0) {
-      paymentAnnuityCalc(p, P, n);
-      O = P - S;
-      o = O / n;
+  if (caseIndex == 0) {
+    paymentAnnuityCalc(p, P, n);
+    O = P - S;
+    o = O / n;
+  }
+
+  while (m <= n) {
+    QString currentYear = QString::number(currentDate.year());
+    QString currentMonth = QLocale().monthName(currentDate.month());
+
+    if (caseIndex == 1) {
+      rateOrPayment = " interest amount: ";
+      paymentDifferentialCalc(p, o, S, i, n, m);
+      P += p;
+      O += o;
     }
+    anuInfo += "Pay for " + currentMonth + " " + currentYear + ": " +
+               QString::number(p, 'f', 2) + rateOrPayment +
+               QString::number(o, 'f', 2) + "\n";
 
-      while (m <= n) {
-        QString currentYear = QString::number(currentDate.year());
-        QString currentMonth = QLocale().monthName(currentDate.month());
+    currentDate = currentDate.addMonths(1);
+    ++m;
+  }
+  // send values to controller from refference
+  S = P;
+  i = O;
+}
 
+void s21::CalcModel::reDepositWithdrawCalculate(QString summ, int caseIndex,
+                                                QDate& currentDate,
+                                                QDate endDate, QDate& pasteDate,
+                                                QDate& itterator,
+                                                double& finalAmount,
+                                                QString& anuInfo, bool flag) {
+  auto startDay = pasteDate.day();
+  QString infoDepWithdraw = "Deposite for ";
+  if (flag) infoDepWithdraw = "Withdraw for ";
+  if (!summ.isEmpty()) {
+    if (caseIndex == 0 || caseIndex == 1) {
+      if (currentDate <= pasteDate && itterator >= pasteDate &&
+          endDate >= pasteDate) {
+        if (flag)
+          finalAmount -= summ.toDouble();
+        else
+          finalAmount += summ.toDouble();
+        anuInfo += infoDepWithdraw + QString::number(pasteDate.day()) + " " +
+                   QLocale().monthName(pasteDate.month()) + " " +
+                   QString::number(pasteDate.year()) + ": " +
+                   QString::number(finalAmount, 'f', 2) +
+                   " amount: " + QString::number(summ.toDouble(), 'f', 2) +
+                   "\n";
         if (caseIndex == 1) {
-            rateOrPayment = " interest amount: ";
-            paymentDifferentialCalc(p, o, S, i, n, m);
-            P += p;
-            O += o;
-        }
-        anuInfo += "Pay for " + currentMonth + " " + currentYear + ": " +
-                   QString::number(p, 'f', 2) +
-                   rateOrPayment + QString::number(o, 'f', 2) + "\n";
-
-        currentDate = currentDate.addMonths(1);
-        ++m;
-      }
-    // send values to controller from refference
-    S = P;
-    i = O;
-}
-
-void s21::CalcModel::reDepositWithdrawCalculate(QString summ, int caseIndex, QDate& currentDate, QDate endDate, QDate& pasteDate, QDate& itterator, double& finalAmount, QString& anuInfo, bool flag) {
-    auto startDay = pasteDate.day();
-    QString infoDepWithdraw = "Deposite for ";
-    if (flag) infoDepWithdraw = "Withdraw for ";
-    if (!summ.isEmpty()) {
-      if (caseIndex == 0 ||
-          caseIndex == 1) {
-        if (currentDate <= pasteDate && itterator >= pasteDate &&
-            endDate >= pasteDate) {
-          if (flag) finalAmount -= summ.toDouble();
-          else finalAmount += summ.toDouble();
-          anuInfo += infoDepWithdraw + QString::number(pasteDate.day()) +
-                     " " + QLocale().monthName(pasteDate.month()) + " " +
-                     QString::number(pasteDate.year()) + ": " +
-                     QString::number(finalAmount, 'f', 2) + " amount: " +
-                     QString::number(summ.toDouble(), 'f', 2) +
-                     "\n";
-          if (caseIndex == 1) {
-            pasteDate = pasteDate.addMonths(1);
-            if (pasteDate.month() != 2 || startDay == 31)
-              pasteDate.setDate(pasteDate.year(), pasteDate.month(),
-                                  pasteDate.daysInMonth());
-          }
+          pasteDate = pasteDate.addMonths(1);
+          if (pasteDate.month() != 2 || startDay == 31)
+            pasteDate.setDate(pasteDate.year(), pasteDate.month(),
+                              pasteDate.daysInMonth());
         }
       }
     }
+  }
 }
 
-void s21::CalcModel::outputDebit(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo) {
-    auto startCurrentDay = currentDate.day();
-//            startDepDay = depositDate.day(),
-//         startWithdrawDay = withdrawDate.day();
-    size_t daysOnYear = currentDate.daysTo(currentDate.addYears(1));
-    double finalAmount = deposit, profit = 0;
+void s21::CalcModel::outputDebit(QString summDep, QString summWithdraw,
+                                 QDate currentDate, QDate endDate,
+                                 QDate depositDate, QDate withdrawDate,
+                                 int caseIndex, int caseIndexDep,
+                                 int caseIndexWithdraw, bool isCapitalized,
+                                 double deposit, double interestRate,
+                                 QString& anuInfo) {
+  auto startCurrentDay = currentDate.day();
 
-    interestRate = interestRate / 100 / daysOnYear;
+  size_t daysOnYear = currentDate.daysTo(currentDate.addYears(1));
+  double finalAmount = deposit, profit = 0;
 
-    while (currentDate.daysTo(endDate) > 0) {
-      double interest;
-      auto ittWeek = 7;
-      QDate itterator;
-      if (caseIndex == 1) {
-        currentDate = currentDate.addMonths(1);
-        if (currentDate.month() != 2 || startCurrentDay == 31)
-          currentDate.setDate(currentDate.year(), currentDate.month(),
-                              currentDate.daysInMonth());
-        itterator = currentDate.addMonths(1);
-        if (itterator.month() != 2 || startCurrentDay == 31)
-          itterator.setDate(itterator.year(), itterator.month(),
-                            itterator.daysInMonth());
-      }
-      if (caseIndex == 0) {
-        if (currentDate.daysTo(endDate) <= ittWeek) {
-          ittWeek = currentDate.daysTo(endDate);
-        }
-        currentDate = currentDate.addDays(ittWeek);
-        itterator = currentDate.addDays(ittWeek);
-      }
-      if (isCapitalized) {
-        qDebug() << currentDate.daysTo(itterator) << "CD to ITT";
-        interest = finalAmount * interestRate * currentDate.daysTo(itterator);
-        qDebug() << interest << "CD to ITT";
-      } else {
-        interest = deposit * interestRate * currentDate.daysTo(itterator);
-      }
-      finalAmount += interest;
-      profit += interest;
-      qDebug() << finalAmount << "FA";
-      qDebug() << profit << "PR";
+  interestRate = interestRate / 100 / daysOnYear;
 
-      QString currentYear = QString::number(currentDate.year());
-      QString currentMonth = QLocale().monthName(currentDate.month());
-      QString currentDay = QString::number(currentDate.day());
-
-      anuInfo += "Pay for " + currentDay + " " + currentMonth + " " +
-                 currentYear + ": " + QString::number(finalAmount, 'f', 2) +
-                 " interest: " + QString::number(interest, 'f', 2) + "\n";
-      qDebug() << currentDate.daysTo(endDate) << "CR - ED";
-      qDebug() << ittWeek << "ITT";
-
-      reDepositWithdrawCalculate(summDep, caseIndexDep, currentDate, endDate, depositDate, itterator, finalAmount, anuInfo, false);
-      reDepositWithdrawCalculate(summWithdraw, caseIndexWithdraw, currentDate, endDate, withdrawDate, itterator, finalAmount, anuInfo, true);
-
-//      if (!summDep.isEmpty()) {
-//        if (caseIndexDep == 0 ||
-//            caseIndexDep == 1) {
-//          if (currentDate <= depositDate && itterator >= depositDate &&
-//              endDate >= depositDate) {
-//            finalAmount += summDep.toDouble();
-//            anuInfo += "Deposite for " + QString::number(depositDate.day()) +
-//                       " " + QLocale().monthName(depositDate.month()) + " " +
-//                       QString::number(depositDate.year()) + ": " +
-//                       QString::number(finalAmount, 'f', 2) + " amount: " +
-//                       QString::number(summDep.toDouble(), 'f', 2) +
-//                       "\n";
-//            if (caseIndexDep == 1) {
-//              depositDate = depositDate.addMonths(1);
-//              if (depositDate.month() != 2 || startDepDay == 31)
-//                depositDate.setDate(depositDate.year(), depositDate.month(),
-//                                    depositDate.daysInMonth());
-//            }
-//          }
-//        }
-//      }
-
-//      if (!summWithdraw.isEmpty()) {
-//        if (caseIndexWithdraw == 0 ||
-//            caseIndexWithdraw == 1) {
-//          if (currentDate <= withdrawDate && itterator >= withdrawDate &&
-//              endDate >= withdrawDate) {
-//            if (finalAmount > summWithdraw.toDouble()) {
-//              finalAmount -= summWithdraw.toDouble();
-//              anuInfo +=
-//                  "Withdraw for " + QString::number(withdrawDate.day()) + " " +
-//                  QLocale().monthName(withdrawDate.month()) + " " +
-//                  QString::number(withdrawDate.year()) + ": " +
-//                  QString::number(finalAmount, 'f', 2) + " amount: " +
-//                  QString::number(summWithdraw.toDouble(), 'f', 2) +
-//                  "\n";
-//              if (caseIndexWithdraw == 1) {
-//                withdrawDate = withdrawDate.addMonths(1);
-//                if (withdrawDate.month() != 2 || startWithdrawDay == 31)
-//                  withdrawDate.setDate(withdrawDate.year(), withdrawDate.month(),
-//                                       withdrawDate.daysInMonth());
-//              }
-//            }
-//          }
-//        }
-//      }
+  while (currentDate.daysTo(endDate) > 0) {
+    double interest;
+    auto ittWeek = 7;
+    QDate itterator;
+    if (caseIndex == 1) {
+      currentDate = currentDate.addMonths(1);
+      if (currentDate.month() != 2 || startCurrentDay == 31)
+        currentDate.setDate(currentDate.year(), currentDate.month(),
+                            currentDate.daysInMonth());
+      itterator = currentDate.addMonths(1);
+      if (itterator.month() != 2 || startCurrentDay == 31)
+        itterator.setDate(itterator.year(), itterator.month(),
+                          itterator.daysInMonth());
     }
+    if (caseIndex == 0) {
+      if (currentDate.daysTo(endDate) <= ittWeek) {
+        ittWeek = currentDate.daysTo(endDate);
+      }
+      currentDate = currentDate.addDays(ittWeek);
+      itterator = currentDate.addDays(ittWeek);
+    }
+    if (isCapitalized) {
+      qDebug() << currentDate.daysTo(itterator) << "CD to ITT";
+      interest = finalAmount * interestRate * currentDate.daysTo(itterator);
+      qDebug() << interest << "CD to ITT";
+    } else {
+      interest = deposit * interestRate * currentDate.daysTo(itterator);
+    }
+    finalAmount += interest;
+    profit += interest;
+    qDebug() << finalAmount << "FA";
+    qDebug() << profit << "PR";
+
+    QString currentYear = QString::number(currentDate.year());
+    QString currentMonth = QLocale().monthName(currentDate.month());
+    QString currentDay = QString::number(currentDate.day());
+
+    anuInfo += "Pay for " + currentDay + " " + currentMonth + " " +
+               currentYear + ": " + QString::number(finalAmount, 'f', 2) +
+               " interest: " + QString::number(interest, 'f', 2) + "\n";
+    qDebug() << currentDate.daysTo(endDate) << "CR - ED";
+    qDebug() << ittWeek << "ITT";
+
+    reDepositWithdrawCalculate(summDep, caseIndexDep, currentDate, endDate,
+                               depositDate, itterator, finalAmount, anuInfo,
+                               false);
+    reDepositWithdrawCalculate(summWithdraw, caseIndexWithdraw, currentDate,
+                               endDate, withdrawDate, itterator, finalAmount,
+                               anuInfo, true);
+  }
 }
 
 void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
