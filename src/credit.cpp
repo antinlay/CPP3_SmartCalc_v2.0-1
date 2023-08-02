@@ -28,8 +28,9 @@ Credit::Credit(QWidget* parent) : QWidget(parent), ui(new Ui::Credit) {
 
   connect(ui->calculate, &QPushButton::clicked, this, &Credit::calcClicked);
 
-  connect(ui->startDate, &QDateEdit::dateChanged,
-          [=](const QDate& date) { ui->endDate->setMinimumDate(date.addMonths(1)); });
+  connect(ui->startDate, &QDateEdit::dateChanged, [=](const QDate& date) {
+    ui->endDate->setMinimumDate(date.addMonths(1));
+  });
 }
 
 Credit::~Credit() { delete ui; }
@@ -37,17 +38,15 @@ Credit::~Credit() { delete ui; }
 void Credit::calcClicked() {
   size_t n = (ui->endDate->date().year() - ui->startDate->date().year()) * 12 +
              ui->endDate->date().month() - ui->startDate->date().month();
-  int caseIndex = ui->caseCredit->currentIndex();
   double S = ui->summa->text().toDouble(),
          i = QString(ui->percent->text()).toDouble() / 12 / 100;
-  QDate currentDate = ui->startDate->date();
   QString anuInfo;
 
   try {
     if (ui->summa->text().isEmpty() || !n || ui->percent->text().isEmpty()) {
       throw std::invalid_argument("Invalid argument in Credit view!");
     } else {
-        emit uiEventOutputInfo(caseIndex, S, i, currentDate, n, anuInfo);
+      emit uiEventOutputInfo(ui->caseCredit->currentIndex(), S, i, ui->startDate->date(), n, anuInfo);
 
       // clear fields
       ui->payment->clear();

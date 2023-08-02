@@ -108,23 +108,23 @@ double s21::CalcModel::tanCalc(double a) {
   return qTan(a);
 }
 double s21::CalcModel::atanCalc(double a) {
-    changeDegreesToRadians(a);
+  changeDegreesToRadians(a);
   return qAtan(a);
 }
 double s21::CalcModel::sinCalc(double a) {
-    changeDegreesToRadians(a);
+  changeDegreesToRadians(a);
   return qSin(a);
 }
 double s21::CalcModel::asinCalc(double a) {
-    changeDegreesToRadians(a);
+  changeDegreesToRadians(a);
   return qAsin(a);
 }
 double s21::CalcModel::cosCalc(double a) {
-    changeDegreesToRadians(a);
+  changeDegreesToRadians(a);
   return qCos(a);
 }
 double s21::CalcModel::acosCalc(double a) {
-    changeDegreesToRadians(a);
+  changeDegreesToRadians(a);
   return qAcos(a);
 }
 
@@ -300,47 +300,51 @@ double s21::CalcModel::calculate(QString infix) {
   return calculatePostfix(newInfix);
 }
 
-void s21::CalcModel::paymentAnnuityCalc(double& S, double& i, size_t n) {
+void s21::CalcModel::paymentAnnuityCalc(double& p, double& P) {
   /* Кредитный калькулятор с аннуитетными платежами можно рассчитать по
    следующей формуле: p = (S * i * (1 + i)^n) / ((1 + i)^n - 1)? где: p -
    размер ежемесячного платежа, S - сумма кредита, i - процентная ставка в
    месяц,  n - количество месяцев, O - общая переплата, o - месячная
    переплата, P - обшая переплата */
-  S = (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
-  i = S * n;
+  short n = CreditStruct.months;
+  double S = CreditStruct.summ, i = CreditStruct.interestRate;
+  p = (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
+  P = S * n;
 }
 
-void s21::CalcModel::paymentDifferentialCalc(double& p, double& o, double S,
-                                             double i, size_t n, size_t m) {
+void s21::CalcModel::paymentDifferentialCalc(double& p, double& o, size_t m) {
   /* Формула для расчета дифференцированного платежа выглядит следующим
    образом : P = (S / n) + (S - (m - 1) * (S / n)) * i, где: P - размер
    дифференцированного платежа, S - сумма кредита, n - срок кредита в
    месяцах, m - номер текущего месяца, i - годовая процентная ставка,
    деленная на 12 месяцев. i = (S - (m - 1) * (S / n)) * i */
+  double S = CreditStruct.summ, i = CreditStruct.interestRate;
+  size_t n = CreditStruct.months;
   p = (S / n) + (S - (m - 1) * (S / n)) * i;
   o = (S - (m - 1) * (S / n)) * i;
 }
 
-void s21::CalcModel::outputCredit(int caseIndex, double& S, double& i,
-                                  QDate currentDate, size_t n,
-                                  QString& anuInfo) {
-  size_t m = 1;
-  double o = 0, O = 0, p = S, P = i;
+void s21::CalcModel::outputCredit(QString& anuInfo, QString& payment,
+                                  QString& overpayment) {
+  short m = 1;
+  double o = 0, O = 0, p = CreditStruct.summ, P = CreditStruct.interestRate;
   QString rateOrPayment = " overpayment: ";
+  QDate currentDate = CreditStruct.currentDate;
 
-  if (caseIndex == 0) {
-    paymentAnnuityCalc(p, P, n);
-    O = P - S;
-    o = O / n;
+  if (CreditStruct.caseIndex == 0) {
+    paymentAnnuityCalc(p, P);
+    O = P - CreditStruct.summ;
+    o = O / CreditStruct.months;
   }
 
-  while (m <= n) {
-    QString currentYear = QString::number(currentDate.year());
-    QString currentMonth = QLocale().monthName(currentDate.month());
+  while (m <= CreditStruct.months) {
+    QString currentYear = QString::number(CreditStruct.currentDate.year());
+    QString currentMonth =
+        QLocale().monthName(CreditStruct.currentDate.month());
 
-    if (caseIndex == 1) {
+    if (CreditStruct.caseIndex == 1) {
       rateOrPayment = " interest amount: ";
-      paymentDifferentialCalc(p, o, S, i, n, m);
+      paymentDifferentialCalc(p, o, m);
       P += p;
       O += o;
     }
@@ -352,23 +356,30 @@ void s21::CalcModel::outputCredit(int caseIndex, double& S, double& i,
     ++m;
   }
   // send values to controller from refference
-  S = P;
-  i = O;
+  payment = QString::number(P, 'f', 2);
+  overpayment = QString::number(O, 'f', 2);
 }
 
-void s21::CalcModel::reDepositWithdrawCalculate(QString summ, int caseIndex,
-                                                QDate& currentDate,
-                                                QDate endDate, QDate& pasteDate,
+void s21::CalcModel::reDepositWithdrawCalculate(QDate& currentDate,
+                                                QDate& pasteDate,
                                                 QDate& itterator,
                                                 double& finalAmount,
                                                 QString& anuInfo, bool flag) {
+  QString summ = ReDepositStruct.summDep;
+  int caseIndex = ReDepositStruct.caseIndexDep;
+  pasteDate = ReDepositStruct.depositDate;
+  if (flag) {
+    summ = WithdrawStruct.summWithdraw;
+    caseIndex = WithdrawStruct.caseIndexWithdraw;
+    pasteDate = WithdrawStruct.withdrawDate;
+  }
   auto startDay = pasteDate.day();
   QString infoDepWithdraw = "Deposite for ";
   if (flag) infoDepWithdraw = "Withdraw for ";
   if (!summ.isEmpty()) {
     if (caseIndex == 0 || caseIndex == 1) {
       if (currentDate <= pasteDate && itterator >= pasteDate &&
-          endDate >= pasteDate) {
+          DepStruct.endDate >= pasteDate) {
         if (flag)
           finalAmount -= summ.toDouble();
         else
@@ -390,34 +401,46 @@ void s21::CalcModel::reDepositWithdrawCalculate(QString summ, int caseIndex,
   }
 }
 
-void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
-                                 QString& profitStr) {
-  auto startCurrentDay = DepStruct.currentDate.day();
+void s21::CalcModel::fixDate(QDate& fixDate, short startCurrentDay) {
+    if (fixDate.month() == 2 || startCurrentDay == 31)
+      fixDate.setDate(fixDate.year(), fixDate.month(),
+                          fixDate.daysInMonth());
+}
 
-  size_t daysOnYear = DepStruct.currentDate.daysTo(DepStruct.currentDate.addYears(1));
-  double finalAmount = DepStruct.summ, profit = 0, interestRate = DepStruct.interestRate / 100 / daysOnYear;
-  QDate itterator, currentDate, endDate = DepStruct.endDate;
-
-  while (DepStruct.currentDate.daysTo(DepStruct.endDate) > 0) {
-    double interest;
-    auto ittWeek = 7;
-    if (DepStruct.caseIndex == 1) {
-      currentDate = DepStruct.currentDate.addMonths(1);
-      if (currentDate.month() != 2 || startCurrentDay == 31)
-        currentDate.setDate(currentDate.year(), currentDate.month(),
-                            currentDate.daysInMonth());
+void s21::CalcModel::debitCaseMonth(QDate& currentDate, QDate& itterator, short startCurrentDay) {
+      currentDate = currentDate.addMonths(1);
+      fixDate(currentDate, startCurrentDay);
       itterator = currentDate.addMonths(1);
-      if (itterator.month() != 2 || startCurrentDay == 31)
+      if (itterator.month() == 2 || startCurrentDay == 31)
         itterator.setDate(itterator.year(), itterator.month(),
                           itterator.daysInMonth());
-    }
-    if (DepStruct.caseIndex == 0) {
+}
+
+void s21::CalcModel::debitCaseWeek(QDate& currentDate, QDate& itterator, short& ittWeek) {
       if (currentDate.daysTo(DepStruct.endDate) <= ittWeek) {
         ittWeek = currentDate.daysTo(DepStruct.endDate);
       }
       currentDate = currentDate.addDays(ittWeek);
       itterator = currentDate.addDays(ittWeek);
-    }
+}
+
+void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
+                                 QString& profitStr) {
+  short daysOnYear = DepStruct.currentDate.daysTo(DepStruct.currentDate.addYears(1)), startCurrentDay = DepStruct.currentDate.day(), ittWeek = 7;
+  double finalAmount = DepStruct.summ, profit = 0,
+         interestRate = DepStruct.interestRate / 100 / daysOnYear;
+  QDate itterator, currentDate = DepStruct.currentDate,
+                   endDate = DepStruct.endDate;
+
+  if (DepStruct.caseIndex == 1) {
+      debitCaseMonth(currentDate, itterator, startCurrentDay);
+  } else if (DepStruct.caseIndex == 0) {
+      debitCaseWeek(currentDate, itterator, ittWeek);
+  }
+
+  while (currentDate.daysTo(DepStruct.endDate) > 0) {
+    double interest;
+
     if (DepStruct.isCapitalized) {
       qDebug() << currentDate.daysTo(itterator) << "CD to ITT";
       interest = finalAmount * interestRate * currentDate.daysTo(itterator);
@@ -440,12 +463,10 @@ void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
     qDebug() << currentDate.daysTo(endDate) << "CR - ED";
     qDebug() << ittWeek << "ITT";
 
-    reDepositWithdrawCalculate(ReDepositStruct.summDep, ReDepositStruct.caseIndexDep,currentDate, endDate,
-                               ReDepositStruct.depositDate, itterator, finalAmount, anuInfo,
-                               false);
-    reDepositWithdrawCalculate(WithdrawStruct.summWithdraw, WithdrawStruct.caseIndexWithdraw, currentDate,
-                               endDate, WithdrawStruct.withdrawDate, itterator, finalAmount,
-                               anuInfo, true);
+    reDepositWithdrawCalculate(currentDate, ReDepositStruct.depositDate,
+                               itterator, finalAmount, anuInfo, false);
+    reDepositWithdrawCalculate(currentDate, WithdrawStruct.withdrawDate,
+                               itterator, finalAmount, anuInfo, true);
   }
   summResult = QString::number(finalAmount, 'f', 2);
   profitStr = QString::number(profit, 'f', 2);

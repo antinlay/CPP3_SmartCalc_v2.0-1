@@ -22,37 +22,28 @@ class CalcController : public QObject {
   void setDegreeMode(bool statusDegreeMode) {
     m_->setDegreeMode(statusDegreeMode);
   };
-  void creditOutputInfo(int caseIndex, double& S, double& i, QDate currentDate,
-                        size_t n, QString& anuInfo) {
-    m_->outputCredit(caseIndex, S, i, currentDate, n, anuInfo);
+  void creditOutputInfo(QString& anuInfo, QString& payment,
+                        QString& overpayment)
+  //          int caseIndex, double& S, double& i, QDate currentDate,
+  //                        size_t n, QString& anuInfo)
+  {
+    m_->outputCredit(anuInfo, payment, overpayment);
   };
-
-  void outputDebitInfo(QString& anuInfo, QString& summResult, QString& profit) {
-    m_->setDepStructureValues(
-        d_->deposit->text().toDouble(), d_->rate->text().toDouble(),
-        d_->casePeriod->currentIndex(), d_->capitalization->isChecked(),
-        d_->startDate->date(), d_->endDate->date());
-    m_->setReDepStructureValues(d_->summDep->text(), d_->depositDate->date(), d_->casePeriodDep->currentIndex());
-    m_->setWithdrawStructureValues(d_->summWithdraw->text(), d_->withdrawDate->date(), d_->casePeriodWithdraw->currentIndex());
-    m_->outputDebit(anuInfo, summResult, profit);
-  }
+  void outputDebitInfo(QString& anuInfo, QString& summResult, QString& profit);
+  void sendDebitUi(Ui::Debit* d) { d_ = d; };
+  void sendCrebitUi(Ui::Credit* r) { r_ = r; };
 
  public:
-  CalcController(Ui::CalcView* v, s21::CalcModel* m, Ui::Debit* d) : m_(m), v_(v), d_(d) {};
-//  CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
+  CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
+  //  ~CalcController();
   void replaceX(QString& equalResult, QString& equalLabel);
   void validateChangeOn(QString equalStr, bool& status);
-  QString calcDebit(double& resProfit, double& resDep, double sumDep,
-                    double percent, int month, bool checkState);
-
-//  QObject::connect(d_, &Debit::uiEventOutputInfo, this, &CalcController::outputDebitInfo);
-//  QObject::connect(v_, &CalcView::uiEventShowDebit, debit, &Debit::showDedit);
 
  private:
-  CalcController* c_;
   s21::CalcModel* m_;
   Ui::CalcView* v_;
   Ui::Debit* d_;
+  Ui::Credit* r_;
 };
 }  // namespace s21
 #endif  // CALCCONTROLLER_H

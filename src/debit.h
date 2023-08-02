@@ -1,7 +1,7 @@
 #ifndef DEBIT_H
 #define DEBIT_H
 
-//#include <QtWidgets>
+#include <QMessageBox>
 #include "ui_debit.h"
 
 QT_BEGIN_NAMESPACE
@@ -17,11 +17,12 @@ class Debit : public QWidget {
  public:
   Debit(QWidget *parent = nullptr);
   ~Debit();
-   void showDedit() {this->show();};
+   void showDebit() {this->show(); emit uiEventSendUi(ui);};
 
  signals:
 //   void uiEventOutputInfo(QString summDep, QString summWithdraw, QDate currentDate, QDate endDate, QDate depositDate, QDate withdrawDate, int caseIndex, int caseIndexDep, int caseIndexWithdraw, bool isCapitalized, double deposit, double interestRate, QString& anuInfo);
    void uiEventOutputInfo(QString& anuInfo, QString& summResult, QString& profit);
+   void uiEventSendUi(Ui::Debit* d);
 
  private slots:
   void debitClicked();

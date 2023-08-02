@@ -14,6 +14,14 @@
 
 namespace s21 {
 
+struct Credit {
+  double summ;
+  double interestRate;
+  short caseIndex;
+  QDate currentDate;
+  short months;
+};
+
 struct Deposit {
   double summ;
   double interestRate;
@@ -75,21 +83,20 @@ class CalcModel {
   double calculatePostfix(QQueue<QString> postfix);
   double calculate(QString infix);
   // CREDIT CALCULATE
-  void outputCredit(int caseIndex, double& S, double& i, QDate currentDate,
-                    size_t n, QString& anuInfo);
-  void paymentAnnuityCalc(double& S, double& i, size_t n);
-  void paymentDifferentialCalc(double& p, double& o, double S, double i,
-                               size_t n, size_t m);
+  void outputCredit(QString& anuInfo, QString& payment, QString& overpayment);
+  void paymentAnnuityCalc(double& p, double& P);
+  void paymentDifferentialCalc(double& p, double& o, size_t m);
   // DEBIT CALCULATE
   void outputDebit(QString& anuInfo, QString& summResult, QString& profit);
   void graphCalculate(int& h, double& xStart, double& yStart, double& xEnd,
                       double& yEnd, QString graphResult, QVector<double>& x,
                       QVector<double>& y);
-  void reDepositWithdrawCalculate(QString summ, int caseIndex,
-                                  QDate& currentDate, QDate endDate,
-                                  QDate& pasteDate, QDate& itterator,
-                                  double& finalAmount, QString& anuInfo,
-                                  bool flag);
+  void reDepositWithdrawCalculate(QDate& currentDate, QDate& pasteDate,
+                                  QDate& itterator, double& finalAmount,
+                                  QString& anuInfo, bool flag);
+  void fixDate(QDate& fixDate, short startCurrentDay);
+  void debitCaseMonth(QDate& currentDate, QDate& itterator, short startCurrentDay);
+  void debitCaseWeek(QDate& currentDate, QDate& itterator, short& ittWeek);
 
   // DEGREE MODE
   void setDegreeMode(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
@@ -102,8 +109,8 @@ class CalcModel {
   // STRUCT GET-SET
   Deposit getDepStructure() { return DepStruct; };
   void setDepStructureValues(double summ, double interestRate, short caseIndex,
-                          bool isCapitalized, QDate currentDate,
-                          QDate endDate) {
+                             bool isCapitalized, QDate currentDate,
+                             QDate endDate) {
     DepStruct.summ = summ;
     DepStruct.interestRate = interestRate;
     DepStruct.caseIndex = caseIndex;
@@ -112,15 +119,15 @@ class CalcModel {
     DepStruct.endDate = endDate;
   }
   ReDeposit getReDepStructure() { return ReDepositStruct; };
-  void setReDepStructureValues(QString summDep,QDate depositDate,
-                          short caseIndexDep) {
+  void setReDepStructureValues(QString summDep, QDate depositDate,
+                               short caseIndexDep) {
     ReDepositStruct.summDep = summDep;
     ReDepositStruct.depositDate = depositDate;
     ReDepositStruct.caseIndexDep = caseIndexDep;
   }
   Withdrawal getWithdrawStructure() { return WithdrawStruct; };
-  void setWithdrawStructureValues(QString summWithdraw,QDate withdrawDate,
-                          short caseIndexWithdraw) {
+  void setWithdrawStructureValues(QString summWithdraw, QDate withdrawDate,
+                                  short caseIndexWithdraw) {
     WithdrawStruct.summWithdraw = summWithdraw;
     WithdrawStruct.withdrawDate = withdrawDate;
     WithdrawStruct.caseIndexWithdraw = caseIndexWithdraw;
@@ -128,6 +135,7 @@ class CalcModel {
 
  private:
   // STRUCTURES
+  Credit CreditStruct;
   Deposit DepStruct;
   ReDeposit ReDepositStruct;
   Withdrawal WithdrawStruct;
