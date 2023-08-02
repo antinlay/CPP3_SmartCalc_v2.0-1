@@ -14,30 +14,36 @@
 
 namespace s21 {
 
+struct Graph {
+  int h;
+  double xStart;
+  double xEnd;
+};
+
 struct Credit {
   double summ;
   double interestRate;
-  short caseIndex;
+  unsigned short caseIndex;
   QDate currentDate;
-  short months;
+  unsigned short months;
 };
 
 struct Deposit {
   double summ;
   double interestRate;
-  short caseIndex;
+  unsigned short caseIndex;
   bool isCapitalized;
   QDate currentDate;
   QDate endDate;
 };
 struct ReDeposit {
   QString summDep;
-  short caseIndexDep;
+  unsigned short caseIndexDep;
   QDate depositDate;
 };
 struct Withdrawal {
   QString summWithdraw;
-  short caseIndexWithdraw;
+  unsigned short caseIndexWithdraw;
   QDate withdrawDate;
 };
 
@@ -88,59 +94,47 @@ class CalcModel {
   void paymentDifferentialCalc(double& p, double& o, size_t m);
   // DEBIT CALCULATE
   void outputDebit(QString& anuInfo, QString& summResult, QString& profit);
-  void graphCalculate(int& h, double& xStart, double& yStart, double& xEnd,
-                      double& yEnd, QString graphResult, QVector<double>& x,
-                      QVector<double>& y);
+  void outputGraph(QString& graphResult, QVector<double>& x,
+                   QVector<double>& y);
   void reDepositWithdrawCalculate(QDate& currentDate, QDate& pasteDate,
                                   QDate& itterator, double& finalAmount,
                                   QString& anuInfo, bool flag);
-  void fixDate(QDate& fixDate, short startCurrentDay);
-  void debitCaseMonth(QDate& currentDate, QDate& itterator, short startCurrentDay);
-  void debitCaseWeek(QDate& currentDate, QDate& itterator, short& ittWeek);
+  void fixDate(QDate& fixDate, unsigned short startCurrentDay);
+  void debitCaseMonth(QDate& currentDate, QDate& itterator,
+                      unsigned short startCurrentDay);
+  void debitCaseWeek(QDate& currentDate, QDate& itterator,
+                     unsigned short& ittWeek);
 
   // DEGREE MODE
-  void setDegreeMode(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
+  void setUseDegree(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
   void changeDegreesToRadians(double& a) {
     if (useDegree_) {
       a = qDegreesToRadians(a);
     }
   };
 
-  // STRUCT GET-SET
-  Deposit getDepStructure() { return DepStruct; };
-  void setDepStructureValues(double summ, double interestRate, short caseIndex,
-                             bool isCapitalized, QDate currentDate,
-                             QDate endDate) {
-    DepStruct.summ = summ;
-    DepStruct.interestRate = interestRate;
-    DepStruct.caseIndex = caseIndex;
-    DepStruct.isCapitalized = isCapitalized;
-    DepStruct.currentDate = currentDate;
-    DepStruct.endDate = endDate;
-  }
-  ReDeposit getReDepStructure() { return ReDepositStruct; };
+  // STRUCT SETTER
+  void setGraphStructureValues(int h, double xStart, double xEnd);
+  void setCreditStructureValues(double summ, double interestRate,
+                                unsigned short caseIndex, QDate currentDate,
+                                unsigned short months);
+  void setDepStructureValues(double summ, double interestRate,
+                             unsigned short caseIndex, bool isCapitalized,
+                             QDate currentDate, QDate endDate);
   void setReDepStructureValues(QString summDep, QDate depositDate,
-                               short caseIndexDep) {
-    ReDepositStruct.summDep = summDep;
-    ReDepositStruct.depositDate = depositDate;
-    ReDepositStruct.caseIndexDep = caseIndexDep;
-  }
-  Withdrawal getWithdrawStructure() { return WithdrawStruct; };
+                               unsigned short caseIndexDep);
   void setWithdrawStructureValues(QString summWithdraw, QDate withdrawDate,
-                                  short caseIndexWithdraw) {
-    WithdrawStruct.summWithdraw = summWithdraw;
-    WithdrawStruct.withdrawDate = withdrawDate;
-    WithdrawStruct.caseIndexWithdraw = caseIndexWithdraw;
-  }
+                                  unsigned short caseIndexWithdraw);
 
  private:
   // STRUCTURES
+  Graph GraphStruct;
   Credit CreditStruct;
   Deposit DepStruct;
   ReDeposit ReDepositStruct;
   Withdrawal WithdrawStruct;
   // DEGREE FLAG
-  bool useDegree_ = false;
+  bool useDegree_;
   // OPERATORS && FUNCTIONS
   QMap<QString, int> precedences_ = {{"(", 0}, {")", 0}, {"+", 1}, {"-", 1},
                                      {"*", 2}, {"/", 2}, {"%", 2}, {"^", 3}};

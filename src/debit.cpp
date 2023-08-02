@@ -44,7 +44,7 @@ Debit::Debit(QWidget* parent) : QWidget(parent), ui(new Ui::Debit) {
   ui->groupBoxWithdraw->setVisible(false);
 
   connect(ui->startDate, &QDateEdit::dateChanged,
-          [=](const QDate& date) { initDate(); });
+          [=]() { initDate(); });
 
   connect(ui->buttounCalculate, &QPushButton::clicked, this,
           &Debit::debitClicked);

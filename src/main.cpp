@@ -7,33 +7,37 @@ int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
   s21::CalcModel m;
-  Ui::CalcView v;
-  s21::CalcController c(&v, &m);
+//  Ui::CalcView v;
+  s21::CalcController c(&m);
 
+  // SHOW && CONNECT VIEW
   CalcView w;
   w.show();
-
-  QObject::connect(&w, &CalcView::setDegreeMode, &c,
-                   &s21::CalcController::setDegreeMode);
-
+//  QObject::connect(&w, &CalcView::getDegreeMode, &c,
+//                   &s21::CalcController::setDegreeMode);
   QObject::connect(&w, &CalcView::uiEventEqual, &c,
                    &s21::CalcController::calcEqual);
-
   QObject::connect(&w, &CalcView::validateChangedOn, &c,
                    &s21::CalcController::validateChangeOn);
+  QObject::connect(&w, &CalcView::uiEventSendUi, &c, &s21::CalcController::sendCalcViewUi);
+  // CONNECT GRAPH
   Graph g;
-  QObject::connect(&g, &Graph::uiEventGraph, &c,
-                   &s21::CalcController::calcGraph);
+  QObject::connect(&g, &Graph::uiEventOutputGraph, &c,
+                   &s21::CalcController::graphOutput);
   QObject::connect(&w, &CalcView::uiEventReplaceX, &c,
                    &s21::CalcController::replaceX);
   QObject::connect(&w, &CalcView::uiEventSendResult, &g,
-                   &Graph::uiEventSendResult);
+                   &Graph::sendResult);
+  QObject::connect(&g, &Graph::uiEventSendUi, &c, &s21::CalcController::sendGraphUi);
 
+  // CONNECT CREDIT
   Credit r;
   QObject::connect(&r, &Credit::uiEventOutputInfo, &c,
                    &s21::CalcController::creditOutputInfo);
   QObject::connect(&w, &CalcView::uiEventShowCredit, &r, &Credit::showCredit);
+  QObject::connect(&r, &Credit::uiEventSendUi, &c, &s21::CalcController::sendCreditUi);
 
+  // CONNECT DEBIT
   Debit t;
   QObject::connect(&t, &Debit::uiEventOutputInfo, &c,
                    &s21::CalcController::outputDebitInfo);

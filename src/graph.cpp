@@ -8,23 +8,19 @@
 Graph::Graph(QWidget *parent) : QWidget(parent), ui(new Ui::Graph) {
   ui->setupUi(this);
 
-  connect(ui->update, &QPushButton::clicked, this,  &Graph::graphClicked);
+  connect(ui->update, &QPushButton::clicked, this, &Graph::graphClicked);
 }
 Graph::~Graph() { delete ui; }
 
 void Graph::graphClicked() {
   int h = ui->caseBox->value() * 300;
-  double xStart = ui->doubleSpinBox_xStart->value(),
-         xEnd = ui->doubleSpinBox_xEnd->value();
+  double xStart = 0, xEnd = 0, yStart = 0, yEnd = 0;
   QVector<double> x(h + 1), y(h + 1);
-
-  double yStart = 0, yEnd = 0;
   QString graphResult = ui->expression->text();
 
-  emit uiEventGraph(h, xStart, yStart, xEnd, yEnd, graphResult, x, y);
+  emit uiEventOutputGraph(graphResult, x, y);
 
-  qDebug() << "x: " << xStart << " " << xEnd << "y: " << yStart << yEnd;
-
+  // clear graphs
   ui->widget->clearGraphs();
   // create Graph and assign data to it:
   ui->widget->addGraph();
@@ -36,15 +32,13 @@ void Graph::graphClicked() {
   ui->widget->xAxis->setRange(xStart, xEnd);
   ui->widget->yAxis->setRange(yStart, yEnd);
   ui->widget->replot();
-
 }
 
-void Graph::uiEventSendResult(QString equalResult) {
+void Graph::sendResult(QString equalResult) {
   ui->expression->setText(equalResult);
   if (!this->isVisible()) {
     this->show();
-    this->graphClicked();
-  } else {
-    this->graphClicked();
   }
+  emit uiEventSendUi(ui);
+  this->graphClicked();
 }

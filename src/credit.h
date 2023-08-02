@@ -18,11 +18,15 @@ class Credit : public QWidget {
  public:
   explicit Credit(QWidget* parent = nullptr);
   ~Credit();
-  void showCredit() { this->show(); };
+  void showCredit() {
+    this->show();
+    emit uiEventSendUi(ui);
+  };
 
  signals:
-  void uiEventOutputInfo(int caseIndex, double& S, double& i, QDate currentDate,
-                         size_t n, QString& anuInfo);
+  void uiEventOutputInfo(QString& anuInfo, QString& payment,
+                         QString& overpayment);
+  void uiEventSendUi(Ui::Credit* r);
 
  private slots:
   void calcClicked();

@@ -16,25 +16,22 @@ class CalcController : public QObject {
 
  public slots:
   void calcEqual(QString& equalResult, QString& equalLabel);
-  void calcGraph(int& h, double& xStart, double& yStart, double& xEnd,
-                 double& yEnd, QString graphResult, QVector<double>& x,
+  void graphOutput(QString& graphResult, QVector<double>& x,
                  QVector<double>& y);
-  void setDegreeMode(bool statusDegreeMode) {
-    m_->setDegreeMode(statusDegreeMode);
+  void setDegreeMode() {
+      qDebug() << v_->radioButton->isChecked() << "CONTROLLER";
+    m_->setUseDegree(v_->radioButton->isChecked());
   };
   void creditOutputInfo(QString& anuInfo, QString& payment,
-                        QString& overpayment)
-  //          int caseIndex, double& S, double& i, QDate currentDate,
-  //                        size_t n, QString& anuInfo)
-  {
-    m_->outputCredit(anuInfo, payment, overpayment);
-  };
+                        QString& overpayment);
   void outputDebitInfo(QString& anuInfo, QString& summResult, QString& profit);
   void sendDebitUi(Ui::Debit* d) { d_ = d; };
-  void sendCrebitUi(Ui::Credit* r) { r_ = r; };
+  void sendCreditUi(Ui::Credit* r) { r_ = r; };
+  void sendGraphUi(Ui::Graph* g) { g_ = g; };
+  void sendCalcViewUi(Ui::CalcView* v) { v_ = v; setDegreeMode();};
 
  public:
-  CalcController(Ui::CalcView* v, s21::CalcModel* m) : m_(m), v_(v){};
+  CalcController(s21::CalcModel* m) : m_(m) {};
   //  ~CalcController();
   void replaceX(QString& equalResult, QString& equalLabel);
   void validateChangeOn(QString equalStr, bool& status);
@@ -42,6 +39,7 @@ class CalcController : public QObject {
  private:
   s21::CalcModel* m_;
   Ui::CalcView* v_;
+  Ui::Graph* g_;
   Ui::Debit* d_;
   Ui::Credit* r_;
 };

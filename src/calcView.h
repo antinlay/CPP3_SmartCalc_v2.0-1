@@ -26,7 +26,7 @@ class CalcView : public QMainWindow {
   void setLineEdit(QLineEdit* ActiveLineEdit) {lastActiveLineEdit_ = ActiveLineEdit;};
 
  signals:
-  void setDegreeMode(bool statusDegreeMode);
+//  void uiEventDegreeMode(bool checked);
   void validateChangedOn(QString expression, bool& status);
 
   void uiEventReplaceX(QString& resultShow, QString& equalX);
@@ -35,6 +35,7 @@ class CalcView : public QMainWindow {
 
   void uiEventShowCredit();
   void uiEventShowDebit();
+  void uiEventSendUi(Ui::CalcView* v);
 
  private slots:
   QLineEdit *checkActiveLineEdit();
@@ -46,12 +47,10 @@ class CalcView : public QMainWindow {
   void creditClicked();
   void debitClicked();
   void graphClicked();
-  void degreeModeClicked(bool checked);
+//  void degreeModeClicked(bool checked);
 
 private:
  Ui::CalcView *ui;
-//  Credit *creditWindow;
-//  Debit *debitWindow;
  QStack<size_t> textLengthStack;
  bool status_ = false;
  QLineEdit* lastActiveLineEdit_ = nullptr;

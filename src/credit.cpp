@@ -3,15 +3,12 @@
 #include "ui_credit.h"
 
 Credit::Credit(QWidget* parent) : QWidget(parent), ui(new Ui::Credit) {
-  QLocale lo(QLocale::C);
-  lo.setNumberOptions(QLocale::RejectGroupSeparator);
-  auto val = new QDoubleValidator();
-  val->setLocale(lo);
+  auto validator = new QDoubleValidator(0, std::numeric_limits<int>::max(), 6);
 
   ui->setupUi(this);
 
-  ui->summa->setValidator(val);
-  ui->percent->setValidator(val);
+  ui->summa->setValidator(validator);
+  ui->percent->setValidator(validator);
 
   ui->caseCredit->addItem("annuity");
   ui->caseCredit->addItem("differentiated");
@@ -28,25 +25,21 @@ Credit::Credit(QWidget* parent) : QWidget(parent), ui(new Ui::Credit) {
 
   connect(ui->calculate, &QPushButton::clicked, this, &Credit::calcClicked);
 
-  connect(ui->startDate, &QDateEdit::dateChanged, [=](const QDate& date) {
-    ui->endDate->setMinimumDate(date.addMonths(1));
+  connect(ui->startDate, &QDateEdit::dateChanged, [=]() {
+    ui->endDate->setMinimumDate(ui->startDate->date().addMonths(1));
   });
 }
 
 Credit::~Credit() { delete ui; }
 
 void Credit::calcClicked() {
-  size_t n = (ui->endDate->date().year() - ui->startDate->date().year()) * 12 +
-             ui->endDate->date().month() - ui->startDate->date().month();
-  double S = ui->summa->text().toDouble(),
-         i = QString(ui->percent->text()).toDouble() / 12 / 100;
-  QString anuInfo;
-
   try {
-    if (ui->summa->text().isEmpty() || !n || ui->percent->text().isEmpty()) {
+    if (ui->summa->text().isEmpty() || ui->percent->text().isEmpty()) {
       throw std::invalid_argument("Invalid argument in Credit view!");
     } else {
-      emit uiEventOutputInfo(ui->caseCredit->currentIndex(), S, i, ui->startDate->date(), n, anuInfo);
+      QString anuInfo, summResult, profit;
+
+      emit uiEventOutputInfo(anuInfo, summResult, profit);
 
       // clear fields
       ui->payment->clear();
@@ -54,8 +47,8 @@ void Credit::calcClicked() {
       ui->info->clear();
       // add info to fields
       ui->info->addItem(anuInfo);
-      ui->payment->setText(QString::number(S, 'f', 2));
-      ui->overpayment->setText(QString::number(i, 'f', 2));
+      ui->payment->setText(summResult);
+      ui->overpayment->setText(profit);
     }
   } catch (std::exception& e) {
     QMessageBox::warning(

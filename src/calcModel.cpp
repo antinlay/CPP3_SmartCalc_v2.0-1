@@ -3,72 +3,29 @@
 bool s21::CalcModel::validateExpression(QString& expression) {
   QStack<QChar> parenthesesStack;
 
-  // Проверка на сбалансированность скобок
   for (int i = 0; i < expression.length(); ++i) {
     QChar ch = expression.at(i);
-    if (ch == '(')
+    if (ch == '(') {
       parenthesesStack.push(ch);
-    else if (ch == ')') {
-      if (parenthesesStack.empty()) return false;
+    } else if (ch == ')') {
+      if (parenthesesStack.empty()) {
+        return false;
+      }
       parenthesesStack.pop();
     }
   }
   if (!parenthesesStack.empty()) return false;
 
-  // QDoubleValidator validator;
-  // int pos = 0;
-  // QValidator::State state = validator.validate(expression, pos);
-  // return (state == QValidator::Acceptable);
-
-  QRegularExpression validChars("[^0-9.(),+\\-*/^sqrtancolimdxX]+");
+  static QRegularExpression validChars("[^0-9.(),+\\-*/^sqrtancolimdxX]+");
   if (validChars.match(expression).hasMatch()) return false;
 
-  QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
+  static QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
   if (regexAlphabet.match(expression).hasMatch()) {
-    QRegularExpression regexFunc(
+    static QRegularExpression regexFunc(
         "(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
     if (!regexFunc.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression regexCloseBracket(
-    //       "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
-    //   if (regexCloseBracket.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression regexBeforeFunc(
-    //       "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
-    //       "log))");
-    //   if (regexBeforeFunc.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
-    //   if (regexBeforeX.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression multipleFunctions(
-    //       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
-    //       "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
-    //       "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
-    //   if (multipleFunctions.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression
-    //   regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?"); if
-    //   (!regexExponenta.match(expression).hasMatch()) return false;
   }
-
-  // QRegularExpression regexBracketDigit("\\)(?=\\d)");
-  // if (regexBracketDigit.match(expression).hasMatch()) return false;
-  // QRegularExpression regexDotMax(
-  //     "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
-  // if (regexDotMax.match(expression).hasMatch()) return false;
-  // // Проверка на неправильное расположение операторов и функций
-  // QRegularExpression invalidOperators(
-  //     "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
-  //     "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
-  //     "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
-  // if (invalidOperators.match(expression).hasMatch()) return false;
-  // // Проверка на неправильное количество операторов и функций
-  // QRegularExpression multipleOperators(
-  //     "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
-  // if (multipleOperators.match(expression).hasMatch()) return false;
-
-  return true;
+    return true;
 }
 
 double s21::CalcModel::addCalc(double a, double b) { return a + b; }
@@ -300,16 +257,18 @@ double s21::CalcModel::calculate(QString infix) {
   return calculatePostfix(newInfix);
 }
 
+// CALCULATE CREDIT
 void s21::CalcModel::paymentAnnuityCalc(double& p, double& P) {
   /* Кредитный калькулятор с аннуитетными платежами можно рассчитать по
    следующей формуле: p = (S * i * (1 + i)^n) / ((1 + i)^n - 1)? где: p -
    размер ежемесячного платежа, S - сумма кредита, i - процентная ставка в
    месяц,  n - количество месяцев, O - общая переплата, o - месячная
    переплата, P - обшая переплата */
-  short n = CreditStruct.months;
-  double S = CreditStruct.summ, i = CreditStruct.interestRate;
+  unsigned short n = CreditStruct.months;
+  qDebug() << CreditStruct.interestRate;
+  double S = CreditStruct.summ, i = CreditStruct.interestRate / 100 / 12;
   p = (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
-  P = S * n;
+  P = p * n;
 }
 
 void s21::CalcModel::paymentDifferentialCalc(double& p, double& o, size_t m) {
@@ -318,7 +277,7 @@ void s21::CalcModel::paymentDifferentialCalc(double& p, double& o, size_t m) {
    дифференцированного платежа, S - сумма кредита, n - срок кредита в
    месяцах, m - номер текущего месяца, i - годовая процентная ставка,
    деленная на 12 месяцев. i = (S - (m - 1) * (S / n)) * i */
-  double S = CreditStruct.summ, i = CreditStruct.interestRate;
+  double S = CreditStruct.summ, i = CreditStruct.interestRate / 100 / 12;
   size_t n = CreditStruct.months;
   p = (S / n) + (S - (m - 1) * (S / n)) * i;
   o = (S - (m - 1) * (S / n)) * i;
@@ -326,8 +285,8 @@ void s21::CalcModel::paymentDifferentialCalc(double& p, double& o, size_t m) {
 
 void s21::CalcModel::outputCredit(QString& anuInfo, QString& payment,
                                   QString& overpayment) {
-  short m = 1;
-  double o = 0, O = 0, p = CreditStruct.summ, P = CreditStruct.interestRate;
+  unsigned short m = 1;
+  double o = 0, O = 0, p = 0, P = 0;
   QString rateOrPayment = " overpayment: ";
   QDate currentDate = CreditStruct.currentDate;
 
@@ -360,6 +319,13 @@ void s21::CalcModel::outputCredit(QString& anuInfo, QString& payment,
   overpayment = QString::number(O, 'f', 2);
 }
 
+// CALCULATE DEPOSIT
+void s21::CalcModel::fixDate(QDate& fixDate, unsigned short startCurrentDay) {
+  if (fixDate.month() == 2 || startCurrentDay == 31) {
+    fixDate.setDate(fixDate.year(), fixDate.month(), fixDate.daysInMonth());
+  }
+}
+
 void s21::CalcModel::reDepositWithdrawCalculate(QDate& currentDate,
                                                 QDate& pasteDate,
                                                 QDate& itterator,
@@ -380,10 +346,11 @@ void s21::CalcModel::reDepositWithdrawCalculate(QDate& currentDate,
     if (caseIndex == 0 || caseIndex == 1) {
       if (currentDate <= pasteDate && itterator >= pasteDate &&
           DepStruct.endDate >= pasteDate) {
-        if (flag)
+        if (flag) {
           finalAmount -= summ.toDouble();
-        else
+        } else {
           finalAmount += summ.toDouble();
+        }
         anuInfo += infoDepWithdraw + QString::number(pasteDate.day()) + " " +
                    QLocale().monthName(pasteDate.month()) + " " +
                    QString::number(pasteDate.year()) + ": " +
@@ -392,66 +359,53 @@ void s21::CalcModel::reDepositWithdrawCalculate(QDate& currentDate,
                    "\n";
         if (caseIndex == 1) {
           pasteDate = pasteDate.addMonths(1);
-          if (pasteDate.month() != 2 || startDay == 31)
-            pasteDate.setDate(pasteDate.year(), pasteDate.month(),
-                              pasteDate.daysInMonth());
+          fixDate(pasteDate, startDay);
         }
       }
     }
   }
 }
 
-void s21::CalcModel::fixDate(QDate& fixDate, short startCurrentDay) {
-    if (fixDate.month() == 2 || startCurrentDay == 31)
-      fixDate.setDate(fixDate.year(), fixDate.month(),
-                          fixDate.daysInMonth());
+void s21::CalcModel::debitCaseMonth(QDate& currentDate, QDate& itterator,
+                                    unsigned short startCurrentDay) {
+  currentDate = currentDate.addMonths(1);
+  fixDate(currentDate, startCurrentDay);
+  itterator = currentDate.addMonths(1);
+  fixDate(itterator, startCurrentDay);
 }
 
-void s21::CalcModel::debitCaseMonth(QDate& currentDate, QDate& itterator, short startCurrentDay) {
-      currentDate = currentDate.addMonths(1);
-      fixDate(currentDate, startCurrentDay);
-      itterator = currentDate.addMonths(1);
-      if (itterator.month() == 2 || startCurrentDay == 31)
-        itterator.setDate(itterator.year(), itterator.month(),
-                          itterator.daysInMonth());
-}
-
-void s21::CalcModel::debitCaseWeek(QDate& currentDate, QDate& itterator, short& ittWeek) {
-      if (currentDate.daysTo(DepStruct.endDate) <= ittWeek) {
-        ittWeek = currentDate.daysTo(DepStruct.endDate);
-      }
-      currentDate = currentDate.addDays(ittWeek);
-      itterator = currentDate.addDays(ittWeek);
+void s21::CalcModel::debitCaseWeek(QDate& currentDate, QDate& itterator,
+                                   unsigned short& ittWeek) {
+  if (currentDate.daysTo(DepStruct.endDate) <= ittWeek) {
+    ittWeek = currentDate.daysTo(DepStruct.endDate);
+  }
+  currentDate = currentDate.addDays(ittWeek);
+  itterator = currentDate.addDays(ittWeek);
 }
 
 void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
                                  QString& profitStr) {
-  short daysOnYear = DepStruct.currentDate.daysTo(DepStruct.currentDate.addYears(1)), startCurrentDay = DepStruct.currentDate.day(), ittWeek = 7;
-  double finalAmount = DepStruct.summ, profit = 0,
+  unsigned short daysOnYear = DepStruct.currentDate.daysTo(
+                     DepStruct.currentDate.addYears(1)),
+                 startCurrentDay = DepStruct.currentDate.day(), ittWeek = 7;
+  double finalAmount = DepStruct.summ, profit = 0, interest = 0,
          interestRate = DepStruct.interestRate / 100 / daysOnYear;
-  QDate itterator, currentDate = DepStruct.currentDate,
-                   endDate = DepStruct.endDate;
-
-  if (DepStruct.caseIndex == 1) {
-      debitCaseMonth(currentDate, itterator, startCurrentDay);
-  } else if (DepStruct.caseIndex == 0) {
-      debitCaseWeek(currentDate, itterator, ittWeek);
-  }
+  QDate itterator, currentDate = DepStruct.currentDate;
 
   while (currentDate.daysTo(DepStruct.endDate) > 0) {
-    double interest;
+    if (DepStruct.caseIndex == 1) {
+      debitCaseMonth(currentDate, itterator, startCurrentDay);
+    } else if (DepStruct.caseIndex == 0) {
+      debitCaseWeek(currentDate, itterator, ittWeek);
+    }
 
     if (DepStruct.isCapitalized) {
-      qDebug() << currentDate.daysTo(itterator) << "CD to ITT";
       interest = finalAmount * interestRate * currentDate.daysTo(itterator);
-      qDebug() << interest << "CD to ITT";
     } else {
       interest = DepStruct.summ * interestRate * currentDate.daysTo(itterator);
     }
     finalAmount += interest;
     profit += interest;
-    qDebug() << finalAmount << "FA";
-    qDebug() << profit << "PR";
 
     QString currentYear = QString::number(currentDate.year());
     QString currentMonth = QLocale().monthName(currentDate.month());
@@ -460,8 +414,6 @@ void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
     anuInfo += "Pay for " + currentDay + " " + currentMonth + " " +
                currentYear + ": " + QString::number(finalAmount, 'f', 2) +
                " interest: " + QString::number(interest, 'f', 2) + "\n";
-    qDebug() << currentDate.daysTo(endDate) << "CR - ED";
-    qDebug() << ittWeek << "ITT";
 
     reDepositWithdrawCalculate(currentDate, ReDepositStruct.depositDate,
                                itterator, finalAmount, anuInfo, false);
@@ -472,21 +424,22 @@ void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
   profitStr = QString::number(profit, 'f', 2);
 }
 
-void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
-                                    double& xEnd, double& yEnd,
-                                    QString graphResult, QVector<double>& x,
-                                    QVector<double>& y) {
-  double j = (xEnd - xStart) / h;
-  for (int i = 0; i <= h; ++i) {
+// CALCULATE GRAPH
+void s21::CalcModel::outputGraph(QString& graphResult, QVector<double>& x,
+                                 QVector<double>& y) {
+  GraphStruct.h *= 300;
+  double j = (GraphStruct.xEnd - GraphStruct.xStart) / GraphStruct.h,
+         yStart = 0, yEnd = 0;
+  for (size_t i = 0; i <= GraphStruct.h; ++i) {
     try {
       QString replace = graphResult;
-      x[i] = xStart + i * j;
+      x[i] = GraphStruct.xStart + i * j;
       QString num = QString::number(x[i]);
       replace.replace("X", num, Qt::CaseInsensitive);
       y[i] = calculate(replace);
     } catch (std::exception& e) {
-      x.remove(i);
-      --i;
+      //      x.remove(i);
+      //      --i;
       continue;
     }
   }
@@ -500,8 +453,47 @@ void s21::CalcModel::graphCalculate(int& h, double& xStart, double& yStart,
       yStart = y[i];
     }
   }
-  // xStart = *qMin(x.constBegin(), x.constEnd());
-  // xEnd = *qMax(x.constBegin(), x.constEnd());
-  // yStart = *qMin(y.constBegin(), y.constEnd());
-  // yEnd = *qMax(y.constBegin(), y.constEnd());
+}
+
+// SETTERS STRUCTS
+void s21::CalcModel::setGraphStructureValues(int h, double xStart,
+                                             double xEnd) {
+  GraphStruct.h = h;
+  GraphStruct.xStart = xStart;
+  GraphStruct.xEnd = xEnd;
+}
+void s21::CalcModel::setCreditStructureValues(double summ, double interestRate,
+                                              unsigned short caseIndex,
+                                              QDate currentDate,
+                                              unsigned short months) {
+  CreditStruct.summ = summ;
+  CreditStruct.interestRate = interestRate;
+  CreditStruct.caseIndex = caseIndex;
+  CreditStruct.currentDate = currentDate;
+  CreditStruct.months = months;
+}
+
+void s21::CalcModel::setDepStructureValues(double summ, double interestRate,
+                                           unsigned short caseIndex,
+                                           bool isCapitalized,
+                                           QDate currentDate, QDate endDate) {
+  DepStruct.summ = summ;
+  DepStruct.interestRate = interestRate;
+  DepStruct.caseIndex = caseIndex;
+  DepStruct.isCapitalized = isCapitalized;
+  DepStruct.currentDate = currentDate;
+  DepStruct.endDate = endDate;
+}
+void s21::CalcModel::setReDepStructureValues(QString summDep, QDate depositDate,
+                                             unsigned short caseIndexDep) {
+  ReDepositStruct.summDep = summDep;
+  ReDepositStruct.depositDate = depositDate;
+  ReDepositStruct.caseIndexDep = caseIndexDep;
+}
+void s21::CalcModel::setWithdrawStructureValues(
+    QString summWithdraw, QDate withdrawDate,
+    unsigned short caseIndexWithdraw) {
+  WithdrawStruct.summWithdraw = summWithdraw;
+  WithdrawStruct.withdrawDate = withdrawDate;
+  WithdrawStruct.caseIndexWithdraw = caseIndexWithdraw;
 }
