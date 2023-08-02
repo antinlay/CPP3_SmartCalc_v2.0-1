@@ -3,29 +3,71 @@
 bool s21::CalcModel::validateExpression(QString& expression) {
   QStack<QChar> parenthesesStack;
 
+  // Проверка на сбалансированность скобок
   for (int i = 0; i < expression.length(); ++i) {
     QChar ch = expression.at(i);
-    if (ch == '(') {
+    if (ch == '(')
       parenthesesStack.push(ch);
-    } else if (ch == ')') {
-      if (parenthesesStack.empty()) {
-        return false;
-      }
+    else if (ch == ')') {
+      if (parenthesesStack.empty()) return false;
       parenthesesStack.pop();
     }
   }
   if (!parenthesesStack.empty()) return false;
 
-  static QRegularExpression validChars("[^0-9.(),+\\-*/^sqrtancolimdxX]+");
+  // QDoubleValidator validator;
+  // int pos = 0;
+  // QValidator::State state = validator.validate(expression, pos);
+  // return (state == QValidator::Acceptable);
+
+  QRegularExpression validChars("[^0-9.(),+\\-*/^sqrtancolimdxX]+");
   if (validChars.match(expression).hasMatch()) return false;
 
-  static QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
+  QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
   if (regexAlphabet.match(expression).hasMatch()) {
-    static QRegularExpression regexFunc(
+    QRegularExpression regexFunc(
         "(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
     if (!regexFunc.match(expression).hasMatch()) return false;
+
+    //   QRegularExpression regexCloseBracket(
+    //       "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
+    //   if (regexCloseBracket.match(expression).hasMatch()) return false;
+
+    //   QRegularExpression regexBeforeFunc(
+    //       "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
+    //       "log))");
+    //   if (regexBeforeFunc.match(expression).hasMatch()) return false;
+
+    //   QRegularExpression regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
+    //   if (regexBeforeX.match(expression).hasMatch()) return false;
+
+    //   QRegularExpression multipleFunctions(
+    //       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
+    //       "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
+    //       "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
+    //   if (multipleFunctions.match(expression).hasMatch()) return false;
+
+    //   QRegularExpression
+    //   regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?"); if
+    //   (!regexExponenta.match(expression).hasMatch()) return false;
   }
-    return true;
+
+//   QRegularExpression regexBracketDigit("\\)(?=\\d)");
+//   if (regexBracketDigit.match(expression).hasMatch()) return false;
+   QRegularExpression regexDotMax(
+       "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
+   if (regexDotMax.match(expression).hasMatch()) return false;
+   // Проверка на неправильное расположение операторов и функций
+   QRegularExpression invalidOperators(
+       "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
+       "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
+       "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
+   if (invalidOperators.match(expression).hasMatch()) return false;
+   // Проверка на неправильное количество операторов и функций
+   QRegularExpression multipleOperators(
+       "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
+   if (multipleOperators.match(expression).hasMatch()) return false;
+  return true;
 }
 
 double s21::CalcModel::addCalc(double a, double b) { return a + b; }
@@ -427,10 +469,10 @@ void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
 // CALCULATE GRAPH
 void s21::CalcModel::outputGraph(QString& graphResult, QVector<double>& x,
                                  QVector<double>& y) {
-  GraphStruct.h *= 300;
-  double j = (GraphStruct.xEnd - GraphStruct.xStart) / GraphStruct.h,
+  int h = GraphStruct.h * 300;
+  double j = (GraphStruct.xEnd - GraphStruct.xStart) / h,
          yStart = 0, yEnd = 0;
-  for (size_t i = 0; i <= GraphStruct.h; ++i) {
+  for (int i = 0; i <= h; ++i) {
     try {
       QString replace = graphResult;
       x[i] = GraphStruct.xStart + i * j;
