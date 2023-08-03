@@ -18,6 +18,7 @@ class CalcController : public QObject {
   void calcEqual(QString& equalResult, QString& equalLabel);
   void graphOutput(QString& graphResult, QVector<double>& x,
                  QVector<double>& y);
+  void graphResize(QVector<double>& y, double& yStart, double& yEnd);
   void setDegreeMode() {
       qDebug() << v_->radioButton->isChecked() << "CONTROLLER";
     m_->setUseDegree(v_->radioButton->isChecked());
@@ -31,7 +32,7 @@ class CalcController : public QObject {
   void sendCalcViewUi(Ui::CalcView* v) { v_ = v; setDegreeMode();};
 
  public:
-  CalcController(s21::CalcModel* m) : m_(m) {};
+  CalcController(s21::CalcModel* m, Ui::CalcView* v) : m_(m), v_(v) {};
   //  ~CalcController();
   void replaceX(QString& equalResult, QString& equalLabel);
   void validateChangeOn(QString equalStr, bool& status);

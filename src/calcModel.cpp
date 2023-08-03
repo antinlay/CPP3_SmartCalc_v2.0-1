@@ -1,72 +1,24 @@
 #include "calcModel.h"
 
-bool s21::CalcModel::validateExpression(QString& expression) {
-  QStack<QChar> parenthesesStack;
+void s21::CalcModel::substituteExpr(QString& expression) {
+  expression.remove(' ');
+  expression.replace("log", "log10");
+  expression.replace("ln", "log");
+  expression.replace("mod", "%");
+  expression.replace("e", "*10^");
+}
 
-  // Проверка на сбалансированность скобок
-  for (int i = 0; i < expression.length(); ++i) {
-    QChar ch = expression.at(i);
-    if (ch == '(')
-      parenthesesStack.push(ch);
-    else if (ch == ')') {
-      if (parenthesesStack.empty()) return false;
-      parenthesesStack.pop();
-    }
-  }
-  if (!parenthesesStack.empty()) return false;
-
-  // QDoubleValidator validator;
-  // int pos = 0;
-  // QValidator::State state = validator.validate(expression, pos);
-  // return (state == QValidator::Acceptable);
-
-  QRegularExpression validChars("[^0-9.(),+\\-*/^sqrtancolimdxX]+");
-  if (validChars.match(expression).hasMatch()) return false;
-
-  QRegularExpression regexAlphabet("[a-zA-ZА-я]+");
-  if (regexAlphabet.match(expression).hasMatch()) {
-    QRegularExpression regexFunc(
-        "(sin|cos|tan|sqrt|asin|acos|atan|ln|log|mod)");
-    if (!regexFunc.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression regexCloseBracket(
-    //       "\\)(sin|cos|tan|sqrt|asin|acos|atan|ln|log|X|x|mod)");
-    //   if (regexCloseBracket.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression regexBeforeFunc(
-    //       "(\\d+(\\.\\d+)?(sin|cos|tan|sqrt|asin|acos|atan|ln|"
-    //       "log))");
-    //   if (regexBeforeFunc.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression regexBeforeX("(\\d+\\.?\\d*[Xx]|[Xx]\\d+\\.?\\d*)");
-    //   if (regexBeforeX.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression multipleFunctions(
-    //       "(?!sqrt\\()sqrt{1,}|(?!sin\\()sin{1,}|(?!cos\\()cos{1,}|(?!tan\\()tan{"
-    //       "1,}|(?!asin\\()asin{1,}|(?!acos\\()acos{1,}|(?!atan\\()atan{1,}|(?!"
-    //       "ln\\()ln{2,}|(?!log\\()log{1,}|(?!mod\\()mod{1,}|X{2,}|x{2,}|\\s{1,}");
-    //   if (multipleFunctions.match(expression).hasMatch()) return false;
-
-    //   QRegularExpression
-    //   regexExponenta("[+-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?"); if
-    //   (!regexExponenta.match(expression).hasMatch()) return false;
-  }
-
-//   QRegularExpression regexBracketDigit("\\)(?=\\d)");
-//   if (regexBracketDigit.match(expression).hasMatch()) return false;
-   QRegularExpression regexDotMax(
-       "\\d*\\.\\d+\\.(?!\\d)|\\d+\\.\\d+\\.\\d+|^\\.\\d+\\.\\d+");
-   if (regexDotMax.match(expression).hasMatch()) return false;
-   // Проверка на неправильное расположение операторов и функций
-   QRegularExpression invalidOperators(
-       "(\\+\\+|\\+\\*|\\+\\/|\\+\\^|\\+\\-|\\*\\*|\\*\\/"
-       "|\\*\\^|\\*\\-|\\/\\/|\\/\\*|\\/\\^|\\/\\-|\\^\\+|\\^\\*|\\^\\/"
-       "|\\^\\^|\\^\\-|\\-\\+|\\-\\*|\\-\\/|\\-\\^|\\-\\-|\\(\\)|\\)\\()");
-   if (invalidOperators.match(expression).hasMatch()) return false;
-   // Проверка на неправильное количество операторов и функций
-   QRegularExpression multipleOperators(
-       "\\+{2,}|\\-{2,}|\\*{2,}|\\/{2,}|\\^{2,}|\\.{2,}");
-   if (multipleOperators.match(expression).hasMatch()) return false;
+bool s21::CalcModel::validateExpression(QString expression) {
+  substituteExpr(expression);
+  exprtk::symbol_table<double> symbol_table;
+  exprtk::expression<double> expr;
+  exprtk::parser<double> parser;
+  symbol_table.add_constants();
+  double x;
+  symbol_table.add_variable("x", x);
+  symbol_table.add_variable("X", x);
+  expr.register_symbol_table(symbol_table);
+  if (!parser.compile(expression.toStdString(), expr)) return false;
   return true;
 }
 
@@ -138,7 +90,7 @@ int s21::CalcModel::getPriority(QString c) {
   return res;
 }
 
-bool s21::CalcModel::isDigit(QChar& currentChar, QString& infix, int& i) {
+bool s21::CalcModel::isDigital(QChar& currentChar, QString& infix, int& i) {
   bool result = false;
   if (currentChar.isDigit() || currentChar == '.' || currentChar == 'e' ||
       (currentChar == '-' &&
@@ -197,34 +149,30 @@ double s21::CalcModel::calcFunctions(double a, QString c) {
   return (this->*functions.value(c))(a);
 }
 
-void s21::CalcModel::fixInfix(QString& infix) {
-  for (auto it = keyFunctions.begin(); it != keyFunctions.end(); ++it) {
-    int pos = 0;
-    while ((pos = infix.indexOf(it.key(), pos)) != -1) {
-      infix.replace(pos, it.key().length(), it.value());
-      pos += it.value().length();
-    }
-  }
-  QTextStream out(stdout);
-
-  out << infix << Qt::endl;
-}
-
 // CONVERT TO POSTFIX
 QQueue<QString> s21::CalcModel::infixToPostfix(QString& infix) {
   QStack<QString> operatorStack;
   QQueue<QString> outputQueue;
   QString currentToken = "";
-  fixInfix(infix);
 
   for (int i = 0; i < infix.length(); i++) {
     QChar currentChar = infix[i];
-    if (isDigit(currentChar, infix, i)) {
+    if (isDigital(currentChar, infix, i)) {
       if (currentChar == 'e') {
         currentToken += currentChar;
         currentChar = infix[++i];
       }
       currentToken += currentChar;
+    } else if (QChar(currentChar).isLetter()) {
+      QString function;
+      while (QChar(currentChar).isLetter()) {
+        function += currentChar;
+        currentChar = infix[++i];
+      }
+          function = keyFunctions.value(function);
+          qDebug() << function << "infToPostf";
+          operatorStack.push(function);
+        --i;
     } else {
       if (!currentToken.isEmpty()) {
         outputQueue.push_back(currentToken);
@@ -295,6 +243,8 @@ double s21::CalcModel::calculatePostfix(QQueue<QString> postfix) {
 }
 
 double s21::CalcModel::calculate(QString infix) {
+  QString expression = infix;
+  if (!validateExpression(expression)) return 0.0;
   QQueue<QString> newInfix = infixToPostfix(infix);
   return calculatePostfix(newInfix);
 }
@@ -470,8 +420,7 @@ void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
 void s21::CalcModel::outputGraph(QString& graphResult, QVector<double>& x,
                                  QVector<double>& y) {
   int h = GraphStruct.h * 300;
-  double j = (GraphStruct.xEnd - GraphStruct.xStart) / h,
-         yStart = 0, yEnd = 0;
+  double j = (GraphStruct.xEnd - GraphStruct.xStart) / h;
   for (int i = 0; i <= h; ++i) {
     try {
       QString replace = graphResult;
@@ -480,17 +429,18 @@ void s21::CalcModel::outputGraph(QString& graphResult, QVector<double>& x,
       replace.replace("X", num, Qt::CaseInsensitive);
       y[i] = calculate(replace);
     } catch (std::exception& e) {
-      //      x.remove(i);
-      //      --i;
       continue;
     }
   }
+}
+
+void s21::CalcModel::resizeGraph(QVector<double>& y, double& yStart,
+                                 double& yEnd) {
   // get xy range
-  for (int i = 0; i < y.size() && i < x.size(); i++) {
+  for (int i = 0; i < y.size() && i < y.size(); i++) {
     if (y[i] > yEnd && y[i] >= 0.000001) {
       yEnd = y[i];
     }
-
     if (y[i] < yStart && y[i] >= 0.000001) {
       yStart = y[i];
     }

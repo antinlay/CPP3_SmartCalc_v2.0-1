@@ -10,7 +10,11 @@
 #include <QStack>
 #include <QTextStream>
 #include <QValidator>
+#include <QChar>
+#include <cmath>
 #include <iostream>
+
+#include "exprtk.hpp"
 
 namespace s21 {
 
@@ -73,16 +77,16 @@ class CalcModel {
   double acosCalc(double a);
 
   // CHECKS
-  bool validateExpression(QString& expression);
+  void substituteExpr(QString& expression);
+  bool validateExpression(QString expression);
   int getPriority(QString c);
-  bool isDigit(QChar& currentChar, QString& infix, int& i);
+  bool isDigital(QChar& currentChar, QString& infix, int& i);
   bool isOperator(const QString& str);
   bool isFunction(const QString& str);
   // MAP CALCULATIONS
   double calcOperations(double a, double b, QString c);
   double calcFunctions(double a, QString c);
   // CONVERT TO POSTFIX
-  void fixInfix(QString& infix);
   QQueue<QString> infixToPostfix(QString& infix);
   // CALCULATE POSTFIX
   double getFromStack(QStack<double>& operands);
@@ -94,8 +98,6 @@ class CalcModel {
   void paymentDifferentialCalc(double& p, double& o, size_t m);
   // DEBIT CALCULATE
   void outputDebit(QString& anuInfo, QString& summResult, QString& profit);
-  void outputGraph(QString& graphResult, QVector<double>& x,
-                   QVector<double>& y);
   void reDepositWithdrawCalculate(QDate& currentDate, QDate& pasteDate,
                                   QDate& itterator, double& finalAmount,
                                   QString& anuInfo, bool flag);
@@ -104,13 +106,19 @@ class CalcModel {
                       unsigned short startCurrentDay);
   void debitCaseWeek(QDate& currentDate, QDate& itterator,
                      unsigned short& ittWeek);
+  // GRAPH CALCULATE
+  void resizeGraph(QVector<double>& y, double& yStart, double& yEnd);
+  void outputGraph(QString& graphResult, QVector<double>& x,
+                   QVector<double>& y);
 
   // DEGREE MODE
   void setUseDegree(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
   void changeDegreesToRadians(double& a) {
+      qDebug() << useDegree_ << "MODE";
     if (useDegree_) {
-      a = qDegreesToRadians(a);
+      a = a * (M_PI / 180.0);
     }
+    qDebug() << QString::number(a);
   };
 
   // STRUCT SETTER

@@ -26,7 +26,6 @@ class CalcView : public QMainWindow {
   void setLineEdit(QLineEdit* ActiveLineEdit) {lastActiveLineEdit_ = ActiveLineEdit;};
 
  signals:
-//  void uiEventDegreeMode(bool checked);
   void validateChangedOn(QString expression, bool& status);
 
   void uiEventReplaceX(QString& resultShow, QString& equalX);
@@ -47,7 +46,6 @@ class CalcView : public QMainWindow {
   void creditClicked();
   void debitClicked();
   void graphClicked();
-//  void degreeModeClicked(bool checked);
 
 private:
  Ui::CalcView *ui;

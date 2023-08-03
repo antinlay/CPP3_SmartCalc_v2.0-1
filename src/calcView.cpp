@@ -15,8 +15,6 @@ CalcView::CalcView(QWidget *parent)
   connect(qApp, &QApplication::focusChanged, this,
           &CalcView::onLineEditFocusChanged);
 
-//  connect(ui->radioButton, &QRadioButton::clicked, this, &CalcView::degreeModeClicked);
-
   connect(ui->sin, &QPushButton::clicked, this, [=]() { focusInsert("("); });
   connect(ui->cos, &QPushButton::clicked, this, [=]() { focusInsert("("); });
   connect(ui->tan, &QPushButton::clicked, this, [=]() { focusInsert("("); });
@@ -61,29 +59,46 @@ CalcView::CalcView(QWidget *parent)
   connect(ui->graph, &QPushButton::clicked, this, [=]() { graphClicked(); });
 
   connect(ui->equalX, &QLineEdit::textChanged, this, [=]() {
-    if (ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
+    ui->progressBarX->setValue(ui->equalX->text().length());
+    emit validateChangedOn(ui->equalX->text(), status_);
+    if (!status_) {
+      ui->result->clear();
+      ui->equalX->setStyleSheet("border: 1px solid pink;");
       ui->equal->setEnabled(false);
+      ui->graph->setEnabled(false);
     } else {
-      ui->equal->setEnabled(true);
+      ui->equalX->setStyleSheet("border: 1px solid white;");
+      if (ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
+        ui->equal->setEnabled(false);
+        ui->graph->setEnabled(true);
+      } else {
+        ui->graph->setEnabled(false);
+        ui->equal->setEnabled(true);
+      }
     }
   });
   connect(ui->resultShow, &QLineEdit::textChanged, this, [=]() {
     ui->progressBar->setValue(ui->resultShow->text().length());
-    if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
-      ui->equalX->setStyleSheet("border: 1px solid pink;");
-      ui->graph->setEnabled(true);
-    } else {
-      ui->equalX->setStyleSheet("");
-      ui->graph->setEnabled(false);
-    }
+    qDebug() << ui->resultShow->text() << "VIEW";
     emit validateChangedOn(ui->resultShow->text(), status_);
     if (!status_) {
+      ui->result->clear();
       ui->resultShow->setStyleSheet("border: 1px solid pink;");
       ui->equal->setEnabled(false);
     } else {
-      ui->resultShow->setStyleSheet("");
-      ui->equal->setEnabled(true);
-      equalClick();
+      if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
+        ui->equalX->setStyleSheet("border: 1px solid white;");
+        ui->graph->setEnabled(true);
+        if (ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
+          ui->equal->setEnabled(false);
+        }
+      } else {
+        ui->equalX->setStyleSheet("");
+        ui->graph->setEnabled(false);
+        ui->resultShow->setStyleSheet("");
+        ui->equal->setEnabled(true);
+        equalClick();
+      }
     }
   });
 }
@@ -128,6 +143,7 @@ void CalcView::equalClick() {
   QString equalX = ui->equalX->text();
   try {
     if (!equalResult.isEmpty()) {
+      qDebug() << equalResult << "equalClick";
       emit uiEventSendUi(ui);
       emit uiEventEqual(equalResult, equalX);
       ui->result->setText(equalResult);
@@ -169,8 +185,3 @@ void CalcView::graphClicked() {
   emit uiEventReplaceX(equalResult, equalX);
   emit uiEventSendResult(equalResult);
 }
-
-//void CalcView::degreeModeClicked(bool checked) {
-//  qDebug() << checked << "VIEW";
-//  emit uiEventDegreeMode(checked);
-//}

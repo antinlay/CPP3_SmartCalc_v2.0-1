@@ -7,14 +7,12 @@ int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
 
   s21::CalcModel m;
-//  Ui::CalcView v;
-  s21::CalcController c(&m);
+  Ui::CalcView v;
+  s21::CalcController c(&m, &v);
 
   // SHOW && CONNECT VIEW
   CalcView w;
   w.show();
-//  QObject::connect(&w, &CalcView::getDegreeMode, &c,
-//                   &s21::CalcController::setDegreeMode);
   QObject::connect(&w, &CalcView::uiEventEqual, &c,
                    &s21::CalcController::calcEqual);
   QObject::connect(&w, &CalcView::validateChangedOn, &c,
@@ -24,6 +22,8 @@ int main(int argc, char *argv[]) {
   Graph g;
   QObject::connect(&g, &Graph::uiEventOutputGraph, &c,
                    &s21::CalcController::graphOutput);
+  QObject::connect(&g, &Graph::uiEventResizeGraph, &c,
+                   &s21::CalcController::graphResize);
   QObject::connect(&w, &CalcView::uiEventReplaceX, &c,
                    &s21::CalcController::replaceX);
   QObject::connect(&w, &CalcView::uiEventSendResult, &g,

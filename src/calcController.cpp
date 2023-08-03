@@ -25,6 +25,10 @@ void s21::CalcController::graphOutput(QString& graphResult, QVector<double>& x,
   m_->outputGraph(graphResult, x, y);
 }
 
+void s21::CalcController::graphResize(QVector<double>& y, double& yStart, double& yEnd) {
+    m_->resizeGraph(y, yStart, yEnd);
+}
+
 void s21::CalcController::outputDebitInfo(QString& anuInfo, QString& summResult,
                                           QString& profit) {
   m_->setDepStructureValues(

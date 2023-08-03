@@ -1,7 +1,6 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-//#include <QtAlgorithms>
 #include "ui_graph.h"
 
 QT_BEGIN_NAMESPACE
@@ -20,6 +19,7 @@ class Graph : public QWidget {
 signals:
  void uiEventOutputGraph(QString& graphResult, QVector<double>& x,
                    QVector<double>& y);
+ void uiEventResizeGraph(QVector<double>& y, double& yStart, double& yEnd);
  void uiEventSendUi(Ui::Graph* g);
 
  public slots:

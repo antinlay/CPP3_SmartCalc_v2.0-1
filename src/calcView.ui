@@ -753,7 +753,7 @@
      </font>
     </property>
     <property name="text">
-     <string>X</string>
+     <string>x</string>
     </property>
    </widget>
    <widget class="QPushButton" name="graph">
@@ -784,9 +784,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>350</x>
+      <x>441</x>
       <y>3</y>
-      <width>371</width>
+      <width>280</width>
       <height>31</height>
      </rect>
     </property>
@@ -804,7 +804,7 @@
      <string/>
     </property>
     <property name="maxLength">
-     <number>255</number>
+     <number>22</number>
     </property>
     <property name="alignment">
      <set>Qt::AlignJustify|Qt::AlignVCenter</set>
@@ -868,6 +868,22 @@
     </property>
     <property name="wordWrap">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBarX">
+    <property name="geometry">
+     <rect>
+      <x>441</x>
+      <y>30</y>
+      <width>280</width>
+      <height>10</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>22</number>
+    </property>
+    <property name="value">
+     <number>0</number>
     </property>
    </widget>
   </widget>

@@ -14,12 +14,13 @@ Graph::~Graph() { delete ui; }
 
 void Graph::graphClicked() {
   int h = ui->caseBox->value() * 300;
-  double xStart = 0, xEnd = 0, yStart = 0, yEnd = 0;
+  double xStart = ui->doubleSpinBox_xStart->value(), xEnd = ui->doubleSpinBox_xEnd->value(), yStart = 0, yEnd = 0;
   QVector<double> x(h + 1), y(h + 1);
   QString graphResult = ui->expression->text();
 
   emit uiEventOutputGraph(graphResult, x, y);
-
+  emit uiEventResizeGraph(y, yStart, yEnd);
+  emit uiEventResizeGraph(x, xStart, xEnd);
   // clear graphs
   ui->widget->clearGraphs();
   // create Graph and assign data to it:
