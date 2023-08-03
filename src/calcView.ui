@@ -56,6 +56,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>9</string>
+    </property>
     <property name="text">
      <string>9</string>
     </property>
@@ -73,6 +76,9 @@
      <font>
       <family>Arial Black</family>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>8</string>
     </property>
     <property name="text">
      <string>8</string>
@@ -92,6 +98,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>7</string>
+    </property>
     <property name="text">
      <string>7</string>
     </property>
@@ -109,6 +118,9 @@
      <font>
       <family>Arial Black</family>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>6</string>
     </property>
     <property name="text">
      <string>6</string>
@@ -128,6 +140,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>5</string>
+    </property>
     <property name="text">
      <string>5</string>
     </property>
@@ -145,6 +160,9 @@
      <font>
       <family>Arial Black</family>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>4</string>
     </property>
     <property name="text">
      <string>4</string>
@@ -164,6 +182,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>1</string>
+    </property>
     <property name="text">
      <string>1</string>
     </property>
@@ -182,6 +203,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>2</string>
+    </property>
     <property name="text">
      <string>2</string>
     </property>
@@ -199,6 +223,9 @@
      <font>
       <family>Arial Black</family>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>3</string>
     </property>
     <property name="text">
      <string>3</string>
@@ -237,6 +264,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>.</string>
+    </property>
     <property name="text">
      <string>.</string>
     </property>
@@ -254,6 +284,9 @@
      <font>
       <family>Arial Black</family>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>0</string>
     </property>
     <property name="text">
      <string>0</string>
@@ -329,6 +362,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>+</string>
+    </property>
     <property name="text">
      <string>+</string>
     </property>
@@ -349,7 +385,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>s(</string>
+     <string>sin(</string>
     </property>
     <property name="text">
      <string>sin</string>
@@ -371,7 +407,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>c(</string>
+     <string>cos(</string>
     </property>
     <property name="text">
      <string>cos</string>
@@ -393,7 +429,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>t(</string>
+     <string>tan(</string>
     </property>
     <property name="text">
      <string>tan</string>
@@ -415,7 +451,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>i(</string>
+     <string>asin(</string>
     </property>
     <property name="text">
      <string>asin</string>
@@ -437,7 +473,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>a(</string>
+     <string>atan(</string>
     </property>
     <property name="text">
      <string>atan</string>
@@ -459,7 +495,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>o(</string>
+     <string>acos(</string>
     </property>
     <property name="text">
      <string>acos</string>
@@ -479,6 +515,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>-</string>
+    </property>
     <property name="text">
      <string>-</string>
     </property>
@@ -497,6 +536,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>/</string>
+    </property>
     <property name="text">
      <string>/</string>
     </property>
@@ -514,6 +556,9 @@
      <font>
       <family>Arial Black</family>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>*</string>
     </property>
     <property name="text">
      <string>*</string>
@@ -535,7 +580,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>%(</string>
+     <string>mod(</string>
     </property>
     <property name="text">
      <string>mod</string>
@@ -557,7 +602,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>q(</string>
+     <string>sqrt(</string>
     </property>
     <property name="text">
      <string>sqrt</string>
@@ -565,7 +610,7 @@
    </widget>
    <widget class="QPushButton" name="equal">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -598,6 +643,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>^</string>
+    </property>
     <property name="text">
      <string>^</string>
     </property>
@@ -618,7 +666,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>n(</string>
+     <string>ln(</string>
     </property>
     <property name="text">
      <string>ln</string>
@@ -640,7 +688,7 @@
      </font>
     </property>
     <property name="accessibleName">
-     <string>g(</string>
+     <string>log(</string>
     </property>
     <property name="text">
      <string>log</string>
@@ -679,6 +727,9 @@
       <family>Arial Black</family>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>(</string>
+    </property>
     <property name="text">
      <string>(</string>
     </property>
@@ -696,6 +747,9 @@
      <font>
       <family>Arial Black</family>
      </font>
+    </property>
+    <property name="accessibleName">
+     <string>)</string>
     </property>
     <property name="text">
      <string>)</string>
@@ -752,6 +806,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="accessibleName">
+     <string>x</string>
+    </property>
     <property name="text">
      <string>x</string>
     </property>
@@ -780,7 +837,7 @@
    </widget>
    <widget class="QLineEdit" name="equalX">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -814,6 +871,9 @@
     </property>
     <property name="placeholderText">
      <string>X = </string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QProgressBar" name="progressBar">

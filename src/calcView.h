@@ -42,7 +42,7 @@ class CalcView : public QMainWindow {
   void equalClick();
   void ceClick();
   void acClick();
-  void focusInsert(QString add);
+  void focusInsert();
   void creditClicked();
   void debitClicked();
   void graphClicked();

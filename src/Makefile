@@ -1,30 +1,30 @@
-CC = gcc
-FLAGS = -Wall -Werror -Wextra -std=c11 -g
+CC = g++
+FLAGS = -Wall -Werror -Wextra -std=c++17 -ggdb -pedantic -lstdc++
 GCOV = --coverage
 TEST = smartcalc_test
 STLIB = s21_smartcalc.a
 OS := $(shell uname -s)
 
 ifeq ($(OS), Linux)
-	LIBS := -lcheck_pic -lpthread -lrt -lm -lsubunit -g
+	LIBS := -lgtest -lpthread -lrt -lm -lsubunit
 endif
 ifeq ($(OS), Darwin)
-	LIBS := -lcheck
+	LIBS := -lgtest
 endif
 
 all: clean gcov_report dist dvi
 
 install: clean
-	mkdir build
-	cd s21_smartcalc && qmake && make && make clean
+	cp -r --parents ./* ./build/
+	cd build && qmake && make && make clean
 ifeq ($(OS), Linux)
-	mv s21_smartcalc/s21_smartcalc build
-	cd build && ./s21_smartcalc
+	mv calcView build
+	cd build && ./calcView
 endif
 ifeq ($(OS), Darwin)
-	mv s21_smartcalc/s21_smartcalc.app build
-	chmod 755 build/s21_smartcalc.app
-	cd build && ./s21_smartcalc.app
+	# mv calcView.app build
+	# chmod 755 build/calcView.app/Contents/MacOS/calcView
+	./build/calcView.app/Contents/MacOS/calcView
 endif
 
 uninstall:
@@ -38,15 +38,15 @@ dvi:
 	texi2dvi info.tex
 
 dist: install
-	mkdir tgz_smartcalc/ tgz_smartcalc/src
-	mv ./build/s21_smartcalc tgz_smartcalc/src/
+	mkdir tgz_smartcalc/ tgz_smartcalc/app
+	mv ./build/* tgz_smartcalc/app/
 	tar cvzf tgz_smartcalc.tgz tgz_smartcalc/
 
 tests: clean
-	$(CC) -c s21_smartcalc.c
-	ar rcs $(STLIB) s21_smartcalc.o
+	$(CC) -c *.cpp
+	ar rcs $(STLIB) smartCalc.o
 	ranlib $(STLIB)
-	$(CC) $(FLAGS) smartcalc_test.c $(STLIB) -o $(TEST) $(LIBS)
+	$(CC) $(FLAGS) calcTests.c $(STLIB) -o $(TEST) $(LIBS)
 	./$(TEST)
 
 check: tests

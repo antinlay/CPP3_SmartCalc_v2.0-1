@@ -15,38 +15,38 @@ CalcView::CalcView(QWidget *parent)
   connect(qApp, &QApplication::focusChanged, this,
           &CalcView::onLineEditFocusChanged);
 
-  connect(ui->sin, &QPushButton::clicked, this, [=]() { focusInsert("("); });
-  connect(ui->cos, &QPushButton::clicked, this, [=]() { focusInsert("("); });
-  connect(ui->tan, &QPushButton::clicked, this, [=]() { focusInsert("("); });
-  connect(ui->asin, &QPushButton::clicked, this, [=]() { focusInsert("("); });
-  connect(ui->acos, &QPushButton::clicked, this, [=]() { focusInsert("("); });
-  connect(ui->atan, &QPushButton::clicked, this, [=]() { focusInsert("("); });
-  connect(ui->sqrt, &QPushButton::clicked, this, [=]() { focusInsert("("); });
-  connect(ui->ln, &QPushButton::clicked, this, [=]() { focusInsert("("); });
-  connect(ui->log, &QPushButton::clicked, this, [=]() { focusInsert("("); });
-  connect(ui->mod, &QPushButton::clicked, this, [=]() { focusInsert("("); });
+  connect(ui->sin, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->cos, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->tan, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->asin, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->acos, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->atan, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->sqrt, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->ln, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->log, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->mod, &QPushButton::clicked, this, [=]() { focusInsert(); });
 
-  connect(ui->num0, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->num1, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->num2, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->num3, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->num4, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->num5, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->num6, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->num7, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->num8, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->num9, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->num0, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->num1, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->num2, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->num3, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->num4, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->num5, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->num6, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->num7, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->num8, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->num9, &QPushButton::clicked, this, [=]() { focusInsert(); });
 
-  connect(ui->div, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->mult, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->add, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->sub, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->pow, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->div, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->mult, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->add, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->sub, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->pow, &QPushButton::clicked, this, [=]() { focusInsert(); });
 
-  connect(ui->open, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->close, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->dot, &QPushButton::clicked, this, [=]() { focusInsert(""); });
-  connect(ui->xoy, &QPushButton::clicked, this, [=]() { focusInsert(""); });
+  connect(ui->open, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->close, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->dot, &QPushButton::clicked, this, [=]() { focusInsert(); });
+  connect(ui->xoy, &QPushButton::clicked, this, [=]() { focusInsert(); });
 
   connect(ui->equal, &QPushButton::clicked, this, [=]() { equalClick(); });
 
@@ -87,6 +87,7 @@ CalcView::CalcView(QWidget *parent)
       ui->equal->setEnabled(false);
     } else {
       if (ui->resultShow->text().contains("X", Qt::CaseInsensitive)) {
+        ui->equalX->setEnabled(true);
         ui->equalX->setStyleSheet("border: 1px solid white;");
         ui->graph->setEnabled(true);
         if (ui->equalX->text().contains("X", Qt::CaseInsensitive)) {
@@ -94,6 +95,7 @@ CalcView::CalcView(QWidget *parent)
         }
       } else {
         ui->equalX->setStyleSheet("");
+        ui->equalX->setEnabled(false);
         ui->graph->setEnabled(false);
         ui->resultShow->setStyleSheet("");
         ui->equal->setEnabled(true);
@@ -129,12 +131,13 @@ void CalcView::onLineEditFocusChanged(QWidget *newWidget) {
   }
 }
 
-void CalcView::focusInsert(QString add) {
+void CalcView::focusInsert() {
   QPushButton *button = qobject_cast<QPushButton *>(sender());
+  if (lastActiveLineEdit_ == ui->equalX && !ui->equalX->isEnabled()) return;
   if (!lastActiveLineEdit_) lastActiveLineEdit_ = ui->resultShow;
-  lastActiveLineEdit_->insert(button->text() + add);
+  lastActiveLineEdit_->insert(button->accessibleName());
   size_t currentlenPos;
-  currentlenPos = button->text().length() + add.length();
+  currentlenPos = button->accessibleName().length();
   textLengthStack.push(currentlenPos);
 }
 
@@ -165,10 +168,10 @@ void CalcView::acClick() {
   if (!lastActiveLineEdit_->text().isEmpty()) {
     lastActiveLineEdit_->selectionEnd();
     size_t textButtonLenght = 1;
-    if (!textLengthStack.empty()) {
-      textButtonLenght = textLengthStack.top();
-      textLengthStack.pop();
-    }
+//    if (!textLengthStack.empty()) {
+//      textButtonLenght = textLengthStack.top();
+//      textLengthStack.pop();
+//    }
     while (textButtonLenght--) {
       if (!lastActiveLineEdit_->text().isEmpty())
         lastActiveLineEdit_->backspace();
