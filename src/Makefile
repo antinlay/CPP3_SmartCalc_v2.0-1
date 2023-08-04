@@ -1,15 +1,17 @@
 CC = clang++
-FLAGS = -Wall -Werror -Wextra -std=c++17 -ggdb -pedantic -lstdc++
+FLAGS = -Wall -Werror -Wextra -pipe -stdlib=libc++ -O2 -std=gnu++1z -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11 -fPIC
+QTFLAGS = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/local/lib/QtWidgets.framework/Headers -I/usr/local/lib/QtGui.framework/Headers -I/usr/local/lib/QtCore.framework/Headers -I/usr/local/share/qt/mkspecs/macx-clang -F/usr/local/lib
+OPENGLFLAGS = -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/OpenGL.framework/Headers 
 GCOV = --coverage
 TEST = calcTests
-STLIB = s21_smartcalc.a
+STLIB = libcalcModel.a
 OS := $(shell uname -s)
 
 ifeq ($(OS), Linux)
-	LIBS := -lgtest -lpthread -lrt -lm -lsubunit -lgtest_main -lQt5Core -lQt5Widgets
+	GLIBS := -lgtest -lpthread -lrt -lm -lsubunit -lgtest_main
 endif
 ifeq ($(OS), Darwin)
-	LIBS := -lgtest -lgtest_main -lpthread -lQt5Core -lQt5Widgets
+	GLIBS := -lgtest -lgtest_main -lpthread
 endif
 
 all: clean gcov_report dist dvi
@@ -27,24 +29,26 @@ ifeq ($(OS), Darwin)
 endif
 
 uninstall:
-	rm -rf build tgz_smartcalc.tgz
+	rm -rf build tgz_calc.tgz
 
 clean: uninstall
-	rm -rf *.o *.a *.gc* test.info info.pdf info.dvi info.log info.aux report $(TEST) tgz_smartcalc .clang-format RESULT_VALGRIND.txt build
+	rm -rf *.o *.a *.gc* test.info info.pdf info.dvi info.log info.aux report $(TEST) tgz_calc .clang-format RESULT_VALGRIND.txt build
 
 dvi:
 	texi2pdf info.tex
 	texi2dvi info.tex
 
 dist: install
-	mkdir tgz_smartcalc/ tgz_smartcalc/app
-	mv ./build/* tgz_smartcalc/app/
-	tar cvzf tgz_smartcalc.tgz tgz_smartcalc/
+	mkdir tgz_calc/ tgz_calc/app
+	mv ./build/* tgz_calc/app/
+	tar cvzf tgz_calc.tgz tgz_calc/
 
 tests: clean
-if [-f ./build/calcModel.o]
-	# clang++ -c -pipe -stdlib=libc++ -O2 -std=gnu++1z  -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11 -Wall -Wextra -fPIC -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -I. -I/usr/local/lib/QtWidgets.framework/Headers -I/usr/local/lib/QtGui.framework/Headers -I/usr/local/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/AGL.framework/Headers -I/usr/local/share/qt/mkspecs/macx-clang -F/usr/local/lib -o calcModel.o calcModel.cpp
-	$(CC) $(FLAGS) calcTests.сс $(STLIB) -o $(TEST) $(LIBS)
+	if [ ! -f ./$(STLIB) ]; then \
+		$(CC) $(FLAGS) $(QTFLAGS) $(OPENGLFLAGS) -o calcModel.o calcModel.cpp; \
+		ar rcs $(STLIB) calcModel.cpp; \
+	fi
+	$(CC) $(FLAGS) $(QTFLAGS) calcTests.cc $(STLIB) -o $(TEST) $(GLIBS)
 	./$(TEST)
 
 check: tests
@@ -58,7 +62,7 @@ else
 endif
 
 gcov_report: tests
-	$(CC) $(FLAGS) $(GCOV) calcTests.cc calcModel.cpp -o $(TEST) $(LIBS)
+	$(CC) $(FLAGS) $(QTFLAGS) $(GCOV) calcTests.cc calcModel.cpp -o $(TEST) $(GLIBS)
 	./$(TEST)
 	lcov -t "test" -o test.info -c -d .
 	genhtml -o report test.info

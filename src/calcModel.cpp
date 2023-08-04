@@ -91,12 +91,14 @@ int s21::CalcModel::getPriority(QString c) {
 }
 
 bool s21::CalcModel::isDigital(QChar& currentChar, QString& infix, int& i) {
-  bool result = false;
-  if (currentChar.isDigit() || currentChar == '.' || currentChar == 'e' ||
-      (currentChar == '-' &&
-       (i == 0 || !infix[i - 1].isDigit() && infix[i - 1] != ')'))) {
-    result = true;
+  bool result =
+      currentChar.isDigit() || currentChar == '.' || currentChar == 'e';
+  if (currentChar == '-') {
+    if (i == 0 || (!infix[i - 1].isDigit() && infix[i - 1] != ')')) {
+      result = true;
+    }
   }
+
   return result;
 }
 
@@ -169,10 +171,10 @@ QQueue<QString> s21::CalcModel::infixToPostfix(QString& infix) {
         function += currentChar;
         currentChar = infix[++i];
       }
-          function = keyFunctions.value(function);
-          qDebug() << function << "infToPostf";
-          operatorStack.push(function);
-        --i;
+      function = keyFunctions.value(function);
+      qDebug() << function << "infToPostf";
+      operatorStack.push(function);
+      --i;
     } else {
       if (!currentToken.isEmpty()) {
         outputQueue.push_back(currentToken);
