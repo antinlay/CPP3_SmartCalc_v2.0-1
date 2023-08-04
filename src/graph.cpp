@@ -1,10 +1,5 @@
 #include "graph.h"
 
-#include <QDebug>
-#include <QVector>
-
-#include "ui_graph.h"
-
 Graph::Graph(QWidget *parent) : QWidget(parent), ui(new Ui::Graph) {
   ui->setupUi(this);
 

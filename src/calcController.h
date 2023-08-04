@@ -1,9 +1,6 @@
 #ifndef CALCCONTROLLER_H
 #define CALCCONTROLLER_H
 
-#include <QMessageBox>
-#include <QWidget>
-
 #include "calcModel.h"
 #include "calcView.h"
 #include "credit.h"

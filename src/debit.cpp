@@ -1,7 +1,5 @@
 #include "debit.h"
 
-#include "ui_debit.h"
-
 Debit::Debit(QWidget* parent) : QWidget(parent), ui(new Ui::Debit) {
   auto validator = new QDoubleValidator(0, std::numeric_limits<int>::max(), 6);
 

@@ -1,10 +1,6 @@
 #ifndef CALCVIEW_H
 #define CALCVIEW_H
 
-#include <QDoubleValidator>
-#include <QMessageBox>
-#include <QStack>
-
 #include "credit.h"
 #include "debit.h"
 #include "graph.h"

@@ -1,7 +1,5 @@
 #include "credit.h"
 
-#include "ui_credit.h"
-
 Credit::Credit(QWidget* parent) : QWidget(parent), ui(new Ui::Credit) {
   auto validator = new QDoubleValidator(0, std::numeric_limits<int>::max(), 6);
 

@@ -1,18 +1,9 @@
 #ifndef CALCMODEL_H
 #define CALCMODEL_H
 
-#include <QCoreApplication>
 #include <QDate>
-#include <QException>
-#include <QMainWindow>
 #include <QQueue>
-#include <QRegularExpressionValidator>
 #include <QStack>
-#include <QTextStream>
-#include <QValidator>
-#include <QChar>
-#include <cmath>
-#include <iostream>
 
 #include "exprtk.hpp"
 
@@ -114,11 +105,9 @@ class CalcModel {
   // DEGREE MODE
   void setUseDegree(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
   void changeDegreesToRadians(double& a) {
-      qDebug() << useDegree_ << "MODE";
     if (useDegree_) {
       a = a * (M_PI / 180.0);
     }
-    qDebug() << QString::number(a);
   };
 
   // STRUCT SETTER
