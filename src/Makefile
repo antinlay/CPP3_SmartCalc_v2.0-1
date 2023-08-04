@@ -47,6 +47,7 @@ tests: clean
 	if [ ! -f ./$(STLIB) ]; then \
 		$(CC) $(FLAGS) $(QTFLAGS) $(OPENGLFLAGS) -o calcModel.o calcModel.cpp; \
 		ar rcs $(STLIB) calcModel.cpp; \
+		g++ -O2 -fPIC -fno-diagnostics-show-caret -I/usr/local/lib -I/usr/local/lib/QtCore -I/usr/local/lib/QtWidgets -I/usr/local/lib/QtGui calcModel.cpp -s -lQt5Core -lQt5Widgets -lQt5Gui -lQt5Xml -o prog
 	fi
 	$(CC) $(FLAGS) $(QTFLAGS) calcTests.cc $(STLIB) -o $(TEST) $(GLIBS)
 	./$(TEST)

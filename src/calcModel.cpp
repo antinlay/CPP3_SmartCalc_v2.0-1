@@ -251,6 +251,14 @@ double s21::CalcModel::calculate(QString infix) {
   return calculatePostfix(newInfix);
 }
 
+double s21::CalcModel::calculate(std::string expression) {
+  QString infix = QString::fromStdString(expression);
+  return calculate(infix);
+  // if (!validateExpression(infix)) return 0.0;
+  // QQueue<QString> newInfix = infixToPostfix(infix);
+  // return calculatePostfix(newInfix);
+}
+
 // CALCULATE CREDIT
 void s21::CalcModel::paymentAnnuityCalc(double& p, double& P) {
   /* Кредитный калькулятор с аннуитетными платежами можно рассчитать по
@@ -491,3 +499,5 @@ void s21::CalcModel::setWithdrawStructureValues(
   WithdrawStruct.withdrawDate = withdrawDate;
   WithdrawStruct.caseIndexWithdraw = caseIndexWithdraw;
 }
+
+int main() { return 0; }

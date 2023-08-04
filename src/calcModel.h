@@ -1,10 +1,14 @@
 #ifndef CALCMODEL_H
 #define CALCMODEL_H
 
-#include <QDate>
-#include <QQueue>
-#include <QStack>
-
+#include "./QtCore.framework/Headers/qdatetime.h"
+// #include "./QtCore.framework/Headers/qhash.h"
+#include "./QtCore.framework/Headers/qlocale.h"
+#include "./QtCore.framework/Headers/qmap.h"
+#include "./QtCore.framework/Headers/qqueue.h"
+#include "./QtCore.framework/Headers/qstack.h"
+#include "./QtCore.framework/Headers/qstring.h"
+#include "./QtCore.framework/Headers/qvector.h"
 #include "exprtk.hpp"
 
 namespace s21 {
@@ -83,6 +87,7 @@ class CalcModel {
   double getFromStack(QStack<double>& operands);
   double calculatePostfix(QQueue<QString> postfix);
   double calculate(QString infix);
+  double calculate(std::string expression);
   // CREDIT CALCULATE
   void outputCredit(QString& anuInfo, QString& payment, QString& overpayment);
   void paymentAnnuityCalc(double& p, double& P);
