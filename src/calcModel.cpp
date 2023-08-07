@@ -198,6 +198,7 @@ QQueue<QString> s21::CalcModel::infixToPostfix(QString& infix) {
         while (!operatorStack.empty() && operatorStack.top() != "(" &&
                getPriority(QString(1, currentChar)) <=
                    getPriority(operatorStack.top())) {
+          if (currentChar == '^' && operatorStack.top() == "^") break;
           outputQueue.push_back(operatorStack.top());
           operatorStack.pop();
         }

@@ -1,4 +1,3 @@
-
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
 #include "../calcModel.h"
@@ -31,7 +30,7 @@ public:
   QString funcExprRes = "12.5979606";
   QString foldedFuncs = "(132+sin(asin(sqrt(ln(log(228.11)))))-4*5^6*(123))";
   QString foldedFuncsRes = "-7687367.07378458";
-  QString expNotation = "2.5 * 10^3 + 1.8 * 10^-2 * (3.7e-5 + 2.1e2)";
+  QString expNotation = "2.5*10^3+1.8*10^-2*(3.7e-5+2.1e2)";
   QString expNotationRes = "2503.78000067";
   QString expEasy = "1.5e5";
   QString expEasyRes = "150000";
@@ -44,9 +43,9 @@ public:
   QString x_str_ = "0.8";
   double x_str_d_ = 0.8;
   QString x_str_res_ = "1.02941257";
-  QString mod_ =
-      "((sin(2.3) * (sqrt(7.8) + cos(1.2))) mod 4.5) / (log(5.6) + atan(0.9))";
-  QString mod_res_ = "1.588689";
+  QString mod =
+      "((sin(2.3)*(sqrt(7.8)+cos(1.2)))mod4.5)/(log(5.6)+atan(0.9))";
+  QString modRes = "1.588689";
   QString graph_func_ = "x^2";
   double x_begin_ = -30;
   double y_begin_ = -30;
@@ -72,10 +71,14 @@ TEST_F(testModel, equals) {
     EXPECT_EQ(resultCalc(calc_.calculate(funcExpr)), funcExprRes);
     qDebug() << resultCalc(calc_.calculate(foldedFuncs));
     EXPECT_EQ(resultCalc(calc_.calculate(foldedFuncs)), foldedFuncsRes);
-//    qDebug() << resultCalc(calc_.calculate(expNotation));
-//    EXPECT_EQ(resultCalc(calc_.calculate(expNotation)), expNotationRes);
+    qDebug() << resultCalc(calc_.calculate(expNotation));
+    EXPECT_EQ(resultCalc(calc_.calculate(expNotation)), expNotationRes);
     qDebug() << resultCalc(calc_.calculate(expEasy));
     EXPECT_EQ(resultCalc(calc_.calculate(expEasy)), expEasyRes);
     qDebug() << resultCalc(calc_.calculate(powTwo));
     EXPECT_EQ(resultCalc(calc_.calculate(powTwo)), powTwoRes);
+    qDebug() << resultCalc(calc_.calculate(powFuncs));
+    EXPECT_EQ(resultCalc(calc_.calculate(powFuncs)), powFuncsRes);
+    qDebug() << resultCalc(calc_.calculate(mod));
+    EXPECT_EQ(resultCalc(calc_.calculate(mod)), modRes);
 }
