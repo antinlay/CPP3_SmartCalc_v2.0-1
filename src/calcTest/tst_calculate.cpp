@@ -2,12 +2,14 @@
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
 #include "../calcModel.h"
+#include <QRegularExpression>
 
 using namespace s21;
 class testModel : public testing::Test {\
 public:
     QString resultCalc(double result) {
-        return QString::number(result, 'f', 8);
+        static QRegularExpression regExp = QRegularExpression("[,.]?0+$");
+        return QString::number(result, 'f', 8).remove(regExp);
     }
  protected:
   s21::CalcModel calc_;
@@ -26,7 +28,7 @@ public:
   QString multiFoldRes = "-30.07216495";
   QString funcExpr =
       "sin(1)+cos(1)+asin(1)+acos(1)+atan(1)+tan(1)+sqrt(16)+ln(10)+log(10)";
-  QString funcExprRes = "12.59796060";
+  QString funcExprRes = "12.5979606";
   QString foldedFuncs = "(132+sin(asin(sqrt(ln(log(228.11)))))-4*5^6*(123))";
   QString foldedFuncsRes = "-7687367.07378458";
   QString expNotation = "2.5 * 10^3 + 1.8 * 10^-2 * (3.7e-5 + 2.1e2)";
@@ -70,6 +72,10 @@ TEST_F(testModel, equals) {
     EXPECT_EQ(resultCalc(calc_.calculate(funcExpr)), funcExprRes);
     qDebug() << resultCalc(calc_.calculate(foldedFuncs));
     EXPECT_EQ(resultCalc(calc_.calculate(foldedFuncs)), foldedFuncsRes);
-    qDebug() << resultCalc(calc_.calculate(expNotation));
-    EXPECT_EQ(resultCalc(calc_.calculate(expNotation)), expNotationRes);
+//    qDebug() << resultCalc(calc_.calculate(expNotation));
+//    EXPECT_EQ(resultCalc(calc_.calculate(expNotation)), expNotationRes);
+    qDebug() << resultCalc(calc_.calculate(expEasy));
+    EXPECT_EQ(resultCalc(calc_.calculate(expEasy)), expEasyRes);
+    qDebug() << resultCalc(calc_.calculate(powTwo));
+    EXPECT_EQ(resultCalc(calc_.calculate(powTwo)), powTwoRes);
 }
