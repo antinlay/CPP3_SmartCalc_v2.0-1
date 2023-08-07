@@ -1,5 +1,11 @@
 #include "calcModel.h"
 
+void s21::CalcModel::changeDegreesToRadians(double& a) {
+  if (useDegree_) {
+    a = a * (M_PI / 180.0);
+  }
+};
+
 void s21::CalcModel::substituteExpr(QString& expression) {
   expression.remove(' ');
   expression.replace("log", "log10");
@@ -173,7 +179,6 @@ QQueue<QString> s21::CalcModel::infixToPostfix(QString& infix) {
         currentChar = infix[++i];
       }
       function = keyFunctions.value(function);
-      qDebug() << function << "infToPostf";
       operatorStack.push(function);
       --i;
     } else {
@@ -245,9 +250,20 @@ double s21::CalcModel::calculatePostfix(QQueue<QString> postfix) {
   return calcStack.top();
 }
 
+void s21::CalcModel::replaceX(QString& equalResult, QString& equalLabel) {
+  if (equalResult.contains("X", Qt::CaseInsensitive) && !equalLabel.isEmpty()) {
+    equalResult =
+        equalResult.replace("X", "(" + equalLabel + ")", Qt::CaseInsensitive);
+  }
+}
+
 double s21::CalcModel::calculate(QString infix) {
   QString expression = infix;
-  if (!validateExpression(expression)) return 0.0;
+  if (!validateExpression(expression)) {
+    throw std::invalid_argument("Input Error: " + expression.toStdString() +
+                                " wrong expression");
+    return 0.0;
+  }
   QQueue<QString> newInfix = infixToPostfix(infix);
   return calculatePostfix(newInfix);
 }
@@ -260,7 +276,6 @@ void s21::CalcModel::paymentAnnuityCalc(double& p, double& P) {
    месяц,  n - количество месяцев, O - общая переплата, o - месячная
    переплата, P - обшая переплата */
   unsigned short n = CreditStruct.months;
-  qDebug() << CreditStruct.interestRate;
   double S = CreditStruct.summ, i = CreditStruct.interestRate / 100 / 12;
   p = (S * (i * qPow((1 + i), n))) / (qPow((1 + i), n) - 1);
   P = p * n;

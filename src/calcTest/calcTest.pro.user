@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 7.0.0, 2023-08-07T15:21:09. -->
+<!-- Written by QtCreator 7.0.0, 2023-08-07T15:38:21. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -60,14 +60,17 @@
   <variable>ProjectExplorer.Project.PluginSettings</variable>
   <valuemap type="QVariantMap">
    <valuemap type="QVariantMap" key="AutoTest.ActiveFrameworks">
-    <value type="bool" key="AutoTest.Framework.Boost">true</value>
+    <value type="bool" key="AutoTest.Framework.Boost">false</value>
     <value type="bool" key="AutoTest.Framework.CTest">false</value>
-    <value type="bool" key="AutoTest.Framework.Catch">true</value>
+    <value type="bool" key="AutoTest.Framework.Catch">false</value>
     <value type="bool" key="AutoTest.Framework.GTest">true</value>
-    <value type="bool" key="AutoTest.Framework.QtQuickTest">true</value>
-    <value type="bool" key="AutoTest.Framework.QtTest">true</value>
+    <value type="bool" key="AutoTest.Framework.QtQuickTest">false</value>
+    <value type="bool" key="AutoTest.Framework.QtTest">false</value>
    </valuemap>
-   <valuemap type="QVariantMap" key="AutoTest.CheckStates"/>
+   <valuemap type="QVariantMap" key="AutoTest.CheckStates">
+    <value type="Qt::CheckState" key="1@/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcTest/tst_calculate.cpp:calculate">Checked</value>
+    <value type="Qt::CheckState" key="1@/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcTest/tst_calculate.cpp:testModel">Checked</value>
+   </valuemap>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>
    <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey"/>
@@ -97,8 +100,8 @@
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
     <value type="int" key="EnableQmlDebugging">0</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/build-calcView-Desktop_x86_darwin_generic_mach_o_64bit-Debug</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory.shadowDir">/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/build-calcView-Desktop_x86_darwin_generic_mach_o_64bit-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/opt/goinfre/janiecee/Projects/CPP3_SmartCalc_v2.0-1-a6bc8ae75801232fd125e293471a4068ff6ac956/src/build-calcTest-Replacement_for_Desktop_x86_darwin_generic_mach_o_64bit-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory.shadowDir">/opt/goinfre/janiecee/Projects/CPP3_SmartCalc_v2.0-1-a6bc8ae75801232fd125e293471a4068ff6ac956/src/build-calcTest-Replacement_for_Desktop_x86_darwin_generic_mach_o_64bit-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -136,8 +139,8 @@
     <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/build-calcView-Desktop_x86_darwin_generic_mach_o_64bit-Release</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory.shadowDir">/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/build-calcView-Desktop_x86_darwin_generic_mach_o_64bit-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/opt/goinfre/janiecee/Projects/CPP3_SmartCalc_v2.0-1-a6bc8ae75801232fd125e293471a4068ff6ac956/src/build-calcTest-Replacement_for_Desktop_x86_darwin_generic_mach_o_64bit-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory.shadowDir">/opt/goinfre/janiecee/Projects/CPP3_SmartCalc_v2.0-1-a6bc8ae75801232fd125e293471a4068ff6ac956/src/build-calcTest-Replacement_for_Desktop_x86_darwin_generic_mach_o_64bit-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -177,8 +180,8 @@
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
     <value type="int" key="EnableQmlDebugging">0</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/build-calcView-Desktop_x86_darwin_generic_mach_o_64bit-Profile</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory.shadowDir">/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/build-calcView-Desktop_x86_darwin_generic_mach_o_64bit-Profile</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/opt/goinfre/janiecee/Projects/CPP3_SmartCalc_v2.0-1-a6bc8ae75801232fd125e293471a4068ff6ac956/src/build-calcTest-Replacement_for_Desktop_x86_darwin_generic_mach_o_64bit-Profile</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory.shadowDir">/opt/goinfre/janiecee/Projects/CPP3_SmartCalc_v2.0-1-a6bc8ae75801232fd125e293471a4068ff6ac956/src/build-calcTest-Replacement_for_Desktop_x86_darwin_generic_mach_o_64bit-Profile</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -238,13 +241,14 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcView.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcView.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">calcTest2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcTest/calcTest.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcTest/calcTest.pro</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/build-calcView-Desktop_x86_darwin_generic_mach_o_64bit-Debug/calcView.app/Contents/MacOS</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/opt/goinfre/janiecee/Projects/CPP3_SmartCalc_v2.0-1-a6bc8ae75801232fd125e293471a4068ff6ac956/src/build-calcTest-Replacement_for_Desktop_x86_darwin_generic_mach_o_64bit-Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

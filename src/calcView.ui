@@ -33,7 +33,7 @@
   </property>
   <property name="font">
    <font>
-    <family>Verdana</family>
+    <family>.AppleSystemUIFont</family>
    </font>
   </property>
   <property name="focusPolicy">
@@ -58,7 +58,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -79,7 +81,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -100,7 +104,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -121,7 +127,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -142,7 +150,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -163,7 +173,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -184,7 +196,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -205,7 +219,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -226,7 +242,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -247,8 +265,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
@@ -266,7 +285,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -287,7 +308,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -308,9 +331,10 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
       <pointsize>18</pointsize>
-      <bold>true</bold>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="cursor">
@@ -364,7 +388,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -385,8 +411,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -407,8 +434,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -429,8 +457,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -451,8 +480,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -473,8 +503,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -495,8 +526,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -517,7 +549,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -538,7 +572,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -559,7 +595,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -580,8 +618,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -602,8 +641,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -627,7 +667,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
@@ -645,7 +687,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -666,8 +710,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -688,8 +733,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -710,8 +756,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
@@ -729,7 +776,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -750,7 +799,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -771,7 +822,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
@@ -789,7 +842,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
@@ -807,8 +862,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="accessibleName">
@@ -832,8 +888,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
-      <bold>true</bold>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
@@ -854,8 +911,9 @@
     </property>
     <property name="font">
      <font>
-      <family>Verdana</family>
+      <family>.AppleSystemUIFont</family>
       <pointsize>16</pointsize>
+      <italic>false</italic>
       <bold>false</bold>
      </font>
     </property>
@@ -890,6 +948,13 @@
       <height>21</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
     <property name="maximum">
      <number>255</number>
     </property>
@@ -906,6 +971,13 @@
       <height>20</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
     <property name="text">
      <string>DEG</string>
     </property>
@@ -918,6 +990,13 @@
       <width>221</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
     </property>
     <property name="mouseTracking">
      <bool>true</bool>
@@ -943,6 +1022,13 @@
       <width>280</width>
       <height>10</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
     </property>
     <property name="maximum">
      <number>22</number>

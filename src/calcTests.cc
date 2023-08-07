@@ -1,15 +1,12 @@
 #include <gtest/gtest.h>
-#include <qmath.h>
 
 #include "calcModel.h"
-#include "qcustomplot.h"
 
-namespace s21 {
 class CalcTests : public testing::Test {
  protected:
   void calculate(QString& expr) { calc_.calculate(expr); }
   CalcModel calc_;
-  QString err_div_zero_ = "1/0";
+  QString errDivZero = "1/0";
   QString err_sqrt_oppos_ = "sqrt(-1)";
   QString err_abracadabra_ = "1234g43s;;";
   QString err_empty_ = "";
@@ -52,11 +49,9 @@ class CalcTests : public testing::Test {
   QPair<QVector<double>, QVector<double>> vector_;
   QVector<double> XVector, YVector;
 }
-}  // namespace s21
 
-TEST_F(MainCalc, DivByZero) {
-  calculate(err_div_zero_);
-  EXPECT_EQ(calc_.getResult(), error_);
+TEST_F(CalcTests, errDivZero) {
+  EXPECT_THROW(calculate(errDivZero), std::runtime_error);
 }
 
 int main(int argc, char* argv[]) {

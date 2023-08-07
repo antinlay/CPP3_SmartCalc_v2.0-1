@@ -79,7 +79,6 @@ CalcView::CalcView(QWidget *parent)
   });
   connect(ui->resultShow, &QLineEdit::textChanged, this, [=]() {
     ui->progressBar->setValue(ui->resultShow->text().length());
-    qDebug() << ui->resultShow->text() << "VIEW";
     emit validateChangedOn(ui->resultShow->text(), status_);
     if (!status_) {
       ui->result->clear();
@@ -146,7 +145,6 @@ void CalcView::equalClick() {
   QString equalX = ui->equalX->text();
   try {
     if (!equalResult.isEmpty()) {
-      qDebug() << equalResult << "equalClick";
       emit uiEventSendUi(ui);
       emit uiEventEqual(equalResult, equalX);
       ui->result->setText(equalResult);
@@ -168,10 +166,6 @@ void CalcView::acClick() {
   if (!lastActiveLineEdit_->text().isEmpty()) {
     lastActiveLineEdit_->selectionEnd();
     size_t textButtonLenght = 1;
-//    if (!textLengthStack.empty()) {
-//      textButtonLenght = textLengthStack.top();
-//      textLengthStack.pop();
-//    }
     while (textButtonLenght--) {
       if (!lastActiveLineEdit_->text().isEmpty())
         lastActiveLineEdit_->backspace();

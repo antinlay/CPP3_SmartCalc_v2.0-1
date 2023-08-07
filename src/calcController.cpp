@@ -1,16 +1,9 @@
 #include "calcController.h"
 
-void s21::CalcController::replaceX(QString& equalResult, QString& equalLabel) {
-  if (equalResult.contains("X", Qt::CaseInsensitive) && !equalLabel.isEmpty()) {
-    equalResult =
-        equalResult.replace("X", "(" + equalLabel + ")", Qt::CaseInsensitive);
-  }
-}
-
 void s21::CalcController::calcEqual(QString& equalResult, QString& equalLabel) {
-  replaceX(equalResult, equalLabel);
+  m_->replaceX(equalResult, equalLabel);
   double result = m_->calculate(equalResult);
-  equalResult = QString::number(result, 'g', 14);
+  equalResult = QString::number(result, 'f', 8);
 }
 
 void s21::CalcController::validateChangeOn(QString equalStr, bool& status) {
@@ -25,8 +18,9 @@ void s21::CalcController::graphOutput(QString& graphResult, QVector<double>& x,
   m_->outputGraph(graphResult, x, y);
 }
 
-void s21::CalcController::graphResize(QVector<double>& y, double& yStart, double& yEnd) {
-    m_->resizeGraph(y, yStart, yEnd);
+void s21::CalcController::graphResize(QVector<double>& y, double& yStart,
+                                      double& yEnd) {
+  m_->resizeGraph(y, yStart, yEnd);
 }
 
 void s21::CalcController::outputDebitInfo(QString& anuInfo, QString& summResult,

@@ -30,7 +30,7 @@
   </property>
   <property name="font">
    <font>
-    <family>Verdana</family>
+    <family>.AppleSystemUIFont</family>
    </font>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
    </property>
    <property name="font">
     <font>
-     <family>Verdana</family>
+     <family>.AppleSystemUIFont</family>
      <bold>true</bold>
     </font>
    </property>
@@ -60,7 +60,7 @@
      <widget class="QLabel" name="labelDeposit">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -73,7 +73,7 @@
      <widget class="QLineEdit" name="deposit">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -89,7 +89,7 @@
      <widget class="QLabel" name="labelStartDate">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -105,7 +105,7 @@
      <widget class="QLabel" name="labelEndDate">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -121,7 +121,7 @@
      <widget class="QLabel" name="labelRate">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -134,7 +134,7 @@
      <widget class="QLineEdit" name="rate">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -159,7 +159,7 @@
        <widget class="QCheckBox" name="capitalization">
         <property name="font">
          <font>
-          <family>Verdana</family>
+          <family>.AppleSystemUIFont</family>
           <bold>true</bold>
          </font>
         </property>
@@ -280,7 +280,7 @@
      <widget class="QPushButton" name="buttounCalculate">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <pointsize>14</pointsize>
         <bold>true</bold>
        </font>
@@ -297,7 +297,7 @@
      <widget class="QLabel" name="labelProfit">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -310,7 +310,7 @@
      <widget class="QLineEdit" name="profit">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -326,7 +326,7 @@
      <widget class="QLabel" name="labelSumm">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -339,7 +339,7 @@
      <widget class="QLineEdit" name="summ">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>
@@ -352,7 +352,7 @@
      <widget class="QListWidget" name="shedule">
       <property name="font">
        <font>
-        <family>Verdana</family>
+        <family>.AppleSystemUIFont</family>
         <bold>true</bold>
        </font>
       </property>

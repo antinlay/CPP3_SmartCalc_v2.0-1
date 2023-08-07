@@ -82,6 +82,7 @@ class CalcModel {
   // CALCULATE POSTFIX
   double getFromStack(QStack<double>& operands);
   double calculatePostfix(QQueue<QString> postfix);
+  void replaceX(QString& equalResult, QString& equalLabel);
   double calculate(QString infix);
   // CREDIT CALCULATE
   void outputCredit(QString& anuInfo, QString& payment, QString& overpayment);
@@ -104,13 +105,7 @@ class CalcModel {
 
   // DEGREE MODE
   void setUseDegree(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
-  void changeDegreesToRadians(double& a) {
-    qDebug() << useDegree_ << "MODE";
-    if (useDegree_) {
-      a = a * (M_PI / 180.0);
-    }
-    qDebug() << QString::number(a);
-  };
+  void changeDegreesToRadians(double& a);
 
   // STRUCT SETTER
   void setGraphStructureValues(int h, double xStart, double xEnd);
