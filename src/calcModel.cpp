@@ -93,6 +93,7 @@ int s21::CalcModel::getPriority(QString c) {
 bool s21::CalcModel::isDigital(QChar& currentChar, QString& infix, int& i) {
   bool result =
       currentChar.isDigit() || currentChar == '.' || currentChar == 'e';
+
   if (currentChar == '-') {
     if (i == 0 || (!infix[i - 1].isDigit() && infix[i - 1] != ')')) {
       result = true;
@@ -249,14 +250,6 @@ double s21::CalcModel::calculate(QString infix) {
   if (!validateExpression(expression)) return 0.0;
   QQueue<QString> newInfix = infixToPostfix(infix);
   return calculatePostfix(newInfix);
-}
-
-double s21::CalcModel::calculate(std::string expression) {
-  QString infix = QString::fromStdString(expression);
-  return calculate(infix);
-  // if (!validateExpression(infix)) return 0.0;
-  // QQueue<QString> newInfix = infixToPostfix(infix);
-  // return calculatePostfix(newInfix);
 }
 
 // CALCULATE CREDIT
@@ -499,5 +492,3 @@ void s21::CalcModel::setWithdrawStructureValues(
   WithdrawStruct.withdrawDate = withdrawDate;
   WithdrawStruct.caseIndexWithdraw = caseIndexWithdraw;
 }
-
-int main() { return 0; }

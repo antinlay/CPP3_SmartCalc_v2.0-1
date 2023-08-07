@@ -28,6 +28,11 @@
     <height>1850</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>Verdana</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>DEBIT</string>
   </property>
@@ -40,13 +45,13 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>431</width>
+     <width>439</width>
      <height>831</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Arial Black</family>
+     <family>Verdana</family>
      <bold>true</bold>
     </font>
    </property>
@@ -55,7 +60,7 @@
      <widget class="QLabel" name="labelDeposit">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -68,7 +73,7 @@
      <widget class="QLineEdit" name="deposit">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -84,7 +89,7 @@
      <widget class="QLabel" name="labelStartDate">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -100,7 +105,7 @@
      <widget class="QLabel" name="labelEndDate">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -116,7 +121,7 @@
      <widget class="QLabel" name="labelRate">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -129,7 +134,7 @@
      <widget class="QLineEdit" name="rate">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -154,7 +159,7 @@
        <widget class="QCheckBox" name="capitalization">
         <property name="font">
          <font>
-          <family>Arial Black</family>
+          <family>Verdana</family>
           <bold>true</bold>
          </font>
         </property>
@@ -275,7 +280,7 @@
      <widget class="QPushButton" name="buttounCalculate">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <pointsize>14</pointsize>
         <bold>true</bold>
        </font>
@@ -292,7 +297,7 @@
      <widget class="QLabel" name="labelProfit">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -305,7 +310,7 @@
      <widget class="QLineEdit" name="profit">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -321,7 +326,7 @@
      <widget class="QLabel" name="labelSumm">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -334,7 +339,7 @@
      <widget class="QLineEdit" name="summ">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>
@@ -347,7 +352,7 @@
      <widget class="QListWidget" name="shedule">
       <property name="font">
        <font>
-        <family>Arial Black</family>
+        <family>Verdana</family>
         <bold>true</bold>
        </font>
       </property>

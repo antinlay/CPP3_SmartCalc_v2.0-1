@@ -1,8 +1,9 @@
 #ifndef CREDIT_H
 #define CREDIT_H
 
-#include "ui_credit.h"
 #include <QMessageBox>
+
+#include "ui_credit.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

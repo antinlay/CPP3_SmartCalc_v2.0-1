@@ -17,15 +17,17 @@ class CalcView : public QMainWindow {
   Q_OBJECT
 
  public:
-  CalcView(QWidget *parent = nullptr);
+  CalcView(QWidget* parent = nullptr);
   ~CalcView();
-  void setLineEdit(QLineEdit* ActiveLineEdit) {lastActiveLineEdit_ = ActiveLineEdit;};
+  void setLineEdit(QLineEdit* ActiveLineEdit) {
+    lastActiveLineEdit_ = ActiveLineEdit;
+  };
 
  signals:
   void validateChangedOn(QString expression, bool& status);
 
   void uiEventReplaceX(QString& resultShow, QString& equalX);
-  void uiEventEqual(QString &equalResult, QString &equalLabel);
+  void uiEventEqual(QString& equalResult, QString& equalLabel);
   void uiEventSendResult(QString equalResult);
 
   void uiEventShowCredit();
@@ -33,7 +35,7 @@ class CalcView : public QMainWindow {
   void uiEventSendUi(Ui::CalcView* v);
 
  private slots:
-  QLineEdit *checkActiveLineEdit();
+  QLineEdit* checkActiveLineEdit();
   void onLineEditFocusChanged(QWidget* newWidget);
   void equalClick();
   void ceClick();
@@ -43,11 +45,11 @@ class CalcView : public QMainWindow {
   void debitClicked();
   void graphClicked();
 
-private:
- Ui::CalcView *ui;
- QStack<size_t> textLengthStack;
- bool status_ = false;
- QLineEdit* lastActiveLineEdit_ = nullptr;
+ private:
+  Ui::CalcView* ui;
+  QStack<size_t> textLengthStack;
+  bool status_ = false;
+  QLineEdit* lastActiveLineEdit_ = nullptr;
 };
 
 // }  // namespace s21

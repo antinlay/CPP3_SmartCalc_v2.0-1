@@ -9,7 +9,8 @@ Graph::~Graph() { delete ui; }
 
 void Graph::graphClicked() {
   int h = ui->caseBox->value() * 300;
-  double xStart = ui->doubleSpinBox_xStart->value(), xEnd = ui->doubleSpinBox_xEnd->value(), yStart = 0, yEnd = 0;
+  double xStart = ui->doubleSpinBox_xStart->value(),
+         xEnd = ui->doubleSpinBox_xEnd->value(), yStart = 0, yEnd = 0;
   QVector<double> x(h + 1), y(h + 1);
   QString graphResult = ui->expression->text();
 

@@ -1,8 +1,9 @@
 #ifndef DEBIT_H
 #define DEBIT_H
 
-#include "ui_debit.h"
 #include <QMessageBox>
+
+#include "ui_debit.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

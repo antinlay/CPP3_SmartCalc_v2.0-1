@@ -26,7 +26,7 @@
 #ifndef QCUSTOMPLOT_H
 #define QCUSTOMPLOT_H
 
-#include <qglobal.h>
+#include <QtCore/qglobal.h>
 
 // some Qt version/configuration dependent macros to include or exclude certain
 // code paths:
@@ -50,19 +50,19 @@
 
 #include <qmath.h>
 
-#include <QCache>
-#include <QDateTime>
-#include <QDebug>
-#include <QFlags>
-#include <QMargins>
-#include <QMultiMap>
-#include <QObject>
-#include <QPointer>
-#include <QSharedPointer>
-#include <QStack>
-#include <QString>
-#include <QTimer>
-#include <QVector>
+#include <QtCore/QCache>
+#include <QtCore/QDateTime>
+#include <QtCore/QDebug>
+#include <QtCore/QFlags>
+#include <QtCore/QMargins>
+#include <QtCore/QMultiMap>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QSharedPointer>
+#include <QtCore/QStack>
+#include <QtCore/QString>
+#include <QtCore/QTimer>
+#include <QtCore/QVector>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QPainter>
@@ -100,10 +100,10 @@
 #include <QtWidgets/QWidget>
 #endif
 #if QT_VERSION >= QT_VERSION_CHECK(4, 8, 0)
-#include <QElapsedTimer>
+#include <QtCore/QElapsedTimer>
 #endif
 #if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
-#include <QTimeZone>
+#include <QtCore/QTimeZone>
 #endif
 
 class QCPPainter;

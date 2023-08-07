@@ -1,14 +1,10 @@
 #ifndef CALCMODEL_H
 #define CALCMODEL_H
 
-#include "./QtCore.framework/Headers/qdatetime.h"
-// #include "./QtCore.framework/Headers/qhash.h"
-#include "./QtCore.framework/Headers/qlocale.h"
-#include "./QtCore.framework/Headers/qmap.h"
-#include "./QtCore.framework/Headers/qqueue.h"
-#include "./QtCore.framework/Headers/qstack.h"
-#include "./QtCore.framework/Headers/qstring.h"
-#include "./QtCore.framework/Headers/qvector.h"
+#include <QtCore/QDate>
+#include <QtCore/QQueue>
+#include <QtCore/QStack>
+
 #include "exprtk.hpp"
 
 namespace s21 {
@@ -87,7 +83,6 @@ class CalcModel {
   double getFromStack(QStack<double>& operands);
   double calculatePostfix(QQueue<QString> postfix);
   double calculate(QString infix);
-  double calculate(std::string expression);
   // CREDIT CALCULATE
   void outputCredit(QString& anuInfo, QString& payment, QString& overpayment);
   void paymentAnnuityCalc(double& p, double& P);
@@ -110,9 +105,11 @@ class CalcModel {
   // DEGREE MODE
   void setUseDegree(bool statusDegreeMode) { useDegree_ = statusDegreeMode; }
   void changeDegreesToRadians(double& a) {
+    qDebug() << useDegree_ << "MODE";
     if (useDegree_) {
       a = a * (M_PI / 180.0);
     }
+    qDebug() << QString::number(a);
   };
 
   // STRUCT SETTER
