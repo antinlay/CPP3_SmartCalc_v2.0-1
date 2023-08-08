@@ -8,9 +8,14 @@ CONFIG += c++17
 
 TEMPLATE = app
 CONFIG += console
-CONFIG -= app_bundle
-CONFIG += thread
-#CONFIG -= qt
+#CONFIG -= app_bundle
+#CONFIG += thread
+#CONFIG += debug
+#CONFIG += testlib
+#CONFIG += debug
+#CONFIG += testlib
+#QMAKE_CXXFLAGS += --coverage
+#LIBS += -L/opt/goinfre/janiecee/homebrew/Cellar/gcovr/6.0 -lgcov
 
 SOURCES += \
         ../calcModel.cpp \
