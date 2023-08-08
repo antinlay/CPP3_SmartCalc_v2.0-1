@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 7.0.0, 2023-08-08T13:23:03. -->
+<!-- Written by QtCreator 7.0.0, 2023-08-08T20:37:44. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -68,8 +68,9 @@
     <value type="bool" key="AutoTest.Framework.QtTest">false</value>
    </valuemap>
    <valuemap type="QVariantMap" key="AutoTest.CheckStates">
-    <value type="Qt::CheckState" key="1@/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcTest/tst_calculate.cpp:calculate">Checked</value>
-    <value type="Qt::CheckState" key="1@/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcTest/tst_calculate.cpp:modelTests">Checked</value>
+    <value type="Qt::CheckState" key="1@/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcTest/tstCalculate.cpp:equals">Checked</value>
+    <value type="Qt::CheckState" key="1@/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcTest/tstCalculate.cpp:errors">Checked</value>
+    <value type="Qt::CheckState" key="1@/Users/janiecee/Documents/CPP3_SmartCalc_v2.0-1/src/calcTest/tstCalculate.cpp:testModel">Checked</value>
    </valuemap>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>
