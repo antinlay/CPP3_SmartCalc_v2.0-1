@@ -1,19 +1,12 @@
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
 
-#include <QRegularExpression>
-
 #include "../calcModel.h"
 
 using namespace s21;
 class testModel : public testing::Test {
- public:
-  QString resultCalc(double result) {
-    static QRegularExpression regExp = QRegularExpression("[,.]?0+$");
-    return QString::number(result, 'f', 8).remove(regExp);
-  }
-
  protected:
+  // Equal
   s21::CalcModel calc_;
   QString errDivZero = "1/0";
   QString errModZero = "11mod(0)";
@@ -24,7 +17,7 @@ class testModel : public testing::Test {
   QString failLexem = "1;02941257";
   QString failLetter = "qwerty";
   QString failLetterX = "sin(x)";
-  QString replaceRes = "0.01050773";
+  QString replaceRes = "0.01050774";
   QString simpleLog = "log(4)";
   QString simpleLogRes = "0.60205999";
   QString multiFold =
@@ -44,27 +37,38 @@ class testModel : public testing::Test {
   QString powTwoRes = "2417851639229258349412352";
   QString powFuncs = "sin(.2)^(cos(1)+tan(1.1))^sin(.6)";
   QString powFuncsRes = "0.06624972";
-  // Credit
-  QString anuInfo, payment, overpayment;
-  QDate currentDate = QDate::fromString("09/08/2023", "dd/MM/yyyy");
-  QDate endDate = QDate::fromString("09/08/2024", "dd/MM/yyyy");
-  // Graph
-  int h = 2;
-  QVector<double> x, y;
-  QString x_str_main_ =
-      "sqrt((7.2 + 3.5 - 2.8) / (5.6 * 4.2)) + sin(x) - cos(1.3)";
-  QString x_str_ = "0.8";
-  double x_str_d_ = 0.8;
-  QString x_str_res_ = "1.02941257";
   QString mod = "((sin(2.3)*(sqrt(7.8)+cos(1.2)))mod4.5)/(log(5.6)+atan(0.9))";
   QString modRes = "1.588689";
-  QString graph_func_ = "x^2";
-  double x_begin_ = -30;
-  double y_begin_ = -30;
-  double x_end_ = 30;
-  double y_end_ = 900;
-  std::pair<std::vector<double>, std::vector<double>> vector_;
-  std::vector<double> XVector, YVector;
+  // Graph
+  int h = 5;
+  QVector<double> xDots, yDots;
+  QString xRes = "-8.53333333", yRes = "-0.14838471";
+  // Credit Debit
+  QString
+      info = "",
+      payment = "", overpayment = "", deposit = "", profit = "",
+      difInfo =
+          "Pay for August 2023: 34416.67 interest amount: 1083.33\nPay for "
+          "August 2023: 34055.56 interest amount: 722.22\nPay for August 2023: "
+          "33694.44 interest amount: 361.11\n",
+      anuInfo =
+          "Pay for August 2023: 34416.67 interest amount: 1083.33\nPay for "
+          "August 2023: 34055.56 interest amount: 722.22\nPay for August 2023: "
+          "33694.44 interest amount: 361.11\nPay for August 2023: 50563.20 "
+          "overpayment: 563.20\nPay for August 2023: 50563.20 overpayment: "
+          "563.20\n",
+      anuPay = "101126.40", anuOverpay = "1126.40", difPay = "102166.67",
+      difOverpay = "2166.67",
+      depInfo =
+          "Total for 9 September 2023: 101065.57 profit: 1065.57\nTotal for 9 "
+          "October 2023: 102178.40 profit: 1112.83\nTotal for 9 November 2023: "
+          "103267.19 profit: 1088.79\nTotal for 9 December 2023: 104404.25 "
+          "profit: 1137.07\nTotal for 9 January 2024: 106295.51 profit: "
+          "1891.26\n",
+      depRes = "106295.51", profitRes = "6295.51";
+  QDate currentDate = QDate::fromString("09/08/2023", "dd/MM/yyyy");
+  QDate depositDate = QDate::fromString("16/08/2023", "dd/MM/yyyy");
+  QDate endDate = QDate::fromString("31/12/2023", "dd/MM/yyyy");
 };
 
 TEST_F(testModel, errors) {
@@ -76,49 +80,54 @@ TEST_F(testModel, errors) {
 }
 
 TEST_F(testModel, equals) {
-  qDebug() << resultCalc(calc_.calculate(simpleLog));
-  EXPECT_EQ(resultCalc(calc_.calculate(simpleLog)), simpleLogRes);
-  qDebug() << resultCalc(calc_.calculate(multiFold));
-  EXPECT_EQ(resultCalc(calc_.calculate(multiFold)), multiFoldRes);
-  qDebug() << resultCalc(calc_.calculate(funcExpr));
-  EXPECT_EQ(resultCalc(calc_.calculate(funcExpr)), funcExprRes);
-  qDebug() << resultCalc(calc_.calculate(foldedFuncs));
-  EXPECT_EQ(resultCalc(calc_.calculate(foldedFuncs)), foldedFuncsRes);
-  qDebug() << resultCalc(calc_.calculate(expNotation));
-  EXPECT_EQ(resultCalc(calc_.calculate(expNotation)), expNotationRes);
-  qDebug() << resultCalc(calc_.calculate(expEasy));
-  EXPECT_EQ(resultCalc(calc_.calculate(expEasy)), expEasyRes);
-  qDebug() << resultCalc(calc_.calculate(powTwo));
-  EXPECT_EQ(resultCalc(calc_.calculate(powTwo)), powTwoRes);
-  qDebug() << resultCalc(calc_.calculate(powFuncs));
-  EXPECT_EQ(resultCalc(calc_.calculate(powFuncs)), powFuncsRes);
-  qDebug() << resultCalc(calc_.calculate(mod));
-  EXPECT_EQ(resultCalc(calc_.calculate(mod)), modRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(simpleLog)), simpleLogRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(multiFold)), multiFoldRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(funcExpr)), funcExprRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(foldedFuncs)), foldedFuncsRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(expNotation)), expNotationRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(expEasy)), expEasyRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(powTwo)), powTwoRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(powFuncs)), powFuncsRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(mod)), modRes);
 }
 
 TEST_F(testModel, graph) {
-  calc_.setGraphStructureValues(h, 0, 10);
-  calc_.outputGraph(failLetterX, x, y);
-  //   qDebug() << " x = " << x[0] << " y = " << y[0];
-  //   EXPECT_EQ(failLetterX, replaceRes);
+  xDots.reserve(1501);
+  yDots.reserve(1501);
+  calc_.setGraphStructureValues(h, -10, 10);
+  calc_.outputGraph(failLetterX, xDots, yDots);
+  qDebug() << calc_.humanResult(xDots[110]) << " "
+           << calc_.humanResult(yDots[110]);
+  EXPECT_EQ(calc_.humanResult(xDots[110]), xRes);
+  EXPECT_EQ(calc_.humanResult(yDots[110]), yRes);
 }
 
 TEST_F(testModel, credit) {
-  calc_.setCreditStructureValues(100000, 12, 1, currentDate, 10);
-  calc_.outputCredit(anuInfo, payment, overpayment);
-  qDebug() << "Credit :" << anuInfo << "PAY" << payment << "OVER"
-           << overpayment;
+  calc_.setCreditStructureValues(100000, 13, 1, currentDate, 3);
+  calc_.outputCredit(info, payment, overpayment);
+  EXPECT_EQ(info, difInfo);
+  EXPECT_EQ(payment, difPay);
+  EXPECT_EQ(overpayment, difOverpay);
+  calc_.setCreditStructureValues(100000, 9, 0, currentDate, 2);
+  calc_.outputCredit(info, payment, overpayment);
+  EXPECT_EQ(info, anuInfo);
+  EXPECT_EQ(payment, anuPay);
+  EXPECT_EQ(overpayment, anuOverpay);
 }
 
 TEST_F(testModel, debit) {
+  info.clear();
   calc_.setDepStructureValues(100000, 13, 1, true, currentDate, endDate);
-  calc_.outputDebit(anuInfo, payment, overpayment);
-  qDebug() << "Debit :" << anuInfo << "PAY" << payment << "OVER" << overpayment;
+  calc_.setReDepStructureValues("1123", depositDate, 1);
+  calc_.setWithdrawStructureValues("999", depositDate, 1);
+  calc_.outputDebit(info, deposit, profit);
+  EXPECT_EQ(info, depInfo);
+  EXPECT_EQ(deposit, depRes);
+  EXPECT_EQ(profit, profitRes);
 }
 
 TEST_F(testModel, replaceX) {
   calc_.setUseDegree(true);
   calc_.replaceX(failLetterX, simpleLogRes);
-  qDebug() << "replace " << resultCalc(calc_.calculate(failLetterX));
-  //   EXPECT_EQ(resultCalc(calc_.calculate(failLetterX)), replaceRes);
+  EXPECT_EQ(calc_.humanResult(calc_.calculate(failLetterX)), replaceRes);
 }

@@ -3,7 +3,7 @@
 void s21::CalcController::calcEqual(QString& equalResult, QString& equalLabel) {
   m_->replaceX(equalResult, equalLabel);
   double result = m_->calculate(equalResult);
-  equalResult = QString::number(result, 'f', 8);
+  equalResult = m_->humanResult(result);
 }
 
 void s21::CalcController::validateChangeOn(QString equalStr, bool& status) {

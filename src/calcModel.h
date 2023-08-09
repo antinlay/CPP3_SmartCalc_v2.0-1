@@ -1,8 +1,9 @@
-#ifndef CALCMODEL_H
-#define CALCMODEL_H
+#ifndef SRC_CALCMODEL_H
+#define SRC_CALCMODEL_H
 
 #include <QtCore/QDate>
 #include <QtCore/QQueue>
+#include <QtCore/QRegularExpression>
 #include <QtCore/QStack>
 
 #include "exprtk.hpp"
@@ -84,6 +85,7 @@ class CalcModel {
   double calculatePostfix(QQueue<QString> postfix);
   void replaceX(QString& equalResult, QString& equalLabel);
   double calculate(QString infix);
+  QString humanResult(double result);
   // CREDIT CALCULATE
   void outputCredit(QString& anuInfo, QString& payment, QString& overpayment);
   void paymentAnnuityCalc(double& p, double& P);
@@ -138,4 +140,4 @@ class CalcModel {
       {"acos", "o"}, {"mod", "%"}, {"x", "X"}};
 };
 }  // namespace s21
-#endif  // CALCMODEL_H
+#endif  // SRC_CALCMODEL_H

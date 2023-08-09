@@ -269,6 +269,10 @@ double s21::CalcModel::calculate(QString infix) {
   return calculatePostfix(newInfix);
 }
 
+QString s21::CalcModel::humanResult(double result) {
+  return QString::number(result, 'f', 8).remove(QRegularExpression("[,.]?0+$"));
+}
+
 // CALCULATE CREDIT
 void s21::CalcModel::paymentAnnuityCalc(double& p, double& P) {
   /* Кредитный калькулятор с аннуитетными платежами можно рассчитать по
@@ -422,9 +426,9 @@ void s21::CalcModel::outputDebit(QString& anuInfo, QString& summResult,
     QString currentMonth = QLocale().monthName(currentDate.month());
     QString currentDay = QString::number(currentDate.day());
 
-    anuInfo += "Pay for " + currentDay + " " + currentMonth + " " +
+    anuInfo += "Total for " + currentDay + " " + currentMonth + " " +
                currentYear + ": " + QString::number(finalAmount, 'f', 2) +
-               " interest: " + QString::number(interest, 'f', 2) + "\n";
+               " profit: " + QString::number(interest, 'f', 2) + "\n";
 
     reDepositWithdrawCalculate(currentDate, ReDepositStruct.depositDate,
                                itterator, finalAmount, anuInfo, false);
