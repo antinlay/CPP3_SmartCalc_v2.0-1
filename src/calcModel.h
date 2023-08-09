@@ -124,13 +124,13 @@ class CalcModel {
 
  private:
   // STRUCTURES
-  Graph GraphStruct;
-  Credit CreditStruct;
-  Deposit DepStruct;
-  ReDeposit ReDepositStruct;
-  Withdrawal WithdrawStruct;
+  Graph GraphStruct{};
+  Credit CreditStruct{};
+  Deposit DepStruct{};
+  ReDeposit ReDepositStruct{};
+  Withdrawal WithdrawStruct{};
   // DEGREE FLAG
-  bool useDegree_;
+  bool useDegree_ = false;
   // OPERATORS && FUNCTIONS
   QMap<QString, int> precedences_ = {{"(", 0}, {")", 0}, {"+", 1}, {"-", 1},
                                      {"*", 2}, {"/", 2}, {"%", 2}, {"^", 3}};

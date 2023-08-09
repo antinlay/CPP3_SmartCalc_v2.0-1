@@ -31,7 +31,7 @@ class Credit : public QWidget {
   void calcClicked();
 
  private:
-  Ui::Credit* ui;
+  Ui::Credit* ui = nullptr;
 };
 
 #endif  // CREDIT_H

@@ -33,7 +33,7 @@ class Debit : public QWidget {
   void initDate();
 
  private:
-  Ui::Debit* ui;
+  Ui::Debit* ui = nullptr;
 };
 
 // }  // namespace s21

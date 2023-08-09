@@ -46,8 +46,8 @@ class CalcView : public QMainWindow {
   void graphClicked();
 
  private:
-  Ui::CalcView* ui;
-  QStack<size_t> textLengthStack;
+  Ui::CalcView* ui = nullptr;
+  QStack<size_t> textLengthStack{};
   bool status_ = false;
   QLineEdit* lastActiveLineEdit_ = nullptr;
 };

@@ -38,11 +38,11 @@ class CalcController : public QObject {
   void validateChangeOn(QString equalStr, bool& status);
 
  private:
-  s21::CalcModel* m_;
-  Ui::CalcView* v_;
-  Ui::Graph* g_;
-  Ui::Debit* d_;
-  Ui::Credit* r_;
+  s21::CalcModel* m_ = nullptr;
+  Ui::CalcView* v_ = nullptr;
+  Ui::Graph* g_ = nullptr;
+  Ui::Debit* d_ = nullptr;
+  Ui::Credit* r_ = nullptr;
 };
 }  // namespace s21
 #endif  // CALCCONTROLLER_H

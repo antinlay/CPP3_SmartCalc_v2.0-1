@@ -44,10 +44,10 @@ double s21::CalcModel::modCalc(double a, double b) {
     throw std::runtime_error("Undefined divide zero: " + std::to_string(a) +
                              " mod " + std::to_string(b));
   }
-  return fmod(a, b);
+  return std::fmod(a, b);
 }
 
-double s21::CalcModel::powerCalc(double a, double b) { return pow(a, b); }
+double s21::CalcModel::powerCalc(double a, double b) { return qPow(a, b); }
 
 double s21::CalcModel::sqrtCalc(double a) {
   if (a < 0) {
@@ -58,8 +58,8 @@ double s21::CalcModel::sqrtCalc(double a) {
   return qSqrt(a);
 }
 // FUNCTIONS
-double s21::CalcModel::lnCalc(double a) { return log(a); }
-double s21::CalcModel::logCalc(double a) { return log10(a); }
+double s21::CalcModel::lnCalc(double a) { return qLn(a); }
+double s21::CalcModel::logCalc(double a) { return std::log10(a); }
 double s21::CalcModel::tanCalc(double a) {
   changeDegreesToRadians(a);
   return qTan(a);
@@ -136,10 +136,6 @@ double s21::CalcModel::calcOperations(double a, double b, QString c) {
                                          {"/", &s21::CalcModel::divideCalc},
                                          {"%", &s21::CalcModel::modCalc},
                                          {"^", &s21::CalcModel::powerCalc}};
-  if (!operations.contains(c))
-    throw std::invalid_argument("Input Error: " + c.toStdString() +
-                                " not found");
-
   return (this->*operations.value(c))(a, b);
 }
 
@@ -151,10 +147,6 @@ double s21::CalcModel::calcFunctions(double a, QString c) {
       {"a", &s21::CalcModel::atanCalc}, {"s", &s21::CalcModel::sinCalc},
       {"i", &s21::CalcModel::asinCalc}, {"c", &s21::CalcModel::cosCalc},
       {"o", &s21::CalcModel::acosCalc}};
-  if (!functions.contains(c))
-    throw std::invalid_argument("Input Error: " + c.toStdString() +
-                                " not found");
-
   return (this->*functions.value(c))(a);
 }
 
@@ -230,7 +222,7 @@ double s21::CalcModel::getFromStack(QStack<double>& operands) {
 
 double s21::CalcModel::calculatePostfix(QQueue<QString> postfix) {
   QStack<double> calcStack;
-  QString token;
+  QString token = "";
   while (!postfix.empty()) {
     token = postfix.front();
     postfix.pop_front();
@@ -270,7 +262,8 @@ double s21::CalcModel::calculate(QString infix) {
 }
 
 QString s21::CalcModel::humanResult(double result) {
-  return QString::number(result, 'f', 8).remove(QRegularExpression("[,.]?0+$"));
+  static QRegularExpression regExpr = QRegularExpression("[,.]?0+$");
+  return QString::number(result, 'f', 8).remove(regExpr);
 }
 
 // CALCULATE CREDIT

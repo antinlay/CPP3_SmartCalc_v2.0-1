@@ -13,21 +13,21 @@ class Graph : public QWidget {
   Q_OBJECT
 
  public:
-  explicit Graph(QWidget *parent = nullptr);
+  explicit Graph(QWidget* parent = nullptr);
   ~Graph();
 
-signals:
- void uiEventOutputGraph(QString& graphResult, QVector<double>& x,
-                   QVector<double>& y);
- void uiEventResizeGraph(QVector<double>& y, double& yStart, double& yEnd);
- void uiEventSendUi(Ui::Graph* g);
+ signals:
+  void uiEventOutputGraph(QString& graphResult, QVector<double>& x,
+                          QVector<double>& y);
+  void uiEventResizeGraph(QVector<double>& y, double& yStart, double& yEnd);
+  void uiEventSendUi(Ui::Graph* g);
 
  public slots:
   void graphClicked();
   void sendResult(QString equalResult);
 
  private:
-  Ui::Graph *ui;
+  Ui::Graph* ui = nullptr;
 };
 
 #endif  // GRAPH_H
