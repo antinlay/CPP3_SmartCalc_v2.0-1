@@ -1,18 +1,22 @@
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
-#include "../calcModel.h"
+
 #include <QRegularExpression>
 
+#include "../calcModel.h"
+
 using namespace s21;
-class testModel : public testing::Test {\
-public:
-    QString resultCalc(double result) {
-        static QRegularExpression regExp = QRegularExpression("[,.]?0+$");
-        return QString::number(result, 'f', 8).remove(regExp);
-    }
+class testModel : public testing::Test {
+ public:
+  QString resultCalc(double result) {
+    static QRegularExpression regExp = QRegularExpression("[,.]?0+$");
+    return QString::number(result, 'f', 8).remove(regExp);
+  }
+
  protected:
   s21::CalcModel calc_;
   QString errDivZero = "1/0";
+  QString errModZero = "11mod(0)";
   QString errSqrtNegative = "sqrt(-1)";
   QString errAbracadabra = "1234g43s;;";
   QString errEmpty = "";
@@ -20,9 +24,11 @@ public:
   QString failLexem = "1;02941257";
   QString failLetter = "qwerty";
   QString failLetterX = "sin(x)";
+  QString replaceRes = "0.01050773";
   QString simpleLog = "log(4)";
   QString simpleLogRes = "0.60205999";
-  QString multiFold = "15/(7-(1+1))*3-(2+(1+1))*15/(7-(200+1))*3-(2+(1+1))*(15/"
+  QString multiFold =
+      "15/(7-(1+1))*3-(2+(1+1))*15/(7-(200+1))*3-(2+(1+1))*(15/"
       "(7-(1+1))*3-(2+(1+1))+15/(7-(1+1))*3-(2+(1+1)))";
   QString multiFoldRes = "-30.07216495";
   QString funcExpr =
@@ -38,13 +44,19 @@ public:
   QString powTwoRes = "2417851639229258349412352";
   QString powFuncs = "sin(.2)^(cos(1)+tan(1.1))^sin(.6)";
   QString powFuncsRes = "0.06624972";
+  // Credit
+  QString anuInfo, payment, overpayment;
+  QDate currentDate = QDate::fromString("09/08/2023", "dd/MM/yyyy");
+  QDate endDate = QDate::fromString("09/08/2024", "dd/MM/yyyy");
+  // Graph
+  int h = 2;
+  QVector<double> x, y;
   QString x_str_main_ =
       "sqrt((7.2 + 3.5 - 2.8) / (5.6 * 4.2)) + sin(x) - cos(1.3)";
   QString x_str_ = "0.8";
   double x_str_d_ = 0.8;
   QString x_str_res_ = "1.02941257";
-  QString mod =
-      "((sin(2.3)*(sqrt(7.8)+cos(1.2)))mod4.5)/(log(5.6)+atan(0.9))";
+  QString mod = "((sin(2.3)*(sqrt(7.8)+cos(1.2)))mod4.5)/(log(5.6)+atan(0.9))";
   QString modRes = "1.588689";
   QString graph_func_ = "x^2";
   double x_begin_ = -30;
@@ -57,28 +69,56 @@ public:
 
 TEST_F(testModel, errors) {
   EXPECT_THROW(calc_.calculate(errDivZero), std::runtime_error);
+  EXPECT_THROW(calc_.calculate(errModZero), std::runtime_error);
   EXPECT_THROW(calc_.calculate(errSqrtNegative), std::runtime_error);
   EXPECT_THROW(calc_.calculate(errAbracadabra), std::invalid_argument);
   EXPECT_THROW(calc_.calculate(errEmpty), std::invalid_argument);
 }
 
 TEST_F(testModel, equals) {
-    qDebug() << resultCalc(calc_.calculate(simpleLog));
-    EXPECT_EQ(resultCalc(calc_.calculate(simpleLog)), simpleLogRes);
-    qDebug() << resultCalc(calc_.calculate(multiFold));
-    EXPECT_EQ(resultCalc(calc_.calculate(multiFold)), multiFoldRes);
-    qDebug() << resultCalc(calc_.calculate(funcExpr));
-    EXPECT_EQ(resultCalc(calc_.calculate(funcExpr)), funcExprRes);
-    qDebug() << resultCalc(calc_.calculate(foldedFuncs));
-    EXPECT_EQ(resultCalc(calc_.calculate(foldedFuncs)), foldedFuncsRes);
-    qDebug() << resultCalc(calc_.calculate(expNotation));
-    EXPECT_EQ(resultCalc(calc_.calculate(expNotation)), expNotationRes);
-    qDebug() << resultCalc(calc_.calculate(expEasy));
-    EXPECT_EQ(resultCalc(calc_.calculate(expEasy)), expEasyRes);
-    qDebug() << resultCalc(calc_.calculate(powTwo));
-    EXPECT_EQ(resultCalc(calc_.calculate(powTwo)), powTwoRes);
-    qDebug() << resultCalc(calc_.calculate(powFuncs));
-    EXPECT_EQ(resultCalc(calc_.calculate(powFuncs)), powFuncsRes);
-    qDebug() << resultCalc(calc_.calculate(mod));
-    EXPECT_EQ(resultCalc(calc_.calculate(mod)), modRes);
+  qDebug() << resultCalc(calc_.calculate(simpleLog));
+  EXPECT_EQ(resultCalc(calc_.calculate(simpleLog)), simpleLogRes);
+  qDebug() << resultCalc(calc_.calculate(multiFold));
+  EXPECT_EQ(resultCalc(calc_.calculate(multiFold)), multiFoldRes);
+  qDebug() << resultCalc(calc_.calculate(funcExpr));
+  EXPECT_EQ(resultCalc(calc_.calculate(funcExpr)), funcExprRes);
+  qDebug() << resultCalc(calc_.calculate(foldedFuncs));
+  EXPECT_EQ(resultCalc(calc_.calculate(foldedFuncs)), foldedFuncsRes);
+  qDebug() << resultCalc(calc_.calculate(expNotation));
+  EXPECT_EQ(resultCalc(calc_.calculate(expNotation)), expNotationRes);
+  qDebug() << resultCalc(calc_.calculate(expEasy));
+  EXPECT_EQ(resultCalc(calc_.calculate(expEasy)), expEasyRes);
+  qDebug() << resultCalc(calc_.calculate(powTwo));
+  EXPECT_EQ(resultCalc(calc_.calculate(powTwo)), powTwoRes);
+  qDebug() << resultCalc(calc_.calculate(powFuncs));
+  EXPECT_EQ(resultCalc(calc_.calculate(powFuncs)), powFuncsRes);
+  qDebug() << resultCalc(calc_.calculate(mod));
+  EXPECT_EQ(resultCalc(calc_.calculate(mod)), modRes);
+}
+
+TEST_F(testModel, graph) {
+  calc_.setGraphStructureValues(h, 0, 10);
+  calc_.outputGraph(failLetterX, x, y);
+  //   qDebug() << " x = " << x[0] << " y = " << y[0];
+  //   EXPECT_EQ(failLetterX, replaceRes);
+}
+
+TEST_F(testModel, credit) {
+  calc_.setCreditStructureValues(100000, 12, 1, currentDate, 10);
+  calc_.outputCredit(anuInfo, payment, overpayment);
+  qDebug() << "Credit :" << anuInfo << "PAY" << payment << "OVER"
+           << overpayment;
+}
+
+TEST_F(testModel, debit) {
+  calc_.setDepStructureValues(100000, 13, 1, true, currentDate, endDate);
+  calc_.outputDebit(anuInfo, payment, overpayment);
+  qDebug() << "Debit :" << anuInfo << "PAY" << payment << "OVER" << overpayment;
+}
+
+TEST_F(testModel, replaceX) {
+  calc_.setUseDegree(true);
+  calc_.replaceX(failLetterX, simpleLogRes);
+  qDebug() << "replace " << resultCalc(calc_.calculate(failLetterX));
+  //   EXPECT_EQ(resultCalc(calc_.calculate(failLetterX)), replaceRes);
 }

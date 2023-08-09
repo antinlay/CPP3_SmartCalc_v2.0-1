@@ -3,11 +3,14 @@ cmake_minimum_required(VERSION 3.7)
 project(calculate LANGUAGES CXX)
 
 # add definitions
-add_definitions(--coverage)
+add_definitions(--coverage -fprofile-arcs -ftest-coverage)
 
 # Include diretories
 include_directories(/usr/local/include)
 link_directories(/usr/local/bin/)
+
+set(CMAKE_C_COMPILER "/usr/local/bin/gcc")
+set(CMAKE_CXX_COMPILER "/usr/local/bin/g++")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -20,7 +23,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(PROJECT_ARCH_TARGET "amd64")
 
 # Set the compiler options
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -Wall -Werror -Wextra --coverage")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -Wall -Werror -Wextra --coverage -fprofile-arcs -ftest-coverage")
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 
 # Create OBJECT_DIR variable
@@ -70,13 +73,12 @@ include_directories(${GTestIncludes})
 set(Sources
                 main.cpp
                 tstCalculate.cpp
-                calcModel.cpp
+                ../calcModel.cpp
                 )
 
 # Set Include directories
 include_directories(
                 ../
-                ../calcTest/
                 )
 
 add_executable(calculate ${Sources} ${GTestFiles})
@@ -90,7 +92,7 @@ add_custom_target(gcov
 add_custom_command(TARGET gcov
     COMMAND echo "=================== GCOV ===================="
     COMMAND gcov --version
-    COMMAND gcov -b ${CMAKE_SOURCE_DIR}/*.cpp -o ${OBJECT_DIR}
+    COMMAND gcov -b ${CMAKE_SOURCE_DIR}/*.cpp ../calcModel.cpp -o ${OBJECT_DIR}
     COMMAND echo "-- Source diretorie: ${CMAKE_SOURCE_DIR}/"
     COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/gcoverage"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcoverage
@@ -104,11 +106,10 @@ add_custom_target(lcov
 add_custom_command(TARGET lcov
     COMMAND echo "=================== LCOV ===================="
     COMMAND echo "-- Passing lcov tool under code coverage"
-    COMMAND lcov -t "calculate" -o ${OBJECT_DIR}/calculate.info -c -d ./ --no-external --ignore-errors mismatch
-    # COMMAND lcov --capture --directory ../ --output-file lcoverage/main_coverage.info --no-external --ignore-errors mismatch
+    COMMAND geninfo --ignore-errors mismatch ${OBJECT_DIR} -b ./lcoverage -o lcoverage/calculate.info
     COMMAND echo "-- Generating HTML output files"
-    COMMAND genhtml -o report calculate.info
-    # COMMAND genhtml lcoverage/main_coverage.info --output-directory lcoverage
+    COMMAND genhtml lcoverage/calculate.info --output-directory lcoverage
+    COMMAND open lcoverage/index.html
     )
 
 # Make sure to clean up the coverage folder
