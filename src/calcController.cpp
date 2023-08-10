@@ -1,7 +1,15 @@
 #include "calcController.h"
 
-void s21::CalcController::calcEqual(QString& equalResult, QString& equalLabel) {
+void s21::CalcController::setDegreeMode() {
+  m_->setUseDegree(v_->radioButton->isChecked());
+};
+
+void s21::CalcController::replaceX(QString& equalResult, QString& equalLabel) {
   m_->replaceX(equalResult, equalLabel);
+}
+
+void s21::CalcController::calcEqual(QString& equalResult, QString& equalLabel) {
+  replaceX(equalResult, equalLabel);
   double result = m_->calculate(equalResult);
   equalResult = m_->humanResult(result);
 }

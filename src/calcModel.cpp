@@ -492,16 +492,30 @@ void s21::CalcModel::setDepStructureValues(double summ, double interestRate,
   DepStruct.currentDate = currentDate;
   DepStruct.endDate = endDate;
 }
+
 void s21::CalcModel::setReDepStructureValues(QString summDep, QDate depositDate,
                                              unsigned short caseIndexDep) {
   ReDepositStruct.summDep = summDep;
   ReDepositStruct.depositDate = depositDate;
   ReDepositStruct.caseIndexDep = caseIndexDep;
 }
+
 void s21::CalcModel::setWithdrawStructureValues(
     QString summWithdraw, QDate withdrawDate,
     unsigned short caseIndexWithdraw) {
   WithdrawStruct.summWithdraw = summWithdraw;
   WithdrawStruct.withdrawDate = withdrawDate;
   WithdrawStruct.caseIndexWithdraw = caseIndexWithdraw;
+}
+
+QDate s21::CalcModel::getDateFromStruct() {
+  return ReDepositStruct.depositDate;
+}
+
+QString s21::CalcModel::getSumDepFromStruct() {
+  return ReDepositStruct.summDep;
+}
+
+unsigned short s21::CalcModel::getcaseIndexDepFromStruct() {
+  return ReDepositStruct.caseIndexDep;
 }

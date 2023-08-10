@@ -1,7 +1,7 @@
 #ifndef DEBIT_H
 #define DEBIT_H
 
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 #include "ui_debit.h"
 

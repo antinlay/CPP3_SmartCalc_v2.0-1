@@ -110,6 +110,9 @@ class CalcModel {
   void changeDegreesToRadians(double& a);
 
   // STRUCT SETTER
+  QDate getDateFromStruct();
+  QString getSumDepFromStruct();
+  unsigned short getcaseIndexDepFromStruct();
   void setGraphStructureValues(int h, double xStart, double xEnd);
   void setCreditStructureValues(double summ, double interestRate,
                                 unsigned short caseIndex, QDate currentDate,
