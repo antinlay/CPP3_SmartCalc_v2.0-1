@@ -145,8 +145,8 @@ TEST_F(testModel, outputGraph) {
   EXPECT_EQ(yDot, yRes);
 }
 TEST_F(testModel, resizeGraph) {
-  xDots.reserve(1501);
-  yDots.reserve(1501);
+  xDots.reserve(1500);
+  yDots.reserve(1500);
   calc_.setGraphStructureValues(h, xStart, xEnd);
   calc_.resizeGraph(xDots, xStart, xEnd);
   EXPECT_EQ(xStart, -10.0);

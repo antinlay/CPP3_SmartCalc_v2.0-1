@@ -507,15 +507,3 @@ void s21::CalcModel::setWithdrawStructureValues(
   WithdrawStruct.withdrawDate = withdrawDate;
   WithdrawStruct.caseIndexWithdraw = caseIndexWithdraw;
 }
-
-QDate s21::CalcModel::getDateFromStruct() {
-  return ReDepositStruct.depositDate;
-}
-
-QString s21::CalcModel::getSumDepFromStruct() {
-  return ReDepositStruct.summDep;
-}
-
-unsigned short s21::CalcModel::getcaseIndexDepFromStruct() {
-  return ReDepositStruct.caseIndexDep;
-}
