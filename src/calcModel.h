@@ -1,5 +1,5 @@
-#ifndef SRC_CALCMODEL_H
-#define SRC_CALCMODEL_H
+#ifndef CALCMODEL_H
+#define CALCMODEL_H
 
 #include <QtCore/QDate>
 #include <QtCore/QQueue>
@@ -143,4 +143,4 @@ class CalcModel {
       {"acos", "o"}, {"mod", "%"}, {"x", "X"}};
 };
 }  // namespace s21
-#endif  // SRC_CALCMODEL_H
+#endif  // CALCMODEL_H

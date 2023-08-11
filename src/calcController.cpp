@@ -1,5 +1,10 @@
 #include "calcController.h"
 
+void s21::CalcController::sendCalcViewUi(Ui::CalcView* v) {
+  v_ = v;
+  setDegreeMode();
+};
+
 void s21::CalcController::setDegreeMode() {
   m_->setUseDegree(v_->radioButton->isChecked());
 };

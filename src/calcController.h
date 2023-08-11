@@ -23,10 +23,7 @@ class CalcController : public QObject {
   void sendDebitUi(Ui::Debit* d) { d_ = d; };
   void sendCreditUi(Ui::Credit* r) { r_ = r; };
   void sendGraphUi(Ui::Graph* g) { g_ = g; };
-  void sendCalcViewUi(Ui::CalcView* v) {
-    v_ = v;
-    setDegreeMode();
-  };
+  void sendCalcViewUi(Ui::CalcView* v);
 
  public:
   CalcController(s21::CalcModel* m, Ui::CalcView* v) : m_(m), v_(v){};
