@@ -22,7 +22,12 @@ clean:
 	rm -rf *.o *.a *.gc* tgz_calc RESULT_VALGRIND.txt $(TEST)/build
 
 dvi:
+ifeq ($(OS), Linux)
+	xdg-open info.pdf
+endif
+ifeq ($(OS), Darwin)
 	open info.pdf
+endif
 
 dist: install
 	cd build && mkdir tgz_calc/ tgz_calc/app
@@ -33,6 +38,10 @@ tests: clean
 	mkdir $(TEST)/build
 	cd $(TEST)/build && cmake .. && make
 	$(TEST)/build/calculate
+
+check: tests
+	clang-format -style="{BasedOnStyle: Google}" -i *.cpp $(TEST)/*.cpp
+	cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-config $(SRC) *.h
 
 gcov_report: tests
 	cd $(TEST)/build && make gcov && make lcov
