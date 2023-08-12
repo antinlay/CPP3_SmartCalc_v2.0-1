@@ -454,10 +454,10 @@ void s21::CalcModel::resizeGraph(QVector<double>& y, double& yStart,
                                  double& yEnd) {
   // get xy range
   for (int i = 0; i < y.size() && i < y.size(); i++) {
-    if (y[i] > yEnd && y[i] >= 0.000001) {
+    if (y[i] > yEnd && fabs(y[i]) >= 0.000001) {
       yEnd = y[i];
     }
-    if (y[i] < yStart && y[i] >= 0.000001) {
+    if (y[i] < yStart && fabs(y[i]) >= 0.000001) {
       yStart = y[i];
     }
   }
