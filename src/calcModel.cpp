@@ -172,7 +172,10 @@ void s21::CalcModel::isBrackets(QChar& currentChar,
     while (!operatorStack.empty() && operatorStack.top() != "(" &&
            getPriority(QString(1, currentChar)) <=
                getPriority(operatorStack.top())) {
-      if (currentChar == '^' && operatorStack.top() == "^") break;
+      // Right-associative power of degree
+      if (currentChar == '^' && operatorStack.top() == "^") {
+        break;
+      }
       outputQueue.push_back(operatorStack.top());
       operatorStack.pop();
     }
