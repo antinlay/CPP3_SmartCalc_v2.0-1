@@ -75,6 +75,12 @@ class CalcModel {
   bool isDigital(QChar& currentChar, QString& infix, int& i);
   bool isOperator(const QString& str);
   bool isFunction(const QString& str);
+  void isEmptyBracket(QString& currentToken, QQueue<QString>& outputQueue);
+  void isBrackets(QChar& currentChar, QQueue<QString>& outputQueue,
+                  QStack<QString>& operatorStack);
+  void isEmptyToken(QString& currentToken, QQueue<QString>& outputQueue);
+  void isEmptyStack(QQueue<QString>& outputQueue,
+                    QStack<QString>& operatorStack);
   // MAP CALCULATIONS
   double calcOperations(double a, double b, QString c);
   double calcFunctions(double a, QString c);

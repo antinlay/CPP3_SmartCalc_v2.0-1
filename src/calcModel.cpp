@@ -150,20 +150,66 @@ double s21::CalcModel::calcFunctions(double a, QString c) {
   return (this->*functions.value(c))(a);
 }
 
+void s21::CalcModel::isEmptyBracket(QString& currentToken,
+                                    QQueue<QString>& outputQueue) {
+  if (!currentToken.isEmpty()) {
+    outputQueue.push_back(currentToken);
+    currentToken = "";
+  }
+}
+void s21::CalcModel::isBrackets(QChar& currentChar,
+                                QQueue<QString>& outputQueue,
+                                QStack<QString>& operatorStack) {
+  if (currentChar == '(') {
+    operatorStack.push(QString(1, currentChar));
+  } else if (currentChar == ')') {
+    while (operatorStack.top() != "(") {
+      outputQueue.push_back(operatorStack.top());
+      operatorStack.pop();
+    }
+    operatorStack.pop();
+  } else {
+    while (!operatorStack.empty() && operatorStack.top() != "(" &&
+           getPriority(QString(1, currentChar)) <=
+               getPriority(operatorStack.top())) {
+      if (currentChar == '^' && operatorStack.top() == "^") break;
+      outputQueue.push_back(operatorStack.top());
+      operatorStack.pop();
+    }
+    operatorStack.push(QString(1, currentChar));
+  }
+}
+
+void s21::CalcModel::isEmptyToken(QString& currentToken,
+                                  QQueue<QString>& outputQueue) {
+  if (!currentToken.isEmpty()) {
+    outputQueue.push_back(currentToken);
+  }
+}
+void s21::CalcModel::isEmptyStack(QQueue<QString>& outputQueue,
+                                  QStack<QString>& operatorStack) {
+  while (!operatorStack.empty()) {
+    outputQueue.push_back(operatorStack.top());
+    operatorStack.pop();
+  }
+}
+
 // CONVERT TO POSTFIX
 QQueue<QString> s21::CalcModel::infixToPostfix(QString& infix) {
   QStack<QString> operatorStack;
   QQueue<QString> outputQueue;
   QString currentToken = "";
-
+  // Main loop for chars
   for (int i = 0; i < infix.length(); i++) {
     QChar currentChar = infix[i];
+    // Check is Digital or exponential
     if (isDigital(currentChar, infix, i)) {
       if (currentChar == 'e') {
         currentToken += currentChar;
         currentChar = infix[++i];
       }
       currentToken += currentChar;
+      // Check is Letter
     } else if (QChar(currentChar).isLetter()) {
       QString function;
       while (QChar(currentChar).isLetter()) {
@@ -174,39 +220,14 @@ QQueue<QString> s21::CalcModel::infixToPostfix(QString& infix) {
       operatorStack.push(function);
       --i;
     } else {
-      if (!currentToken.isEmpty()) {
-        outputQueue.push_back(currentToken);
-        currentToken = "";
-      }
-      if (currentChar == '(') {
-        operatorStack.push(QString(1, currentChar));
-      } else if (currentChar == ')') {
-        while (operatorStack.top() != "(") {
-          outputQueue.push_back(operatorStack.top());
-          operatorStack.pop();
-        }
-        operatorStack.pop();
-      } else {
-        while (!operatorStack.empty() && operatorStack.top() != "(" &&
-               getPriority(QString(1, currentChar)) <=
-                   getPriority(operatorStack.top())) {
-          if (currentChar == '^' && operatorStack.top() == "^") break;
-          outputQueue.push_back(operatorStack.top());
-          operatorStack.pop();
-        }
-        operatorStack.push(QString(1, currentChar));
-      }
+      // Check brackets
+      isEmptyBracket(currentToken, outputQueue);
+      isBrackets(currentChar, outputQueue, operatorStack);
     }
   }
-
-  if (!currentToken.isEmpty()) {
-    outputQueue.push_back(currentToken);
-  }
-
-  while (!operatorStack.empty()) {
-    outputQueue.push_back(operatorStack.top());
-    operatorStack.pop();
-  }
+  // Checks is empty
+  isEmptyToken(currentToken, outputQueue);
+  isEmptyStack(outputQueue, operatorStack);
   return outputQueue;
 }
 
