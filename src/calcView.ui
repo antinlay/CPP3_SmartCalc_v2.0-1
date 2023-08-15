@@ -936,7 +936,7 @@
      <string>X = </string>
     </property>
     <property name="clearButtonEnabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QProgressBar" name="progressBar">
