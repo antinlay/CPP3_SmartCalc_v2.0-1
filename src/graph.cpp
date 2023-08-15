@@ -21,6 +21,7 @@ void Graph::graphClicked() {
   ui->widget->clearGraphs();
   // create Graph and assign data to it:
   ui->widget->addGraph();
+  ui->widget->setInteraction(QCP::iRangeZoom);
   ui->widget->graph(0)->setData(x, y);
   // give the axes some labels:
   ui->widget->xAxis->setLabel("x");
